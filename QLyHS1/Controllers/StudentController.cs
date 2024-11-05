@@ -41,6 +41,7 @@ namespace QLyHS1.Controllers
             return View(studentVM.ToList());
         }
 
+
         // Xem chi tiết học sinh
         [Route("Student/Search")]
         public IActionResult Search(string? query)
