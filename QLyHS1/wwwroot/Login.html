@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý học sinh - Đăng nhập</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    width: 700px;
+    height: 400px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.login-left {
+    background-color: #e0f0ff;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-image {
+    width: 150px;
+}
+
+.login-right {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+label {
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+button.btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button.btn-login:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+p a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+</style>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <img src="https://sie.tlu.edu.vn/Portals/0/icon_bachelor.png" alt="Graduation Image" class="login-image">
+        </div>
+        <div class="login-right">
+            <h2>Đăng nhập</h2>
+            <form action="login.php" method="POST">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" required>
+
+                <div class="forgot-password">
+                    <a href="forgot_password.php">Quên mật khẩu?</a>
+                </div>
+                
+                <button type="submit" class="btn-login">Đăng nhập</button>
+            </form>
+            <p><a href="register.php">Đăng ký tài khoản</a></p>
+        </div>
+    </div>
+</body>
+</html>

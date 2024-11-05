@@ -1,0 +1,145 @@
+﻿@model QLyHS1.Models.TeacherDetailViewModel
+@{
+    ViewData["Title"] = "Add";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Chỉnh Sửa Thông Tin Giáo Viên</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+            button:hover {
+                background-color: #218838;
+            }
+
+        .cancel-btn {
+            display: inline-block;
+            margin-top: 10px;
+            text-align: center;
+            color: #dc3545;
+            text-decoration: none;
+        }
+
+            .cancel-btn:hover {
+                text-decoration: underline;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thêm Thông Tin Giáo Viên</h2>
+        <form asp-action="Add" asp-controller="Teacher" method="post">
+            <div class="form-group">
+                <label asp-for="Name">Họ Tên:</label>
+                <input type="text" asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserName">Tên Đăng Nhập:</label>
+                <input type="text" asp-for="UserName" class="form-control" required />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password">Mật Khẩu:</label>
+                <input type="password" asp-for="Password" class="form-control" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email">Email:</label>
+                <input type="email" asp-for="Email" class="form-control" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth">Ngày Sinh:</label>
+                <input type="date" asp-for="DateOfBirth" class="form-control" required />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone">Số Điện Thoại:</label>
+                <input type="tel" asp-for="Phone" class="form-control" required />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address">Địa Chỉ:</label>
+                <input type="text" asp-for="Address" class="form-control" required />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <!-- Token được tạo tự động trên server-side -->
+            <input type="hidden" asp-for="Token" />
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Thêm</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<QLyHS1.Models.TeacherViewModel>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân công giáo viên</title>
+    <link rel="stylesheet" href="~/css/Teacher.css">
+</head>
+<style>
+   
+</style>
+<body>
+    <div class="container">
+
+        <div class="main-content">
+            <h1>Phân công giáo viên</h1>
+
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="semester">Học kỳ:</label>
+                    <select id="semester">
+                        <option value="HK1">HK1</option>
+                        <option value="HK2">HK2</option>
+                    </select>
+
+                    <label for="year">Niên khoá:</label>
+                    <select id="year">
+                        <option value="2022-2023">2022-2023</option>
+                        <option value="2023-2024">2023-2024</option>
+                        <option value="2024-2025">2024-2025</option>
+                    </select>
+                </div>
+
+                <div class="search-group">
+                    <form name="SearchForm" asp-action="Search" asp-controller="Student">
+                    <input type="text" placeholder="Tìm kiếm" name="query">
+                    <button class="btn-search">Tìm kiếm</button>
+                </form>
+                <button class="btn-add" onclick="location.href='@Url.Action("Add", "Teacher")'">+</button>
+                </div>
+            </div>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Giáo Viên</th>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Ngày phân công</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int stt = 1;
+                        foreach (var student in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@student.Name</td>
+                                <td>@student.Subject</td>
+                                <td>@student.ClassName</td>
+                                <td>@student.StartTime</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">Không có dữ liệu học sinh.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+
+

@@ -1,0 +1,7 @@
+﻿@model IEnumerable<QLyHS1.Models.StudentViewModel>
+@{
+    ViewData["Title"] = "Search";
+    Layout = "_HomeLayout";
+}
+
+@await Html.PartialAsync("Index", Model)
