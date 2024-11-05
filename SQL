@@ -1,0 +1,196 @@
+-- sql student, 
+create database QLyHS1
+
+use QlyHS1
+GO
+CREATE TABLE Semester (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,               
+    name NVARCHAR(50) NOT NULL,                
+    createAt DATE NOT NULL DEFAULT GETDATE(),                   
+    updateAt DATE NOT NULL DEFAULT GETDATE(),                    
+    status BIT NOT NULL DEFAULT 1            
+);
+
+GO
+CREATE TABLE SchoolYear (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
+    year INT NOT NULL   
+);
+GO
+CREATE TABLE Subject (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    name NVARCHAR(50) NOT NULL,
+    createAt DATE NOT NULL DEFAULT GETDATE(),
+    updateAt DATE NOT NULL DEFAULT GETDATE(),
+    status BIT NOT NULL
+);
+GO
+CREATE TABLE Schedules (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    subjectID INT NOT NULL,
+    classRoom NVARCHAR(50) NOT NULL,
+    dayOfWeek INT NOT NULL,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    FOREIGN KEY (subjectID) REFERENCES Subject(id)
+);
+GO
+CREATE TABLE GrandLevel (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    name NVARCHAR(50) NOT NULL
+);
+GO
+CREATE TABLE Teacher (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    name NVARCHAR(50) NOT NULL,
+    userName NVARCHAR(50) NOT NULL,
+    password NVARCHAR(50) NOT NULL,
+    email CHAR(50) NOT NULL,
+    dateOfBirth DATE NOT NULL,
+    phone CHAR(12) NOT NULL,
+    address NVARCHAR(100) NOT NULL,
+    token NVARCHAR(200) NOT NULL,
+    role BIT NOT NULL,
+    createAt DATE NOT NULL,
+    updateAt DATE NOT NULL,
+    status BIT NOT NULL
+);
+GO
+CREATE TABLE Classroom (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    gradeLevelID INT NOT NULL,
+    teacherID INT NOT NULL,
+    name NVARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    createAt DATE NOT NULL,
+    updateAt DATE NOT NULL,
+    status BIT NOT NULL,
+    --CONSTRAINT FK_GradeLevel 
+	FOREIGN KEY (gradeLevelID) REFERENCES GrandLevel(id),
+    --CONSTRAINT FK_Teacher 
+	FOREIGN KEY (teacherID) REFERENCES Teacher(id)
+);
+
+--EXEC sp_rename 'Class', 'Classroom';
+
+GO
+CREATE TABLE Student (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    classID INT NOT NULL,                
+    name NVARCHAR(50) NOT NULL,
+	gender CHAR(5),
+    email CHAR(50) NOT NULL UNIQUE,      
+    dateOfBirth DATE NOT NULL,           
+    phone CHAR(12) NOT NULL UNIQUE, 
+	phoneParent CHAR(12) NOT NULL UNIQUE,
+    address NVARCHAR(100) NOT NULL,     
+    createAt DATE NOT NULL DEFAULT GETDATE(), 
+    updateAt DATE NOT NULL DEFAULT GETDATE(), 
+    status BIT NOT NULL DEFAULT 1,
+	FOREIGN KEY (classID) REFERENCES Classroom(id),
+);
+--ALTER TABLE Student
+--ADD gender CHAR(5) NOT NULL;
+--ALTER TABLE Student
+--ADD parentPhone CHAR(12) NOT NULL UNIQUE;
+
+
+
+--ALTER TABLE Student
+--ADD CONSTRAINT fk_classID FOREIGN KEY (classID) REFERENCES Class(id);
+--CREATE INDEX idx_email ON Student(email);
+--CREATE INDEX idx_phone ON Student(phone);
+
+GO
+CREATE TABLE Schedules (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    subjectID INT NOT NULL,
+    classRoom NVARCHAR(50) NOT NULL,
+    dayOfWeek INT NOT NULL,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    FOREIGN KEY (subjectID) REFERENCES Subject(id)
+);
+GO
+CREATE TABLE Grade (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    StudentID INT NOT NULL,
+    SemesterID INT NOT NULL,
+    SubjectID INT NOT NULL,
+    SchoolYearID INT NOT NULL,
+    GradeI FLOAT NOT NULL,
+    GradeII FLOAT NOT NULL,
+    GradeSemester FLOAT NOT NULL,
+    createAt DATE NOT NULL DEFAULT GETDATE(),
+    updateAt DATE NOT NULL DEFAULT GETDATE(),
+    status BIT NOT NULL,
+    FOREIGN KEY (StudentID) REFERENCES Student(id),
+    FOREIGN KEY (SemesterID) REFERENCES Semester(id),
+    FOREIGN KEY (SubjectID) REFERENCES Subject(id),
+    FOREIGN KEY (SchoolYearID) REFERENCES SchoolYear(id)
+);
+GO
+CREATE TABLE Assignment (
+    TeacherID int NOT NULL,
+    SubjectID int NOT NULL,
+    StartDate date NOT NULL,
+    EndDate date NOT NULL
+	FOREIGN KEY (TeacherID) REFERENCES Teacher(id),
+    FOREIGN KEY (SubjectID) REFERENCES Subject(id),
+);
+
+use QLyHS
+
+select * from Student
+Select * from Classroom
+
+SELECT 
+    st.Name,
+    st.Gender,
+    st.DateOfBirth AS Birthday,
+    cl.Name AS ClassName,
+    st.Address,
+    st.ParentPhone
+FROM 
+    Student st
+JOIN 
+    Classroom cl ON st.ClassId = cl.Id;
+
+use QlyHS1
+INSERT INTO Student (classID, name, gender, email, dateOfBirth, phone, phoneParent, address)
+VALUES 
+(1, N'Nguyễn Văn C', 'Nam', 'nguyenvanc@example.com', '2005-05-15', '012345679', '0987654323', N'123 Đường ABC, Quận 1, TP.HCM'),
+(1, N'Trần Thị B', N'Nữ', 'tranthib@example.com', '2005-06-20', '0123456790', '0987654322', N'456 Đường DEF, Quận 1, TP.HCM');
+
+INSERT INTO Classroom (gradeLevelID, teacherID, name, quantity, createAt, updateAt, status)
+VALUES 
+(1, 1, N'Lớp 1A', 30, GETDATE(), GETDATE(), 1),
+(2, 2, N'Lớp 2B', 25, GETDATE(), GETDATE(), 1);
+
+INSERT INTO Teacher (name, userName, password, email, dateOfBirth, phone, address, token, role, createAt, updateAt, status)
+VALUES 
+(N'Teacher 1', N'teacher1', N'password123', 'teacher1@example.com', '1980-01-15', '0123456789', N'123 Đường ABC, Quận 1', N'abc123token', 1, GETDATE(), GETDATE(), 1),
+(N'Teacher 2', N'teacher2', N'password456', 'teacher2@example.com', '1985-03-22', '0987654321', N'456 Đường DEF, Quận 2', N'def456token', 1, GETDATE(), GETDATE(), 1);
+
+
+INSERT INTO GrandLevel (name)
+VALUES 
+(N'Khối 10'), 
+(N'Khối 11');
+
+SELECT TOP 1 s.Id, s.Name, s.Gender, s.DateOfBirth, s.ClassId, s.Address, s.PhoneParent,
+             c.Name AS ClassName
+FROM Student s
+INNER JOIN Classroom c ON s.ClassId = c.Id
+WHERE s.Name like '%A%'
+
+
+SELECT [s].[id], [s].[name], [s].[gender], [s].[dateOfBirth], [c].[name], [s].[address], [s].[phoneParent]
+FROM [Student] AS [s]
+INNER JOIN [Classroom] AS [c] ON [s].[classID] = [c].[id]
+where s.Name like '%A%'
+
+
+select * from Student
+select * from Teacher
+
