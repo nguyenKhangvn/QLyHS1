@@ -30,6 +30,7 @@ public partial class Teacher
     public DateTime UpdateAt { get; set; }
 
     public bool Status { get; set; }
-
+  
     public virtual ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
+
 }

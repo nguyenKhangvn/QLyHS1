@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<QLyHS1.Models.TeacherViewModel>
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,9 @@
     <link rel="stylesheet" href="~/css/Teacher.css">
 </head>
 <style>
-   
+
 </style>
+
 <body>
     <div class="container">
 
@@ -33,11 +35,11 @@
                 </div>
 
                 <div class="search-group">
-                    <form name="SearchForm" asp-action="Search" asp-controller="Student">
-                    <input type="text" placeholder="Tìm kiếm" name="query">
-                    <button class="btn-search">Tìm kiếm</button>
-                </form>
-                <button class="btn-add" onclick="location.href='@Url.Action("Add", "Teacher")'">+</button>
+                    <form name="SearchForm" asp-action="Search" asp-controller="Teacher">
+                        <input type="text" placeholder="Tìm kiếm" name="query">
+                        <button class="btn-search">Tìm kiếm</button>
+                    </form>
+                    <button class="btn-add" onclick="location.href='@Url.Action("Add", "Teacher")'">+</button>
                 </div>
             </div>
 
@@ -46,27 +48,29 @@
                     <tr>
                         <th>STT</th>
                         <th>Giáo Viên</th>
-                        <th>Môn học</th>
-                        <th>Lớp</th>
-                        <th>Ngày phân công</th>
+                        <th>Email</th>
+                        <th>Sinh nhât</th>
+                        <th>Địa chỉ</th>
+                        <th>Số điện thoại</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
-                        foreach (var student in Model)
+                        foreach (var teacher in Model)
                         {
                             <tr>
                                 <td>@stt</td>
-                                <td>@student.Name</td>
-                                <td>@student.Subject</td>
-                                <td>@student.ClassName</td>
-                                <td>@student.StartTime</td>
+                                <td>@teacher.Name</td>
+                                <td>@teacher.Email</td>
+                                <td>@teacher.DateOfBirth</td>
+                                <td>@teacher.Address</td>
+                                <td>@teacher.Phone</td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                                    <a asp-action="Edit" asp-route-id="@teacher.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@teacher.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@teacher.Id">Delete</a>
                                 </td>
                             </tr>
                             stt++;
@@ -76,7 +80,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7">Không có dữ liệu học sinh.</td>
+                            <td colspan="7">Không có dữ liệu giáo viên.</td>
                         </tr>
                     }
                 </tbody>
@@ -84,6 +88,5 @@
         </div>
     </div>
 </body>
+
 </html>
-
-

@@ -1,0 +1,120 @@
+﻿@model QLyHS1.Data.Teacher
+@{
+    ViewData["Title"] = "Details";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết giáo viên</title>
+    <link rel="stylesheet" href="~/css/details.css">
+    <style>
+        /* Đặt các thuộc tính chung cho trang */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Định dạng container chính */
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Định dạng hộp chi tiết */
+        .details-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .detail-item {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+        }
+
+            .detail-item strong {
+                color: #333;
+            }
+
+        /* Định dạng nút quay lại */
+        .btn-back {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-back:hover {
+                background-color: #45a049;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chi tiết giáo viên</h1>
+
+        <div class="details-box">
+            <div class="detail-item">
+                <strong>Họ và tên:</strong> @Model.Name
+            </div>
+            <div class="detail-item">
+                <strong>Tên đăng nhập:</strong> @Model.UserName
+            </div>
+            <div class="detail-item">
+                <strong>Email:</strong> @Model.Email
+            </div>
+            <div class="detail-item">
+                <strong>Ngày sinh:</strong> @Model.DateOfBirth.ToString("dd/MM/yyyy")
+            </div>
+            <div class="detail-item">
+                <strong>Số điện thoại:</strong> @Model.Phone
+            </div>
+            <div class="detail-item">
+                <strong>Địa chỉ:</strong> @Model.Address
+            </div>
+            <div class="detail-item">
+                <strong>Vai trò:</strong> @(Model.Role ? "Quản trị viên" : "Giáo viên")
+            </div>
+            <div class="detail-item">
+                <strong>Trạng thái:</strong> @(Model.Status ? "Hoạt động" : "Tạm dừng")
+            </div>
+            <div class="detail-item">
+                <strong>Ngày tạo:</strong> @Model.CreateAt
+            </div>
+            <div class="detail-item">
+                <strong>Cập nhật lần cuối:</strong> @Model.UpdateAt
+            </div>
+        </div>
+
+        <button onclick="location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại danh sách</button>
+    </div>
+</body>
+</html>
+
+

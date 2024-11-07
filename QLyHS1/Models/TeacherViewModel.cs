@@ -1,12 +1,15 @@
-﻿namespace QLyHS1.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace QLyHS1.Models
 {
     public class TeacherViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ClassName { get; set; }
-        public string Subject { get; set; }
-        public string StartTime { get; set; }
+        public string Email { get; set; }
+        public string DateOfBirth { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
     }
 
     public class TeacherDetailViewModel
@@ -27,15 +30,21 @@
 
         public string Address { get; set; } = null!;
 
-        public string Token { get; set; } = null!;
+        // Set default value or remove required validation from Token, CreateAt, and UpdateAt
+        [HiddenInput(DisplayValue = false)]
+        public string? Token { get; set; }
 
+        [HiddenInput]
         public bool Role { get; set; }
 
-        public string CreateAt { get; set; }
+        [HiddenInput]
+        public DateTime CreateAt { get; set; } = DateTime.Now;
 
-        public string UpdateAt { get; set; }
+        [HiddenInput]
+        public DateTime UpdateAt { get; set; } = DateTime.Now;
 
         public bool Status { get; set; }
     }
+
 
 }
