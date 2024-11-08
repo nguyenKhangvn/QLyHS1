@@ -9,9 +9,9 @@ public partial class Subject
 
     public string Name { get; set; } = null!;
 
-    public DateOnly CreateAt { get; set; }
+    public DateTime  CreateAt { get; set; }
 
-    public DateOnly UpdateAt { get; set; }
+    public DateTime UpdateAt { get; set; }
 
     public bool Status { get; set; }
 

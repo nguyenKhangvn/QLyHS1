@@ -1,0 +1,67 @@
+﻿@model IEnumerable<QLyHS1.Models.SubjectViewModel>
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý môn học</title>
+    <link rel="stylesheet" href="~/css/Teacher.css">
+</head>
+<style>
+
+</style>
+
+<body>
+    <div class="container">
+
+        <div class="main-content">
+            <h1>Quản lý môn học</h1>
+
+            <div class="filter-section">
+               
+                    <button class="btn-add" onclick="location.href='@Url.Action("Add", "Subject")'">+</button>
+                
+            </div>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên môn học</th>
+                      
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int stt = 1;
+                        foreach (var sub in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@sub.Name</td>
+                               
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@sub.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@sub.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@sub.Id">Delete</a>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">Không có dữ liệu môn học.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
