@@ -20,20 +20,19 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var schedules = await _context.Schedules
-                .Include(s => s.Subject)
-                .Select(s => new ScheduleViewModel
-                {
-                    Id = s.Id,
-                    SubjectName = s.Subject.Name,
-                    ClassRoom = s.ClassRoom,
-                    DayOfWeek = s.DayOfWeek,
-                    StartTime = s.StartTime,
-                    EndTime = s.EndTime
-                })
-                .ToListAsync();
+            var schedules = from sch in _context.Schedules
+                            join s in _context.Subjects on sch.SubjectId equals s.Id
+                            select new ScheduleViewModel
+                            {
+                                Id = sch.Id,
+                                SubjectName = s.Name,
+                                ClassRoom = sch.ClassRoom,
+                                DayOfWeek = sch.DayOfWeek,
+                                StartTime = sch.StartTime,
+                                EndTime = sch.EndTime
+                            };
 
-            return View(schedules);
+            return View(schedules.ToList());
         }
 
         // Search schedules based on subject name or class room
@@ -70,7 +69,7 @@ namespace QLyHS1.Controllers
 
         // Add a new schedule
         [HttpPost]
-        public async Task<IActionResult> Add(ScheduleViewModel model)
+        public async Task<IActionResult> Add(ScheduleDetailViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -106,7 +105,7 @@ namespace QLyHS1.Controllers
                 return NotFound();
             }
 
-            var model = new ScheduleViewModel
+            var model = new ScheduleDetailViewModel
             {
                 Id = schedule.Id,
                 SubjectId = schedule.SubjectId,
@@ -122,7 +121,7 @@ namespace QLyHS1.Controllers
 
         // Edit a schedule
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, ScheduleViewModel model)
+        public async Task<IActionResult> Edit(int id, ScheduleDetailViewModel model)
         {
             if (id != model.Id)
             {

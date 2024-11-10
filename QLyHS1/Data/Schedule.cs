@@ -17,5 +17,6 @@ public partial class Schedule
 
     public DateTime EndTime { get; set; }
 
+    public string SubjectName { get; set; }
     public virtual Subject Subject { get; set; } = null!;
 }

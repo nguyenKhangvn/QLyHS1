@@ -275,23 +275,6 @@
     }
 </style>
 <body>
-    <header>
-        <h1>Thời khóa biểu Học sinh</h1>
-    </header>
-
-    <nav class="navbar">
-        <ul>
-            <li><a href="Home.html"><span class="icon">&#127968;</span>Trang Chủ</a></li>
-        </ul>
-
-        <div class="user-dropdown">
-            <button>Admin ▼</button>
-            <div class="user-dropdown-content">
-                <a href="#">Đổi mật khẩu</a>
-                <a href="#">Thoát</a>
-            </div>
-        </div>
-    </nav>
 
     <div class="container">
        
@@ -343,9 +326,7 @@
                         {
                             <tr>
                                 <td>@stt</td>
-                                <td>@student.Name</td>
-                                
-                               
+                                <td>@student.SubjectName, @student.ClassRoom, @student.DayOfWeek, @student.StartTime, @student.EndTime</td>
                             </tr>
                             stt++;
                         }
@@ -354,7 +335,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7">Không có dữ liệu học sinh.</td>
+                            <td colspan="7">Không có dữ liệu thời khóa biểu.</td>
                         </tr>
                     }
                 </tbody>
