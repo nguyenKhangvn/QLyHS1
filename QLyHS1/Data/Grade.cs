@@ -17,15 +17,15 @@ public partial class Grade
 
     public double GradeI { get; set; }
 
-    public double GradeIi { get; set; }
+    public double GradeII { get; set; }
 
     public double GradeSemester { get; set; }
 
-    public DateOnly CreateAt { get; set; }
+    public DateTime CreateAt { get; set; }
 
-    public DateOnly UpdateAt { get; set; }
+    public DateTime UpdateAt { get; set; }
 
-    public bool Status { get; set; }
+    public bool? Status { get; set; }
 
     public virtual SchoolYear SchoolYear { get; set; } = null!;
 

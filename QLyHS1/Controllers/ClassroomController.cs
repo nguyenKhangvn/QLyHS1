@@ -119,8 +119,8 @@ namespace QLyHS1.Controllers
                 UpdateAt = student.UpdateAt
             };
 
-            ViewData["ClassId"] = new SelectList(_context.Teachers, "Id", "Name", student.TeacherId);
-            ViewData["ClassId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GradeLevelId);
+            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", student.TeacherId);
+            ViewData["GradeLevelId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GradeLevelId);
             return View(studentViewModel);
         }
 
