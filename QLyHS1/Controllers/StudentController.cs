@@ -18,7 +18,7 @@ namespace QLyHS1.Controllers
         }
 
         // Danh sách học sinh và tìm kiếm
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
             var studentVM = from st in _context.Students
                             join cl in _context.Classrooms on st.ClassId equals cl.Id
@@ -32,11 +32,6 @@ namespace QLyHS1.Controllers
                                 Address = st.Address,
                                 ParentPhone = st.PhoneParent
                             };
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                studentVM = studentVM.Where(s => s.Name.Contains(searchString));
-            }
 
             return View(studentVM.ToList());
         }
