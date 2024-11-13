@@ -121,6 +121,7 @@ namespace QLyHS1.Controllers
 
             var studentViewModel = new GradeDetailToEditViewModel
             {
+                Id = student.Id,
                 StudentId = student.StudentId,
                 SemesterId = student.SemesterId,
                 SubjectId = student.SubjectId,
@@ -135,7 +136,7 @@ namespace QLyHS1.Controllers
             ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name", studentViewModel.StudentId);
             ViewData["SemesterId"] = new SelectList(_context.Semesters, "Id", "Name", studentViewModel.SemesterId);
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", studentViewModel.SubjectId);
-            ViewData["SchoolYearId"] = new SelectList(_context.SchoolYears, "Id", "Name", studentViewModel.SchoolYearId);
+            ViewData["SchoolYearId"] = new SelectList(_context.SchoolYears, "Id", "Year", studentViewModel.SchoolYearId);
             return View(studentViewModel);
         }
 
@@ -143,7 +144,7 @@ namespace QLyHS1.Controllers
         // POST: Student/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,SemesterId,SubjectId,SchoolYearId,GradeI,GradeII,GradeIII,Status")] GradeDetailToEditViewModel studentViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,SemesterId,SubjectId,SchoolYearId,GradeI,GradeII,GradeSemester,Status")] GradeDetailToEditViewModel studentViewModel)
         {
             if (id != studentViewModel.Id)
             {

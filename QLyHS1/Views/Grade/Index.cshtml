@@ -1,7 +1,76 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model IEnumerable<QLyHS1.Models.GradeViewModel>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Điểm</title>
+    <link rel="stylesheet" href="~/css/student.css">
+</head>
+<body>
+    <div class="container">
 
-<h1>Index</h1>
+        <div class="main-content">
+            <h1>Hồ sơ Điểm số</h1>
 
+            <div class="search-container">
+                <form name="SearchForm" asp-action="Search" asp-controller="Grade">
+                    <input type="text" placeholder="Tìm kiếm" name="query">
+                    <button class="btn-search">Tìm kiếm</button>
+                </form>
+                <button class="btn-add" onclick="location.href='@Url.Action("Add", "Grade")'">+</button>
+
+                <button class="btn-refresh">⟲</button>
+            </div>
+
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên học sinh</th>
+                        <th>Khối</th>
+                        <th>Tên môn</th>
+                        <th>Năm học</th>
+                        <th>Điểm hệ số 1</th>
+                        <th>Điểm hệ số 2</th>
+                        <th>Điểm hệ số 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        int stt = 1;
+                        foreach (var student in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@student.StudentName</td>
+                                <td>@student.SemesterName</td>
+                                <td>@student.SubjectName</td>
+                                <td>@student.SchoolYearName</td>
+                                <td>@student.GradeI</td>
+                                <td>@student.GradeII</td>
+                                <td>@student.GradeIII</td>
+
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                                </td>
+                            </tr>
+                            stt++;
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">Không có dữ liệu Điểm.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
