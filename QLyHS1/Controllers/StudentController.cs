@@ -18,7 +18,7 @@ namespace QLyHS1.Controllers
         }
 
         // Danh sách học sinh và tìm kiếm
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
             var studentVM = from st in _context.Students
                             join cl in _context.Classrooms on st.ClassId equals cl.Id
@@ -32,11 +32,6 @@ namespace QLyHS1.Controllers
                                 Address = st.Address,
                                 ParentPhone = st.PhoneParent
                             };
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                studentVM = studentVM.Where(s => s.Name.Contains(searchString));
-            }
 
             return View(studentVM.ToList());
         }
@@ -109,38 +104,38 @@ namespace QLyHS1.Controllers
 
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-    var student = await _context.Students.FindAsync(id);
-    if (student == null)
-    {
-        return NotFound();
-    }
+            var student = await _context.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
 
-    // Ánh xạ dữ liệu từ `Student` sang `StudentDetailToEditViewModel`
-    var studentViewModel = new StudentDetailToEditViewModel
-    {
-        Id = student.Id,
-        ClassId = student.ClassId,
-        Name = student.Name,
-        Gender = student.Gender,
-        Email = student.Email,
-        DateOfBirth = student.DateOfBirth,
-        Phone = student.Phone,
-        PhoneParent = student.PhoneParent,
-        Address = student.Address,
-        Status = student.Status,
-        CreateAt = student.CreateAt,
-        UpdateAt = student.UpdateAt
-    };
+            // Ánh xạ dữ liệu từ `Student` sang `StudentDetailToEditViewModel`
+            var studentViewModel = new StudentDetailToEditViewModel
+            {
+                Id = student.Id,
+                ClassId = student.ClassId,
+                Name = student.Name,
+                Gender = student.Gender,
+                Email = student.Email,
+                DateOfBirth = student.DateOfBirth,
+                Phone = student.Phone,
+                PhoneParent = student.PhoneParent,
+                Address = student.Address,
+                Status = student.Status,
+                CreateAt = student.CreateAt,
+                UpdateAt = student.UpdateAt
+            };
 
-    ViewData["ClassId"] = new SelectList(_context.Classrooms, "Id", "Name", student.ClassId);
-    return View(studentViewModel);
-}
+            ViewData["ClassId"] = new SelectList(_context.Classrooms, "Id", "Name", student.ClassId);
+            return View(studentViewModel);
+        }
 
 
         // POST: Student/Edit/5

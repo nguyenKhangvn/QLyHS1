@@ -99,7 +99,7 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.CreateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("createAt");
-            entity.Property(e => e.GradeIi).HasColumnName("GradeII");
+            entity.Property(e => e.GradeII).HasColumnName("GradeII");
             entity.Property(e => e.SchoolYearId).HasColumnName("SchoolYearID");
             entity.Property(e => e.SemesterId).HasColumnName("SemesterID");
             entity.Property(e => e.Status).HasColumnName("status");

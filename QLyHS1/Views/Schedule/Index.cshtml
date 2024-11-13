@@ -300,7 +300,7 @@
                 <div class="search-group">
                     <input type="text" placeholder="Tìm kiếm học sinh">
                     <button class="btn-search">Tìm kiếm</button>
-                    <button class="btn-add">+</button>
+                    <button class="btn-add" onclick="location.href='@Url.Action("Add", "Schedule")'">+</button>
                     <button class="btn-edit">&#9998;</button>
                     <button class="btn-delete">&#128465;</button>
                 </div>
@@ -326,7 +326,12 @@
                         {
                             <tr>
                                 <td>@stt</td>
-                                <td>@student.SubjectName, @student.ClassRoom, @student.DayOfWeek, @student.StartTime, @student.EndTime</td>
+                                <td>
+                                    @student.SubjectName, @student.ClassRoom, @student.DayOfWeek, @student.StartTime, @student.EndTime,  
+                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
+                                   
+                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                                </td>
                             </tr>
                             stt++;
                         }

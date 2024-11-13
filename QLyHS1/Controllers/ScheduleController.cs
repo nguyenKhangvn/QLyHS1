@@ -35,7 +35,7 @@ namespace QLyHS1.Controllers
             return View(schedules.ToList());
         }
 
-        // Search schedules based on subject name or class room
+
         [HttpGet]
         public async Task<IActionResult> Search(string? query)
         {
@@ -60,35 +60,34 @@ namespace QLyHS1.Controllers
             return View(await schedules.ToListAsync());
         }
 
-        // Display the add schedule form
+
         public IActionResult Add()
         {
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name");
+            //ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name");
             return View();
         }
 
         // Add a new schedule
         [HttpPost]
-        public async Task<IActionResult> Add(ScheduleDetailViewModel model)
+        public IActionResult Add(ScheduleDetailViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var schedule = new Schedule
-                {
-                    SubjectId = model.SubjectId,
-                    ClassRoom = model.ClassRoom,
-                    DayOfWeek = model.DayOfWeek,
-                    StartTime = model.StartTime,
-                    EndTime = model.EndTime
-                };
-
-                _context.Schedules.Add(schedule);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(model);
             }
+            var student = new Schedule
+            {
+                SubjectId = model.SubjectId,
+                ClassRoom = model.ClassRoom,
+                DayOfWeek = model.DayOfWeek,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime
+            };
 
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", model.SubjectId);
-            return View(model);
+            _context.Schedules.Add(student);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // Display edit form
@@ -105,7 +104,7 @@ namespace QLyHS1.Controllers
                 return NotFound();
             }
 
-            var model = new ScheduleDetailViewModel
+            var model = new ScheduleToEditViewModel
             {
                 Id = schedule.Id,
                 SubjectId = schedule.SubjectId,
@@ -121,7 +120,7 @@ namespace QLyHS1.Controllers
 
         // Edit a schedule
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, ScheduleDetailViewModel model)
+        public async Task<IActionResult> Edit(int id, ScheduleToEditViewModel model)
         {
             if (id != model.Id)
             {

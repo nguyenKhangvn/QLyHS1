@@ -14,7 +14,7 @@
             <h1>Hồ sơ lớp học</h1>
 
             <div class="search-container">
-                <form name="SearchForm" asp-action="Search" asp-controller="Student">
+                <form name="SearchForm" asp-action="Search" asp-controller="Classroom">
                     <input type="text" placeholder="Tìm kiếm" name="query">
                     <button class="btn-search">Tìm kiếm</button>
                 </form>
@@ -44,7 +44,7 @@
                                 <td>@stt</td>
                                 <td>@student.Name</td>
                                 <td>@student.Quantity</td>
-                                <td>@student.GrandLevelName</td>
+                                <td>@student.GradeLevelName</td>
                                 <td>@student.TeacherName</td>
                              
                                 <td>
