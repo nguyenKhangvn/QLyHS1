@@ -170,8 +170,8 @@ namespace QLyHS1.Controllers
                     }
                 }
             }
-            ViewData["ClassId"] = new SelectList(_context.Teachers, "Id", "Name", studentViewModel.TeacherID);
-            ViewData["ClassId"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GradeLevelID);
+            ViewData["TeacherID"] = new SelectList(_context.Teachers, "Id", "Name", studentViewModel.TeacherID);
+            ViewData["GradeLevelID"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GradeLevelID);
             return View(studentViewModel);
         }
 
