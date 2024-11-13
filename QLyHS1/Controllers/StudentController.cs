@@ -41,12 +41,6 @@ namespace QLyHS1.Controllers
         [Route("Student/Search")]
         public IActionResult Search(string? query)
         {
-            var stu = _context.Students.AsQueryable();
-            if (query == null)
-            {
-                return NotFound();
-            }
-
             var students = _context.Students
                 .Include(s => s.Class)
                 .Where(m => m.Name.Contains(query))
@@ -63,9 +57,8 @@ namespace QLyHS1.Controllers
 
             if (!students.Any())
             {
-                return NotFound();
+                return Index();
             }
-
             return View(students);
         }
 
