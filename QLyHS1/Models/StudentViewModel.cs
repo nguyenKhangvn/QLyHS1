@@ -36,7 +36,7 @@ namespace QLyHS1.Models
         public string Phone { get; set; } = string.Empty;
         public string PhoneParent { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
-        public bool? Status { get; set; }
+        public bool Status { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         

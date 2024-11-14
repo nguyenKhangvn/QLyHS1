@@ -71,7 +71,7 @@ public partial class QlyHs1Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreateAt).HasColumnName("createAt");
-            entity.Property(e => e.GradeLevelId).HasColumnName("gradeLevelID");
+            entity.Property(e => e.GrandLevelId).HasColumnName("grandLevelID");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
@@ -80,10 +80,10 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.TeacherId).HasColumnName("teacherID");
             entity.Property(e => e.UpdateAt).HasColumnName("updateAt");
 
-            entity.HasOne(d => d.GradeLevel).WithMany(p => p.Classrooms)
-                .HasForeignKey(d => d.GradeLevelId)
+            entity.HasOne(d => d.GrandLevel).WithMany(p => p.Classrooms)
+                .HasForeignKey(d => d.GrandLevelId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Classroom__grade__5AEE82B9");
+                .HasConstraintName("FK__Classroom__grand__5AEE82B9");
 
             entity.HasOne(d => d.Teacher).WithMany(p => p.Classrooms)
                 .HasForeignKey(d => d.TeacherId)
@@ -101,7 +101,7 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.CreateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("createAt");
-            entity.Property(e => e.GradeIi).HasColumnName("GradeII");
+            entity.Property(e => e.GradeII).HasColumnName("GradeII");
             entity.Property(e => e.SchoolYearId).HasColumnName("SchoolYearID");
             entity.Property(e => e.SemesterId).HasColumnName("SemesterID");
             entity.Property(e => e.Status).HasColumnName("status");

@@ -33,4 +33,6 @@ public partial class Teacher
   
     public virtual ICollection<Classroom> Classrooms { get; set; } = new List<Classroom>();
 
+    public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+
 }

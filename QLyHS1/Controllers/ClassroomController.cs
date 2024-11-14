@@ -19,13 +19,13 @@ namespace QLyHS1.Controllers
         {
             var schedules = from cl in _context.Classrooms
                             join t in _context.Teachers on cl.TeacherId equals t.Id
-                            join gl in _context.GrandLevels on cl.GradeLevelId equals gl.Id
+                            join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
                             select new ClassroomViewModel
                             {
                                 Id = cl.Id,
                                 Name = cl.Name,
                                 Quantity = cl.Quantity,
-                                GradeLevelName= gl.Name,
+                                GrandLevelName = gl.Name,
                                 TeacherName = t.Name,
                                 
                             };
@@ -44,14 +44,14 @@ namespace QLyHS1.Controllers
 
             var students = _context.Classrooms
                 .Include(t => t.Teacher)
-                .Include(gl => gl.GradeLevel)
+                .Include(gl => gl.GrandLevel)
                 .Where(m => m.Name.Contains(query))
                 .Select(cl => new ClassroomViewModel
                 {
                     Id = cl.Id,
                     Name = cl.Name,
                     Quantity = cl.Quantity,
-                    GradeLevelName = cl.GradeLevel.Name,
+                    GrandLevelName = cl.GrandLevel.Name,
                     TeacherName = cl.Teacher.Name,
                 }).ToList();
 
@@ -79,12 +79,12 @@ namespace QLyHS1.Controllers
             {
                
                TeacherId = model.TeacherID,
-                GradeLevelId = model.GradeLevelID,
-                Name = model.Name,
+               GrandLevelId = model.GrandLevelID,
+               Name = model.Name,
                Quantity = model.Quantity,
-                CreateAt = DateTime.Now,
-                UpdateAt = DateTime.Now,
-                Status = true
+               CreateAt = DateTime.Now,
+               UpdateAt = DateTime.Now,
+               Status = true
             };
 
             _context.Classrooms.Add(student);
@@ -111,7 +111,7 @@ namespace QLyHS1.Controllers
             {
                 Id = student.Id,
                 TeacherID = student.TeacherId,
-                GradeLevelID = student.GradeLevelId,
+                GrandLevelID = student.GrandLevelId,
                 Name = student.Name,
                 Quantity = student.Quantity,
                 Status = student.Status,
@@ -120,7 +120,7 @@ namespace QLyHS1.Controllers
             };
 
             ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", student.TeacherId);
-            ViewData["GradeLevelId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GradeLevelId);
+            ViewData["GradeLevelId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GrandLevelId);
             return View(studentViewModel);
         }
 
@@ -147,7 +147,7 @@ namespace QLyHS1.Controllers
 
                     // Cập nhật các thuộc tính cần thiết
                     student.TeacherId = studentViewModel.TeacherID;
-                    student.GradeLevelId = studentViewModel.GradeLevelID;
+                    student.GrandLevelId = studentViewModel.GrandLevelID;
                     student.Name = studentViewModel.Name;
                     student.Quantity = studentViewModel.Quantity;
                     student.Status = studentViewModel.Status;
@@ -171,7 +171,7 @@ namespace QLyHS1.Controllers
                 }
             }
             ViewData["TeacherID"] = new SelectList(_context.Teachers, "Id", "Name", studentViewModel.TeacherID);
-            ViewData["GradeLevelID"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GradeLevelID);
+            ViewData["GradeLevelID"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GrandLevelID);
             return View(studentViewModel);
         }
 
@@ -191,7 +191,7 @@ namespace QLyHS1.Controllers
             }
             var classroms = await _context.Classrooms
                 .Include(t => t.Teacher)
-                .Include(gl => gl.GradeLevel)
+                .Include(gl => gl.GrandLevel)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (classroms == null)
             {
@@ -211,7 +211,7 @@ namespace QLyHS1.Controllers
 
             var student = await _context.Classrooms
                  .Include(t => t.Teacher)
-                .Include(gl => gl.GradeLevel)
+                .Include(gl => gl.GrandLevel)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (student == null)
             {

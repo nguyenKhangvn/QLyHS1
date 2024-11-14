@@ -9,7 +9,7 @@ public partial class Classroom
 
     public int TeacherId { get; set; }
 
-    public int GradeLevelId { get; set; }
+    public int GrandLevelId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public partial class Classroom
 
     public bool? Status { get; set; }
 
-    public virtual GrandLevel GradeLevel { get; set; } = null!;
+    public virtual GrandLevel GrandLevel { get; set; } = null!;
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
 

@@ -8,13 +8,13 @@
 
         public int Quantity { get; set; }
         public string TeacherName { get; set; }
-        public string GradeLevelName { get; set; }
+        public string GrandLevelName { get; set; }
     }
 
     public class ClassroomDetailViewModel
     {
         public int TeacherID { get; set; }
-        public int GradeLevelID { get; set; }
+        public int GrandLevelID { get; set; }
         public string Name { get; set; }
 
         public int Quantity { get; set; }
@@ -25,7 +25,7 @@
         {
         public int Id { get; set; }
         public int TeacherID { get; set; }
-        public int GradeLevelID { get; set; }
+        public int GrandLevelID { get; set; }
         public string Name { get; set; }
         public int Quantity { get; set; }
         public bool? Status { get; set; }
