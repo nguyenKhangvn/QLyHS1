@@ -15,13 +15,20 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(String? className)
         {
+            ViewBag.Classrooms = _context.Classrooms.Select(c => new SelectListItem
+            {
+                Value = c.Name,
+                Text = c.Name
+            }).ToList();
             var schedules = from g in _context.Grades
                             join s in _context.Students on g.StudentId equals s.Id
                             join sm in _context.Semesters on g.SemesterId equals sm.Id
                             join sc in _context.SchoolYears on g.SchoolYearId equals sc.Id
                             join su in _context.Subjects on g.SubjectId equals su.Id
+                            join cl in _context.Classrooms on g.SubjectId equals cl.Id
+                            where string.IsNullOrEmpty(className) || cl.Name == className
                             select new GradeViewModel
                             {
                                 Id = g.Id,

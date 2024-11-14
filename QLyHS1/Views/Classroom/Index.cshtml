@@ -19,7 +19,19 @@
                     <button class="btn-search">Tìm kiếm</button>
                 </form>
                 <button class="btn-add" onclick="location.href='@Url.Action("Add", "Classroom")'">+</button>
-
+                <form method="get" asp-action="Index">
+                    <label for="grandLevel">Lọc theo khối:</label>
+                    <select name="grandLevel" id="grandLevel" onchange="this.form.submit()">
+                        <option value="">-- Chọn lớp --</option>
+                        @if (ViewBag.GrandLevel != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.GrandLevel)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                </form>
                 <button class="btn-refresh">⟲</button>
             </div>
 

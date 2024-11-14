@@ -322,20 +322,32 @@
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
-                        foreach (var student in Model)
+                        var schedulesGroupedByLesson = Model.GroupBy(s => s.DayOfWeek);
+
+                        foreach (var lessonGroup in schedulesGroupedByLesson)
                         {
                             <tr>
                                 <td>@stt</td>
-                                <td>
-                                    @student.SubjectName, @student.ClassRoom, @student.DayOfWeek, @student.StartTime, @student.EndTime,  
-                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                   
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
-                                </td>
+
+                                @for (int day = 1; day <= 6; day++)
+                                {
+                                    var schedule = lessonGroup.FirstOrDefault(s => s.DayOfWeek == day);
+                                    if (schedule != null)
+                                    {
+                                        <td>
+                                            @schedule.SubjectName, @schedule.ClassRoom, @schedule.StartTime, @schedule.EndTime
+                                            <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a> |
+                                            <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>---</td>
+                                    }
+                                }
                             </tr>
                             stt++;
                         }
-
                     }
                     else
                     {
@@ -345,6 +357,7 @@
                     }
                 </tbody>
             </table>
+
         </div>
     </div>
 </body>

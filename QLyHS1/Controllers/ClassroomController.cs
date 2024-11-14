@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using QLyHS1.Data;
 using QLyHS1.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -15,11 +16,17 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(String? grandLevel)
         {
+            ViewBag.GrandLevel = _context.GrandLevels.Select(c => new SelectListItem
+            {
+                Value = c.Name,
+                Text = c.Name
+            }).ToList();
             var schedules = from cl in _context.Classrooms
                             join t in _context.Teachers on cl.TeacherId equals t.Id
                             join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
+                            where string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
                             select new ClassroomViewModel
                             {
                                 Id = cl.Id,
@@ -120,7 +127,7 @@ namespace QLyHS1.Controllers
             };
 
             ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", student.TeacherId);
-            ViewData["GradeLevelId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GrandLevelId);
+            ViewData["GrandLevelId"] = new SelectList(_context.GrandLevels, "Id", "Name", student.GrandLevelId);
             return View(studentViewModel);
         }
 
@@ -171,7 +178,7 @@ namespace QLyHS1.Controllers
                 }
             }
             ViewData["TeacherID"] = new SelectList(_context.Teachers, "Id", "Name", studentViewModel.TeacherID);
-            ViewData["GradeLevelID"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GrandLevelID);
+            ViewData["GrandLevelID"] = new SelectList(_context.GrandLevels, "Id", "Name", studentViewModel.GrandLevelID);
             return View(studentViewModel);
         }
 

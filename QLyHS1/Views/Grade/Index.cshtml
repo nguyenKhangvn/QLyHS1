@@ -19,7 +19,19 @@
                     <button class="btn-search">Tìm kiếm</button>
                 </form>
                 <button class="btn-add" onclick="location.href='@Url.Action("Add", "Grade")'">+</button>
-
+                <form method="get" asp-action="Index">
+                    <label for="className">Lọc theo lớp:</label>
+                    <select name="className" id="className" onchange="this.form.submit()">
+                        <option value="">-- Chọn lớp --</option>
+                        @if (ViewBag.Classrooms != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                </form>
                 <button class="btn-refresh">⟲</button>
             </div>
 
@@ -28,7 +40,7 @@
                     <tr>
                         <th>STT</th>
                         <th>Tên học sinh</th>
-                        <th>Khối</th>
+                        <th>Học kì</th>
                         <th>Tên môn</th>
                         <th>Năm học</th>
                         <th>Điểm hệ số 1</th>

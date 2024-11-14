@@ -130,6 +130,11 @@ public partial class QlyHs1Context : DbContext
                 .HasForeignKey(d => d.SubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Grade__SubjectID__6C190EBB");
+
+            entity.HasOne(d => d.Classroom).WithMany(p => p.Grades)
+                .HasForeignKey(d => d.ClassNameID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WClassroom_Grade");
         });
 
         modelBuilder.Entity<GrandLevel>(entity =>

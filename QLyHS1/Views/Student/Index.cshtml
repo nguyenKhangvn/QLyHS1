@@ -20,6 +20,21 @@
                 </form>
                 <button class="btn-add" onclick="location.href='@Url.Action("Add", "Student")'">+</button>
           
+               <form method="get" asp-action="Index">
+                    <label for="className">Lọc theo lớp:</label>
+                    <select name="className" id="className" onchange="this.form.submit()">
+                        <option value="">-- Chọn lớp --</option>
+                        @if (ViewBag.Classrooms != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                </form>
+
+
                 <button class="btn-refresh">⟲</button>
             </div>
 

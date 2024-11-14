@@ -18,10 +18,19 @@ namespace QLyHS1.Controllers
         }
 
         // Danh sách học sinh và tìm kiếm
-        public IActionResult Index()
+        public IActionResult Index(string? className)
         {
+        
+            ViewBag.Classrooms = _context.Classrooms.Select(c => new SelectListItem
+            {
+                Value = c.Name,
+                Text = c.Name
+            }).ToList();
+
+         
             var studentVM = from st in _context.Students
                             join cl in _context.Classrooms on st.ClassId equals cl.Id
+                            where string.IsNullOrEmpty(className) || cl.Name == className
                             select new StudentViewModel
                             {
                                 Id = st.Id,
@@ -35,6 +44,8 @@ namespace QLyHS1.Controllers
 
             return View(studentVM.ToList());
         }
+
+
 
 
         // Xem chi tiết học sinh
@@ -55,10 +66,7 @@ namespace QLyHS1.Controllers
                     ParentPhone = student.PhoneParent
                 }).ToList();
 
-            if (!students.Any())
-            {
-                return Index();
-            }
+          
             return View(students);
         }
 

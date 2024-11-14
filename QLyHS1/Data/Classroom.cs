@@ -24,6 +24,7 @@ public partial class Classroom
     public virtual GrandLevel GrandLevel { get; set; } = null!;
 
     public virtual ICollection<Student> Students { get; set; } = new List<Student>();
+    public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
 
     public virtual Teacher Teacher { get; set; } = null!;
 }
