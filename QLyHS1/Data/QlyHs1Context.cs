@@ -35,9 +35,11 @@ public partial class QlyHs1Context : DbContext
 
     public virtual DbSet<Teacher> Teachers { get; set; }
 
- //   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
- //       => optionsBuilder.UseSqlServer("Data Source=ADMIN\\SQL2022EX;Initial Catalog=QLyHS1;Integrated Security=True;Trust Server Certificate=True");
+    public virtual DbSet<WeekDay> WeekDays { get; set; }
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Data Source=ADMIN\\SQL2022EX;Initial Catalog=QLyHS1;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -99,7 +101,7 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.CreateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("createAt");
-            entity.Property(e => e.GradeII).HasColumnName("GradeII");
+            entity.Property(e => e.GradeIi).HasColumnName("GradeII");
             entity.Property(e => e.SchoolYearId).HasColumnName("SchoolYearID");
             entity.Property(e => e.SemesterId).HasColumnName("SemesterID");
             entity.Property(e => e.Status).HasColumnName("status");
@@ -158,11 +160,21 @@ public partial class QlyHs1Context : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("startTime");
             entity.Property(e => e.SubjectId).HasColumnName("subjectID");
+            entity.Property(e => e.TeacherId).HasColumnName("teacherID");
+
+            entity.HasOne(d => d.DayOfWeekNavigation).WithMany(p => p.Schedules)
+                .HasForeignKey(d => d.DayOfWeek)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WeekDays_Schedule");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.SubjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Schedules__subje__5441852A");
+
+            entity.HasOne(d => d.Teacher).WithMany(p => p.Schedules)
+                .HasForeignKey(d => d.TeacherId)
+                .HasConstraintName("FK_Teacher_Schedule");
         });
 
         modelBuilder.Entity<SchoolYear>(entity =>
@@ -213,6 +225,9 @@ public partial class QlyHs1Context : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("address");
             entity.Property(e => e.ClassId).HasColumnName("classID");
+            entity.Property(e => e.Conduct)
+                .HasMaxLength(10)
+                .HasColumnName("conduct");
             entity.Property(e => e.CreateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("createAt");
@@ -309,6 +324,13 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .HasColumnName("userName");
+        });
+
+        modelBuilder.Entity<WeekDay>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__WeekDays__3214EC07BC126F2E");
+
+            entity.Property(e => e.DayName).HasMaxLength(20);
         });
 
         OnModelCreatingPartial(modelBuilder);

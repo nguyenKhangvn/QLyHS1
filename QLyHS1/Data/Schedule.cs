@@ -17,5 +17,11 @@ public partial class Schedule
 
     public DateTime EndTime { get; set; }
 
+    public int? TeacherId { get; set; }
+
+    public virtual WeekDay DayOfWeekNavigation { get; set; } = null!;
+
     public virtual Subject Subject { get; set; } = null!;
+
+    public virtual Teacher? Teacher { get; set; }
 }

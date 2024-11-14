@@ -15,7 +15,7 @@ public partial class Student
 
     public string Email { get; set; } = null!;
 
-    public DateTime DateOfBirth { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     public string Phone { get; set; } = null!;
 
@@ -23,11 +23,13 @@ public partial class Student
 
     public string Address { get; set; } = null!;
 
-    public DateTime CreateAt { get; set; }
+    public DateOnly CreateAt { get; set; }
 
-    public DateTime UpdateAt { get; set; }
+    public DateOnly UpdateAt { get; set; }
 
-    public bool? Status { get; set; }
+    public bool Status { get; set; }
+
+    public string? Conduct { get; set; }
 
     public virtual Classroom Class { get; set; } = null!;
 
