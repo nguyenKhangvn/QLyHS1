@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Điểm</title>
+    <link rel="stylesheet" href="~/css/Base.css">
     <link rel="stylesheet" href="~/css/student.css">
 </head>
 <body>
@@ -35,9 +36,8 @@
                 <button class="btn-refresh">⟲</button>
             </div>
 
-            <table class="student-table">
-                <thead>
-                    <tr>
+            <div class="list-container">
+                <ul class="styled-top"">
                         <th>STT</th>
                         <th>Tên học sinh</th>
                         <th>Học kì</th>
@@ -46,42 +46,39 @@
                         <th>Điểm hệ số 1</th>
                         <th>Điểm hệ số 2</th>
                         <th>Điểm hệ số 3</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    </ul>
+                <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
                         foreach (var student in Model)
                         {
-                            <tr>
-                                <td>@stt</td>
-                                <td>@student.StudentName</td>
-                                <td>@student.SemesterName</td>
-                                <td>@student.SubjectName</td>
-                                <td>@student.SchoolYearName</td>
-                                <td>@student.GradeI</td>
-                                <td>@student.GradeII</td>
-                                <td>@student.GradeIII</td>
+                            <ul>
+                                <li>@stt</li>
+                                <li>@student.StudentName</li>
+                                <li>@student.SemesterName</li>
+                                <li>@student.SubjectName</li>
+                                <li>@student.SchoolYearName</li>
+                                <li>@student.GradeI</li>
+                                <li>@student.GradeII</li>
+                                <li>@student.GradeIII</li>
 
-                                <td>
+                                <li>
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
-                                </td>
-                            </tr>
+                                </li>
+                            </ul>
                             stt++;
                         }
 
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="7">Không có dữ liệu Điểm.</td>
-                        </tr>
+                            <li colspan="7">Không có dữ liệu Điểm.</li>
                     }
                 </tbody>
-            </table>
+            </div>
         </div>
     </div>
 </body>
