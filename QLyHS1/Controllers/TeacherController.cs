@@ -19,12 +19,13 @@ namespace QLyHS1.Controllers
         public IActionResult Index(string searchString)
         {
             var teacherVM = from te in _context.Teachers
-
-
+                            join ass in _context.Assignments on te.Id equals ass.TeacherId
+                            join su in _context.Subjects on ass.SubjectId equals su.Id
                             select new TeacherViewModel
                             {
                                 Id = te.Id,
                                 Name = te.Name,
+                                SubjectName = su.Name,
                                 Email = te.Email,
                                 Address = te.Address,
                                 DateOfBirth = te.DateOfBirth.ToString("dd/MM/yyyy"),
@@ -46,12 +47,13 @@ namespace QLyHS1.Controllers
         {
             var stu = _context.Teachers.AsQueryable();
             var teacherVM = from te in _context.Teachers
-                           
-
+                            join ass in _context.Assignments on te.Id equals ass.TeacherId
+                            join su in _context.Subjects on ass.SubjectId equals su.Id
                             select new TeacherViewModel
                             {
                                 Id = te.Id,
                                 Name = te.Name,
+                                SubjectName = su.Name,
                                 Email = te.Email,
                                 Address = te.Address,
                                 DateOfBirth = te.DateOfBirth.ToString("dd/MM/yyyy"),
@@ -82,7 +84,7 @@ namespace QLyHS1.Controllers
                 {
                     foreach (var error in state.Value.Errors)
                     {
-                        // Log or inspect the error messages
+                        
                         Console.WriteLine(error.ErrorMessage);
                     }
                 }
@@ -90,7 +92,7 @@ namespace QLyHS1.Controllers
             }
             var teacher = new Teacher
             {
-                
+
                 Name = model.Name,
                 UserName = model.UserName,
                 Password = model.Password,

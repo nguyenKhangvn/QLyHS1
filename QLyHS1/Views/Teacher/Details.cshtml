@@ -84,6 +84,9 @@
                 <strong>Họ và tên:</strong> @Model.Name
             </div>
             <div class="detail-item">
+                <strong>Tên môn học:</strong> @Model.Schedules.FirstOrDefault().Subject.Name
+            </div>
+            <div class="detail-item">
                 <strong>Tên đăng nhập:</strong> @Model.UserName
             </div>
             <div class="detail-item">

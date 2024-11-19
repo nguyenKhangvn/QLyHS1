@@ -10,11 +10,13 @@ namespace QLyHS1.Models
         public string DateOfBirth { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
+        public string SubjectName { get; set; }
     }
 
     public class TeacherDetailViewModel
     {
         public int Id { get; set; }
+        public int SubjectId { get; set; }
 
         public string Name { get; set; } = null!;
 
@@ -30,7 +32,7 @@ namespace QLyHS1.Models
 
         public string Address { get; set; } = null!;
 
-        // Set default value or remove required validation from Token, CreateAt, and UpdateAt
+        
         [HiddenInput(DisplayValue = false)]
         public string? Token { get; set; }
 

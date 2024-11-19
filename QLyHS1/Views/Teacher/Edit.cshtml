@@ -92,6 +92,13 @@
                 <input type="text" asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="SubjectId">Môn Học:</label>
+                <select asp-for="SubjectId" asp-items="ViewBag.Subjects" class="form-control" required>
+                    <option value="">-- Chọn Môn Học --</option>
+                </select>
+                <span asp-validation-for="SubjectId" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <label asp-for="UserName">Tên Đăng Nhập:</label>

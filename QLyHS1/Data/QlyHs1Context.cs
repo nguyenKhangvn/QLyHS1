@@ -280,16 +280,16 @@ public partial class QlyHs1Context : DbContext
             entity.ToTable("Subject");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+               .HasMaxLength(50)
+               .HasColumnName("name");
             entity.Property(e => e.CreateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("createAt");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UpdateAt)
                 .HasDefaultValueSql("(getdate())")
-                .HasColumnName("updateAt");
+                .HasColumnName("updateAt");          
+            entity.Property(e => e.Status).HasColumnName("status");
         });
 
         modelBuilder.Entity<Teacher>(entity =>

@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="~/css/Base.css">
     <link rel="stylesheet" href="~/css/student.css">
 </head>
-<body>
-    <div class="container">
 
+    <div class="container">
         <div class="main-content">
             <h1>Hồ sơ Điểm số</h1>
 
@@ -38,14 +37,17 @@
 
             <div class="list-container">
                 <ul class="styled-top"">
-                        <th>STT</th>
-                        <th>Tên học sinh</th>
-                        <th>Học kì</th>
-                        <th>Tên môn</th>
-                        <th>Năm học</th>
-                        <th>Điểm hệ số 1</th>
-                        <th>Điểm hệ số 2</th>
-                        <th>Điểm hệ số 3</th>
+                    <ul class="styled-top">
+                        <li>STT</li>
+                        <li>Tên học sinh</li>
+                        <li>Học kì</li>
+                        <li>Tên môn</li>
+                        <li>Năm học</li>
+                        <li>Điểm hệ số 1</li>
+                        <li>Điểm hệ số 2</li>
+                        <li>Điểm hệ số 3</li>
+                    </ul>
+
                     </ul>
                 <div class="styled-list">
                     @if (Model != null && Model.Any())
@@ -81,5 +83,4 @@
             </div>
         </div>
     </div>
-</body>
 </html>
