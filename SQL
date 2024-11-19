@@ -24,6 +24,15 @@ CREATE TABLE Subject (
     updateAt DATE NOT NULL DEFAULT GETDATE(),
     status BIT NOT NULL
 );
+//bo sung
+Go
+CREATE TABLE WeekDays (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    DayName NVARCHAR(20)
+);
+INSERT INTO WeekDays (DayName)
+VALUES (N'Thứ 2'), (N'Thứ 3'), (N'Thứ 4'), (N'Thứ 5'), (N'Thứ 6'), (N'Thứ 7'), (N'Chủ nhật');
+
 GO
 CREATE TABLE Schedules (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -34,6 +43,13 @@ CREATE TABLE Schedules (
     endTime DATETIME NOT NULL,
     FOREIGN KEY (subjectID) REFERENCES Subject(id)
 );
+ALTER TABLE Schedules
+ADD teacherID INT;
+ALTER TABLE Schedules
+ADD CONSTRAINT FK_Teacher_Schedule FOREIGN KEY (teacherID) REFERENCES Teacher(id);
+ALTER TABLE Schedules
+ADD CONSTRAINT FK_WeekDays_Schedule FOREIGN KEY (dayOfWeek) REFERENCES WeekDays(Id);
+
 GO
 CREATE TABLE GrandLevel (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -55,6 +71,7 @@ CREATE TABLE Teacher (
     updateAt DATE NOT NULL,
     status BIT NOT NULL
 );
+ALTER TABLE Teacher ALTER COLUMN token NVARCHAR(200) NULL;
 GO
 CREATE TABLE Classroom (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -70,7 +87,7 @@ CREATE TABLE Classroom (
     --CONSTRAINT FK_Teacher 
 	FOREIGN KEY (teacherID) REFERENCES Teacher(id)
 );
-
+EXEC sp_rename 'Classroom.gradeLevelID', 'grandLevelID', 'COLUMN';
 --EXEC sp_rename 'Class', 'Classroom';
 
 GO
@@ -89,8 +106,8 @@ CREATE TABLE Student (
     status BIT NOT NULL DEFAULT 1,
 	FOREIGN KEY (classID) REFERENCES Classroom(id),
 );
---ALTER TABLE Student
---ADD gender CHAR(5) NOT NULL;
+ALTER TABLE Student
+ADD conduct NVARCHAR(10);
 --ALTER TABLE Student
 --ADD parentPhone CHAR(12) NOT NULL UNIQUE;
 
@@ -129,6 +146,10 @@ CREATE TABLE Grade (
     FOREIGN KEY (SubjectID) REFERENCES Subject(id),
     FOREIGN KEY (SchoolYearID) REFERENCES SchoolYear(id)
 );
+ALTER TABLE Grade
+ADD ClassNameID int;
+ALTER TABLE Grade
+ADD CONSTRAINT FK_WClassroom_Grade FOREIGN KEY (ClassNameID) REFERENCES Classroom(Id);
 GO
 CREATE TABLE Assignment (
     TeacherID int NOT NULL,
@@ -136,14 +157,17 @@ CREATE TABLE Assignment (
     StartDate date NOT NULL,
     EndDate date NOT NULL
 	FOREIGN KEY (TeacherID) REFERENCES Teacher(id),
-    FOREIGN KEY (SubjectID) REFERENCES Subject(id),
+    FOREIGN KEY (SubjectID) REFERENCES Subject(id)
 );
 
-use QLyHS
+use QLyHS1
 
+select * from Teacher
 select * from Student
 Select * from Classroom
-
+Select * from GrandLevel
+select * from Subject
+select * from Schedules
 SELECT 
     st.Name,
     st.Gender,
@@ -178,6 +202,16 @@ VALUES
 (N'Khối 10'), 
 (N'Khối 11');
 
+INSERT INTO SchoolYear(year)
+VALUES 
+(2024), 
+(2025);
+
+INSERT INTO Semester(name)
+VALUES 
+(N'HKI'), 
+(N'HKII');
+
 SELECT TOP 1 s.Id, s.Name, s.Gender, s.DateOfBirth, s.ClassId, s.Address, s.PhoneParent,
              c.Name AS ClassName
 FROM Student s
@@ -190,7 +224,29 @@ FROM [Student] AS [s]
 INNER JOIN [Classroom] AS [c] ON [s].[classID] = [c].[id]
 where s.Name like '%A%'
 
-
+use QLyHS1
 select * from Student
-select * from Teacher
+select * from Schedules
+select * from Classroom
+select * from SchoolYear
+select * from Semester
+select * from GrandLevel where id = 1
+select * from Grade
 
+SELECT [s].[id] AS [Id], [s0].[SubjectName], [s].[classRoom] AS [ClassRoom], [s].[dayOfWeek] AS [DayOfWeek], [s].[startTime] AS [StartTime], [s].[endTime] AS [EndTime]
+      FROM [Schedules] AS [s]
+      INNER JOIN [Subject] AS [s0] ON [s].[subjectID] = [s0].[id]
+
+	  INSERT INTO Schedules (subjectID, classRoom, dayOfWeek, startTime, endTime)
+VALUES (1, 'Room A1', 2, '2024-11-11 08:00:00', '2024-11-11 10:00:00');
+
+      SELECT [c].[id] AS [Id], [c].[name] AS [Name], [c].[quantity] AS [Quantity], [g].[name] AS [GradeLevelName], [t].[name] AS [TeacherName]
+      FROM [Classroom] AS [c]
+      INNER JOIN [Teacher] AS [t] ON [c].[teacherID] = [t].[id]
+      INNER JOIN [GrandLevel] AS [g] ON [c].[gradeLevelID] = [g].[id]
+
+	  SELECT TOP(1) [c].[id], [c].[createAt], [c].[gradeLevelID], [c].[name], [c].[quantity], [c].[status], [c].[teacherID], [c].[updateAt], [t].[id], [t].[address], [t].[createAt], [t].[dateOfBirth], [t].[email], [t].[name], [t].[password], [t].[phone], [t].[role], [t].[status], [t].[token], [t].[updateAt], [t].[userName], [g].[id], [g].[name]
+      FROM [Classroom] AS [c]
+      INNER JOIN [Teacher] AS [t] ON [c].[teacherID] = [t].[id]
+      INNER JOIN [GrandLevel] AS [g] ON [c].[gradeLevelID] = [g].[id]
+      WHERE [c].[id] = 1
