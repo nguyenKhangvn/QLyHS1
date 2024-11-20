@@ -69,10 +69,29 @@ namespace QLyHS1.Controllers
 
             return View(students);
         }
-
+        [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            var model = new ClassroomDetailViewModel
+            {
+                Teachers = _context.Teachers
+                .Where(t => t.Status == true)
+            .Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = t.Name 
+            })
+            .ToList(),
+
+                GradeLevels = _context.GrandLevels
+            .Select(gl => new SelectListItem
+            {
+                Value = gl.Id.ToString(),
+                Text = gl.Name
+            })
+            .ToList()
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -80,25 +99,48 @@ namespace QLyHS1.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Teachers = _context.Teachers
+                    .Select(t => new SelectListItem
+                    {
+                        Value = t.Id.ToString(),
+                        Text = t.Name
+                    })
+                    .ToList();
+
+                model.GradeLevels = _context.GrandLevels
+                    .Select(gl => new SelectListItem
+                    {
+                        Value = gl.Id.ToString(),
+                        Text = gl.Name
+                    })
+                    .ToList();
+
                 return View(model);
             }
-            var student = new Classroom
+            if (!_context.Teachers.Any(t => t.Id == model.TeacherID) ||
+                !_context.GrandLevels.Any(gl => gl.Id == model.GrandLevelID))
             {
-               
-               TeacherId = model.TeacherID,
-               GrandLevelId = model.GrandLevelID,
-               Name = model.Name,
-               Quantity = model.Quantity,
-               CreateAt = DateTime.Now,
-               UpdateAt = DateTime.Now,
-               Status = true
+                ModelState.AddModelError("", "Giáo viên hoặc cấp lớp không hợp lệ.");
+                return View(model);
+            }
+            var classroom = new Classroom
+            {
+                TeacherId = model.TeacherID,
+                GrandLevelId = model.GrandLevelID,
+                Name = model.Name,
+                Quantity = model.Quantity,
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+                Status = true
             };
 
-            _context.Classrooms.Add(student);
+            _context.Classrooms.Add(classroom);
             _context.SaveChanges();
 
             return RedirectToAction("Index");
         }
+
+
 
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)

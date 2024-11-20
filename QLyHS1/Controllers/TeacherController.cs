@@ -71,6 +71,12 @@ namespace QLyHS1.Controllers
 
         public IActionResult Add()
         {
+            var subjects = _context.Subjects
+                              .Where(s => s.Status)
+                              .Select(s => new { s.Id, s.Name })
+                              .ToList();
+
+            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
             return View();
         }
 
@@ -83,32 +89,55 @@ namespace QLyHS1.Controllers
                 
                 {
                     foreach (var error in state.Value.Errors)
-                    {
-                        
+                    {     
                         Console.WriteLine(error.ErrorMessage);
                     }
                 }
                 return View(model);
             }
-            var teacher = new Teacher
+            if (ModelState.IsValid)
             {
+                var teacher = new Teacher
+                {
+                    Name = model.Name,
+                    UserName = model.UserName,
+                    Password = model.Password,
+                    Email = model.Email,
+                    DateOfBirth = model.DateOfBirth,
+                    Phone = model.Phone,
+                    Address = model.Address,
+                    Token = "",
+                    Role = false,
+                    CreateAt = DateTime.Now,
+                    UpdateAt = DateTime.Now,
+                    Status = true
+                };
 
-                Name = model.Name,
-                UserName = model.UserName,
-                Password = model.Password,
-                Email = model.Email,
-                DateOfBirth = model.DateOfBirth,
-                Phone = model.Phone,
-                Address = model.Address,
-                Token = "",
-                Role = false,
-                CreateAt = DateTime.Now,
-                UpdateAt = DateTime.Now,
-                Status = true
-            };
+                _context.Teachers.Add(teacher);
+                _context.SaveChanges();
 
-            _context.Teachers.Add(teacher);
-            _context.SaveChanges();
+                int teacherId = teacher.Id;
+                var assignment = new Assignment
+                {
+                    TeacherId = teacherId,
+                    SubjectId = model.SubjectId,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddMonths(6) 
+                };
+
+                _context.Assignments.Add(assignment);
+                _context.SaveChanges();
+
+                var subjects = _context.Subjects
+                       .Where(s => s.Status)
+                       .Select(s => new { s.Id, s.Name })
+                       .ToList();
+                ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
+                /*return View(model);*/
+
+                return RedirectToAction("Index");
+            }
+
 
             return RedirectToAction("Index");
         }

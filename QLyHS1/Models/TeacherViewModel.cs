@@ -5,6 +5,7 @@ namespace QLyHS1.Models
     public class TeacherViewModel
     {
         public int Id { get; set; }
+        public int SubjectId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string DateOfBirth { get; set; }

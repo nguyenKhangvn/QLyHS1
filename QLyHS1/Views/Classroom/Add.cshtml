@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QLyHS1.Models.ClassroomDetailViewModel>
+﻿@model QLyHS1.Models.ClassroomDetailViewModel
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -88,12 +88,24 @@
         <h1>Thêm lớp học</h1>
         <form asp-action="Add" asp-controller="Classroom" method="post">
             <div class="form-group">
-                <label for="TeacherID" class="control-label">Teacher ID:</label>
-                <input type="number" id="TeacherID" name="TeacherID" required />
+                <label for="TeacherID" class="control-label">Teacher:</label>
+                <select id="TeacherID" name="TeacherID" class="form-control" required>
+                    <option value="">-- Select a Teacher --</option>
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        <option value="@teacher.Value">@teacher.Text</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
-                <label for="GrandLevelID" class="control-label">GradeLevel ID:</label>
-                <input type="number" id="GrandLevelID" name="GrandLevelID" required />
+                <label for="GrandLevelID" class="control-label">Grade Level:</label>
+                <select id="GrandLevelID" name="GrandLevelID" class="form-control" required>
+                    <option value="">-- Select a Grade Level --</option>
+                    @foreach (var grade in Model.GradeLevels)
+                    {
+                        <option value="@grade.Value">@grade.Text</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label for="name" class="control-label">Name:</label>
@@ -101,11 +113,11 @@
             </div>
             <div class="form-group">
                 <label for="quantity" class="control-label">Quantity:</label>
-                <input type="quantity" id="quantity" name="quantity" required />
+                <input type="number" id="quantity" name="quantity" required />
             </div>
-          
             <button type="submit" name="Add" value="Add">Add Classroom</button>
         </form>
+
         <div>
             <a asp-action="Index">Back to List</a>
         </div>

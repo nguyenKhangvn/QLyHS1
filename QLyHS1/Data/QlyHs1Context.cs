@@ -46,9 +46,11 @@ public partial class QlyHs1Context : DbContext
         modelBuilder.Entity<Assignment>(entity =>
         {
             entity
-                .HasNoKey()
-                .ToTable("Assignment");
+                .HasKey(e => e.Id).HasName("PK_Assignment");
 
+            entity.ToTable("Assignment");
+
+            entity.Property(e => e.Id).HasColumnName("Id");
             entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
             entity.Property(e => e.TeacherId).HasColumnName("TeacherID");
 

@@ -84,7 +84,15 @@
                 <strong>Họ và tên:</strong> @Model.Name
             </div>
             <div class="detail-item">
-                <strong>Tên môn học:</strong> @Model.Schedules.FirstOrDefault().Subject.Name
+                <strong>Tên môn học:</strong>
+                @if (Model.Schedules != null && Model.Schedules.Any())
+                {
+                    @Model.Schedules.FirstOrDefault()?.Subject?.Name
+                }
+                else
+                {
+                    <span>Không có môn học</span>
+                }
             </div>
             <div class="detail-item">
                 <strong>Tên đăng nhập:</strong> @Model.UserName

@@ -1,4 +1,6 @@
-﻿namespace QLyHS1.Models
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace QLyHS1.Models
 {
     public class ClassroomViewModel
     {
@@ -16,9 +18,10 @@
         public int TeacherID { get; set; }
         public int GrandLevelID { get; set; }
         public string Name { get; set; }
-
         public int Quantity { get; set; }
-     
+        public List<SelectListItem> Teachers { get; set; }
+        public List<SelectListItem> GradeLevels { get; set; }
+
     }
 
      public class ClassroomDetailToEditViewModel
