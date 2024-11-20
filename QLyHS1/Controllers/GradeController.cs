@@ -81,12 +81,56 @@ namespace QLyHS1.Controllers
 
         public IActionResult Add()
         {
+
+            var Student = _context.Students
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
+
+            ViewBag.Student = new SelectList(Student, "Id", "Name");
+                  var Semester = _context.Semesters
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
+
+            ViewBag.Semester = new SelectList(Semester, "Id", "Name");
+                  var Subject = _context.Subjects
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
+
+            ViewBag.Subject = new SelectList(Subject, "Id", "Name");
+                  var SchoolYear = _context.SchoolYears
+                           .Select(s => new { s.Id, s.Year })
+                           .ToList();
+
+            ViewBag.SchoolYear = new SelectList(SchoolYear, "Id", "Year");
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Add(GradeDetailViewModel model)
         {
+            var Student = _context.Students
+                          .Select(s => new { s.Id, s.Name })
+                          .ToList();
+
+            ViewBag.Student = new SelectList(Student, "Id", "Name");
+            var Semester = _context.Semesters
+                     .Select(s => new { s.Id, s.Name })
+                     .ToList();
+
+            ViewBag.Semester = new SelectList(Semester, "Id", "Name");
+            var Subject = _context.Subjects
+                     .Select(s => new { s.Id, s.Name })
+                     .ToList();
+
+            ViewBag.Subject = new SelectList(Subject, "Id", "Name");
+            var SchoolYear = _context.SchoolYears
+                     .Select(s => new { s.Id, s.Year })
+                     .ToList();
+
+            ViewBag.SchoolYear = new SelectList(SchoolYear, "Id", "Year");
+
+
             if (!ModelState.IsValid)
             {
                 return View(model);

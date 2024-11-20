@@ -45,9 +45,6 @@ namespace QLyHS1.Controllers
             return View(studentVM.ToList());
         }
 
-
-
-
         // Xem chi tiết học sinh
         [Route("Student/Search")]
         public IActionResult Search(string? query)
@@ -72,16 +69,37 @@ namespace QLyHS1.Controllers
 
         public IActionResult Add()
         {
+            var classroom = _context.Classrooms
+                             .Where(s => s.Status == true)
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
+
+            ViewBag.Classroom = new SelectList(classroom, "Id", "Name");
             return View();
         }
 
         [HttpPost]
         public IActionResult Add(StudentDetailViewModel model)
         {
+            var classroom = _context.Classrooms
+                             .Where(s => s.Status == true)
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
+
+            ViewBag.Classroom = new SelectList(classroom, "Id", "Name");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+           
+
+            if (!_context.Classrooms.Any(t => t.Id == model.ClassID))
+            {
+                ModelState.AddModelError("", "Lớp học không tồn tại.");
+                return View(model);
+            }
+
             var student = new Student
             {
                 ClassId = model.ClassID,
@@ -102,6 +120,7 @@ namespace QLyHS1.Controllers
 
             return RedirectToAction("Index");
         }
+
 
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)

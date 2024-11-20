@@ -19,8 +19,6 @@ namespace QLyHS1.Models
         public int GrandLevelID { get; set; }
         public string Name { get; set; }
         public int Quantity { get; set; }
-        public List<SelectListItem> Teachers { get; set; }
-        public List<SelectListItem> GradeLevels { get; set; }
 
     }
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QLyHS1.Models.GradeDetailViewModel>
+﻿@model QLyHS1.Models.GradeDetailViewModel
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -89,19 +89,27 @@
         <form asp-action="Add" asp-controller="Grade" method="post">
             <div class="form-group">
                 <label for="StudentId" class="control-label">Student ID:</label>
-                <input type="number" id="StudentId" name="StudentId" required />
+                 <select id="StudentId" asp-for="StudentId" asp-items="ViewBag.Student" class="form-control">
+                    <option value="">-- Chọn học sinh--</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="SemesterId" class="control-label">SemesterId ID:</label>
-                <input type="number" id="SemesterId" name="SemesterId" required />
+                <select id="SemesterId" asp-for="SemesterId" asp-items="ViewBag.Semester" class="form-control">
+                    <option value="">-- Chọn kì học--</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="SubjectId" class="control-label">SubjectId ID:</label>
-                <input type="number" id="SubjectId" name="SubjectId" required />
+               <select id="SubjectId" asp-for="SubjectId" asp-items="ViewBag.Subject" class="form-control">
+                    <option value="">-- Chọn môn học--</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="SchoolYearId" class="control-label">SchoolYearId ID:</label>
-                <input type="number" id="SchoolYearId" name="SchoolYearId" required />
+                 <select id="SchoolYearId" asp-for="SchoolYearId" asp-items="ViewBag.SchoolYear" class="form-control">
+                    <option value="">-- Chọn năm học--</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="GradeI" class="control-label">GradeI:</label>

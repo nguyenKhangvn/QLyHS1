@@ -19,20 +19,22 @@ namespace QLyHS1.Controllers
         public IActionResult Index(string searchString)
         {
             var teacherVM = from te in _context.Teachers
-                            join ass in _context.Assignments on te.Id equals ass.TeacherId
-                            join su in _context.Subjects on ass.SubjectId equals su.Id
+                            join ass in _context.Assignments on te.Id equals ass.TeacherId into assGroup
+                            from ass in assGroup.DefaultIfEmpty()
+                            join su in _context.Subjects on ass.SubjectId equals su.Id into suGroup
+                            from su in suGroup.DefaultIfEmpty()
                             select new TeacherViewModel
                             {
                                 Id = te.Id,
                                 Name = te.Name,
-                                SubjectName = su.Name,
+                                SubjectName = su != null ? su.Name : "N/A",
                                 Email = te.Email,
                                 Address = te.Address,
                                 DateOfBirth = te.DateOfBirth.ToString("dd/MM/yyyy"),
                                 Phone = te.Phone
                             };
 
-            
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -47,18 +49,21 @@ namespace QLyHS1.Controllers
         {
             var stu = _context.Teachers.AsQueryable();
             var teacherVM = from te in _context.Teachers
-                            join ass in _context.Assignments on te.Id equals ass.TeacherId
-                            join su in _context.Subjects on ass.SubjectId equals su.Id
+                            join ass in _context.Assignments on te.Id equals ass.TeacherId into assGroup
+                            from ass in assGroup.DefaultIfEmpty()
+                            join su in _context.Subjects on ass.SubjectId equals su.Id into suGroup
+                            from su in suGroup.DefaultIfEmpty()
                             select new TeacherViewModel
                             {
                                 Id = te.Id,
                                 Name = te.Name,
-                                SubjectName = su.Name,
+                                SubjectName = su != null ? su.Name : "N/A", 
                                 Email = te.Email,
                                 Address = te.Address,
                                 DateOfBirth = te.DateOfBirth.ToString("dd/MM/yyyy"),
                                 Phone = te.Phone
                             };
+
 
             if (!string.IsNullOrEmpty(query))
             {
@@ -149,6 +154,12 @@ namespace QLyHS1.Controllers
                 return NotFound();
             }
 
+            var subjects = _context.Subjects
+                              .Where(s => s.Status)
+                              .Select(s => new { s.Id, s.Name })
+                              .ToList();
+
+            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
             var student = await _context.Teachers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (student == null)
@@ -181,15 +192,29 @@ namespace QLyHS1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Teachers.FindAsync(id);
-            if (student != null)
+            try
             {
-                _context.Teachers.Remove(student);
+                var teacher = await _context.Teachers.FindAsync(id);
+                if (teacher != null)
+                {
+                    _context.Teachers.Remove(teacher);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Xóa giáo viên thành công!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không tìm thấy giáo viên cần xóa.";
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorMessage"] = "Không thể xóa giáo viên. Giáo viên này có dữ liệu liên quan trong hệ thống.";
+                Console.WriteLine(ex.Message);
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         // GET: Teacher/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -204,7 +229,12 @@ namespace QLyHS1.Controllers
             {
                 return NotFound();
             }
+            var subjects = _context.Subjects
+                             .Where(s => s.Status)
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
 
+            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
             // Map data from `Teacher` to `TeacherDetailViewModel`
             var teacherViewModel = new TeacherDetailViewModel
             {

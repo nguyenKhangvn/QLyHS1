@@ -1,4 +1,5 @@
-﻿using QLyHS1.Data;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using QLyHS1.Data;
 
 namespace QLyHS1.Models
 {

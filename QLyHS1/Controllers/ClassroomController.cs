@@ -72,49 +72,39 @@ namespace QLyHS1.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            var model = new ClassroomDetailViewModel
-            {
-                Teachers = _context.Teachers
-                .Where(t => t.Status == true)
-            .Select(t => new SelectListItem
-            {
-                Value = t.Id.ToString(),
-                Text = t.Name 
-            })
-            .ToList(),
+            var GrandLevel = _context.GrandLevels
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
 
-                GradeLevels = _context.GrandLevels
-            .Select(gl => new SelectListItem
-            {
-                Value = gl.Id.ToString(),
-                Text = gl.Name
-            })
-            .ToList()
-            };
-            return View(model);
+            ViewBag.GrandLevel = new SelectList(GrandLevel, "Id", "Name");
+
+            var Teacher = _context.Teachers
+                             .Where(s => s.Status == true)
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
+
+            ViewBag.Teacher = new SelectList(Teacher, "Id", "Name");
+            return View();
         }
 
         [HttpPost]
         public IActionResult Add(ClassroomDetailViewModel model)
         {
+            var GrandLevel = _context.GrandLevels
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
+
+            ViewBag.GrandLevel = new SelectList(GrandLevel, "Id", "Name");
+
+            var Teacher = _context.Teachers
+                             .Where(s => s.Status == true)
+                             .Select(s => new { s.Id, s.Name })
+                             .ToList();
+
+            ViewBag.Teacher = new SelectList(Teacher, "Id", "Name");
+
             if (!ModelState.IsValid)
             {
-                model.Teachers = _context.Teachers
-                    .Select(t => new SelectListItem
-                    {
-                        Value = t.Id.ToString(),
-                        Text = t.Name
-                    })
-                    .ToList();
-
-                model.GradeLevels = _context.GrandLevels
-                    .Select(gl => new SelectListItem
-                    {
-                        Value = gl.Id.ToString(),
-                        Text = gl.Name
-                    })
-                    .ToList();
-
                 return View(model);
             }
             if (!_context.Teachers.Any(t => t.Id == model.TeacherID) ||

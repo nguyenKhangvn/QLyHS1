@@ -16,12 +16,13 @@ namespace QLyHS1.Controllers
         public IActionResult Index()
         {
            var sub = from st in _context.Subjects
-                           select new SubjectViewModel
-                           {
-                               Id = st.Id,
-                               Name = st.Name,
+                             .Where(t => t.Status == true)
+                             select new SubjectViewModel
+                                   {
+                                       Id = st.Id,
+                                       Name = st.Name,
                                
-                           };
+                              };
 
             return View(sub.ToList());
         }

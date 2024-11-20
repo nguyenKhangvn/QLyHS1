@@ -1,6 +1,6 @@
 ﻿@model QLyHS1.Data.Teacher
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Chi tiết giáo viên";
 }
 
 <!DOCTYPE html>
@@ -11,7 +11,6 @@
     <title>Chi tiết giáo viên</title>
     <link rel="stylesheet" href="~/css/details.css">
     <style>
-        /* Đặt các thuộc tính chung cho trang */
         body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
@@ -19,7 +18,6 @@
             padding: 0;
         }
 
-        /* Định dạng container chính */
         .container {
             max-width: 600px;
             margin: 40px auto;
@@ -36,7 +34,6 @@
             margin-bottom: 20px;
         }
 
-        /* Định dạng hộp chi tiết */
         .details-box {
             display: flex;
             flex-direction: column;
@@ -53,7 +50,6 @@
                 color: #333;
             }
 
-        /* Định dạng nút quay lại */
         .btn-back {
             display: block;
             width: 100%;
@@ -72,7 +68,6 @@
             .btn-back:hover {
                 background-color: #45a049;
             }
-
     </style>
 </head>
 <body>
@@ -84,7 +79,7 @@
                 <strong>Họ và tên:</strong> @Model.Name
             </div>
             <div class="detail-item">
-                <strong>Tên môn học:</strong> @Model.Schedules.FirstOrDefault().Subject.Name
+                <strong>Tên môn học:</strong> @(Model.Schedules?.FirstOrDefault()?.Subject?.Name ?? "Chưa có")
             </div>
             <div class="detail-item">
                 <strong>Tên đăng nhập:</strong> @Model.UserName
@@ -108,10 +103,10 @@
                 <strong>Trạng thái:</strong> @(Model.Status ? "Hoạt động" : "Tạm dừng")
             </div>
             <div class="detail-item">
-                <strong>Ngày tạo:</strong> @Model.CreateAt
+                <strong>Ngày tạo:</strong> @Model.CreateAt.ToString("dd/MM/yyyy HH:mm:ss")
             </div>
             <div class="detail-item">
-                <strong>Cập nhật lần cuối:</strong> @Model.UpdateAt
+                <strong>Cập nhật lần cuối:</strong> @Model.UpdateAt.ToString("dd/MM/yyyy HH:mm:ss")
             </div>
         </div>
 
@@ -119,5 +114,3 @@
     </div>
 </body>
 </html>
-
-

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<QLyHS1.Models.StudentDetailViewModel>
+﻿@model QLyHS1.Models.StudentDetailViewModel
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -89,42 +89,60 @@
         <h1>Thêm Học Sinh</h1>
         <form asp-action="Add" asp-controller="Student" method="post">
             <div class="form-group">
-                <label for="classID" class="control-label">Class ID:</label>
-                <input type="number" id="classID" name="classID" required />
+                <label for="ClassID" class="control-label">Tên lớp:</label>
+                <select id="ClassID" asp-for="ClassID" asp-items="ViewBag.Classroom" class="form-control">
+                    <option value="">-- Chọn lớp --</option>
+                </select>
             </div>
+
             <div class="form-group">
-                <label for="name" class="control-label">Name:</label>
-                <input type="text" id="name" name="name" required />
+                <label asp-for="Name" class="control-label">Name:</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="gender" class="control-label">Gender:</label>
-                <select id="gender" name="gender" required>
+                <label asp-for="Gender" class="control-label">Gender:</label>
+                <select asp-for="Gender" class="form-control">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                 </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="email" class="control-label">Email:</label>
-                <input type="email" id="email" name="email" required />
+                <label asp-for="Email" class="control-label">Email:</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="dateOfBirth" class="control-label">Date of Birth:</label>
-                <input type="date" id="dateOfBirth" name="dateOfBirth" required />
+                <label asp-for="DateOfBirth" class="control-label">Date of Birth:</label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="phone" class="control-label">Phone:</label>
-                <input type="text" id="phone" name="phone" required />
+                <label asp-for="Phone" class="control-label">Phone:</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="phoneParent" class="control-label">Parent Phone:</label>
-                <input type="text" id="phoneParent" name="phoneParent" required />
+                <label asp-for="PhoneParent" class="control-label">Parent Phone:</label>
+                <input asp-for="PhoneParent" class="form-control" />
+                <span asp-validation-for="PhoneParent" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="address" class="control-label">Address:</label>
-                <input type="text" id="address" name="address" required />
+                <label asp-for="Address" class="control-label">Address:</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <button type="submit" name="Add" value="Add">Add Student</button>
+
+            <button type="submit" class="btn btn-primary">Thêm học sinh</button>
         </form>
+
         <div>
             <a asp-action="Index">Back to List</a>
         </div>
