@@ -7,13 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phân công giáo viên</title>
     <link rel="stylesheet" href="~/css/Teacher.css">
+    <link rel="stylesheet" href="~/css/Base.css">
+
 </head>
 <style>
 
 </style>
 
 <body>
-    <div class="container">
+    <div class="container_form">
 
         <div class="main-content">
             <h1>Hồ sơ giáo viên</h1>
@@ -43,50 +45,46 @@
                 </div>
             </div>
 
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Giáo Viên</th>
-                        <th>Tên môn học</th>
-                        <th>Email</th>
-                        <th>Sinh nhât</th>
-                        <th>Địa chỉ</th>
-                        <th>Số điện thoại</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="list-container">
+                <ul class="styled-top">
+                        <li>STT</li>
+                        <li>Giáo Viên</li>
+                        <li>Tên môn học</li>
+                        <li>Email</li>
+                        <li>Sinh nhât</li>
+                        <li>Địa chỉ</li>
+                        <li>Số điện thoại</li>
+                    </ul>
+                <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
                         foreach (var teacher in Model)
                         {
-                            <tr>
-                                <td>@stt</td>
-                                <td>@teacher.Name</td>
-                                <td>@teacher.SubjectName</td>
-                                <td>@teacher.Email</td>
-                                <td>@teacher.DateOfBirth</td>
-                                <td>@teacher.Address</td>
-                                <td>@teacher.Phone</td>
-                                <td>
+                            <ul>
+                                <li>@stt</li>
+                                <li>@teacher.Name</li>
+                                <li>@teacher.SubjectName</li>
+                                <li>@teacher.Email</li>
+                                <li>@teacher.DateOfBirth</li>
+                                <li>@teacher.Address</li>
+                                <li>@teacher.Phone</li>
+                                <li>
                                     <a asp-action="Edit" asp-route-id="@teacher.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@teacher.Id">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@teacher.Id">Delete</a>
-                                </td>
-                            </tr>
+                                </li>
+                            </ul>
                             stt++;
                         }
 
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="7">Không có dữ liệu giáo viên.</td>
-                        </tr>
+                            <li colspan="7">Không có dữ liệu giáo viên.</li>
                     }
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>

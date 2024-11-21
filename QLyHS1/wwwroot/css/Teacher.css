@@ -1,6 +1,6 @@
 ﻿
 
-.schedule-table {
+/*.schedule-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
@@ -20,10 +20,10 @@
             background-color: #007bff;
             color: white;
             font-weight: bold;
-        }
+        }*/
 
 /* Additional styles for schedule */
-.schedule-header {
+/*.schedule-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -107,5 +107,5 @@
 .btn-delete {
     background-color: #ff4c4c;
     color: white;
-}
+}*/
 

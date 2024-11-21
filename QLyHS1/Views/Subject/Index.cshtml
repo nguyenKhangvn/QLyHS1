@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý môn học</title>
-    <link rel="stylesheet" href="~/css/Teacher.css">
+    <link rel="stylesheet" href="~/css/Base.css">
 </head>
 <style>
 
 </style>
 
 <body>
-    <div class="container">
+    <div class="container_form">
 
         <div class="main-content">
             <h1>Quản lý môn học</h1>
@@ -24,42 +24,39 @@
                 
             </div>
 
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên môn học</th>
+            <div class="list-container">
+
+                <ul class="styled-top">
+                        <li>STT</li>
+                        <li>Tên môn học</li>
                       
-                    </tr>
-                </thead>
-                <tbody>
+                    </ul>
+                <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
                         foreach (var sub in Model)
                         {
-                            <tr>
-                                <td>@stt</td>
-                                <td>@sub.Name</td>
+                            <ul>
+                                <li>@stt</li>
+                                <li>@sub.Name</li>
                                
-                                <td>
+                                <li>
                                     <a asp-action="Edit" asp-route-id="@sub.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@sub.Id">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@sub.Id">Delete</a>
-                                </td>
-                            </tr>
+                                </li>
+                            </ul>
                             stt++;
                         }
 
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="7">Không có dữ liệu môn học.</td>
-                        </tr>
+                            <li colspan="7">Không có dữ liệu môn học.</li>
                     }
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
     </div>
 </body>
