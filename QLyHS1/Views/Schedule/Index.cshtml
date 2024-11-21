@@ -7,277 +7,10 @@
     <title>Thời khóa biểu Học sinh</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="~/css/Base.css">
+    <link rel="stylesheet" href="~/css/Schedule.css">
 </head>
-<style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-    }
-
-    header {
-        background-color: #2e8ece;
-        color: white;
-        padding: 20px;
-        text-align: center;
-    }
-
-    .navbar {
-        background-color: #007bff;
-        overflow: hidden;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-    }
-
-        .navbar ul {
-            padding: 0;
-            list-style: none;
-            display: flex;
-            margin: 0;
-        }
-
-            .navbar ul li {
-                margin: 0 15px;
-            }
-
-                .navbar ul li a {
-                    color: white;
-                    text-decoration: none;
-                    padding: 14px 20px;
-                    display: block;
-                }
-
-                    .navbar ul li a:hover {
-                        background-color: #0056b3;
-                        border-radius: 5px;
-                    }
-
-    /* User Dropdown */
-    .user-dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-        .user-dropdown button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-
-    .user-dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-        right: 0;
-        min-width: 160px;
-    }
-
-        .user-dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-            .user-dropdown-content a:hover {
-                background-color: #f1f1f1;
-            }
-
-    .user-dropdown:hover .user-dropdown-content {
-        display: block;
-    }
-
-    .user-dropdown:hover button {
-        background-color: #0056b3;
-    }
-
-    .container {
-        display: flex;
-        height: 100vh;
-    }
-
-    .sidebar {
-        width: 200px;
-        background-color: #b0e0f1;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .sidebar li {
-            padding: 15px 0;
-            font-size: 16px;
-            color: #333;
-            cursor: pointer;
-        }
-
-            .sidebar li:hover {
-                background-color: #87c4e0;
-                color: #fff;
-                padding-left: 10px;
-            }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-        }
-
-            .sidebar ul li a:hover {
-                text-decoration: underline;
-            }
-
-    /* Main Content */
-    .main-content {
-        flex-grow: 1;
-        padding: 30px;
-        background-color: #f5f5f5;
-    }
-
-    .schedule-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: white;
-    }
-
-        .schedule-table, .schedule-table th, .schedule-table td {
-            border: 1px solid #ddd;
-        }
-
-            .schedule-table th, .schedule-table td {
-                padding: 10px;
-                text-align: left;
-            }
-
-            .schedule-table th {
-                background-color: #007bff;
-                color: white;
-                font-weight: bold;
-            }
-
-    /* Additional styles for schedule */
-    .schedule-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-        .schedule-header h2 {
-            margin: 0;
-        }
-
-        .schedule-header select {
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-        }
-
-    .filter-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    .filter-group label {
-        margin-right: 10px;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .filter-group select,
-    .filter-group input[type="text"] {
-        padding: 10px;
-        font-size: 14px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-    }
-
-    .search-group {
-        display: flex;
-        align-items: center;
-    }
-
-        .search-group input[type="text"] {
-            width: 200px;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-        }
-
-        .search-group button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-    .btn-search {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .btn-add {
-        background-color: #28a745;
-        color: white;
-    }
-
-    .btn-edit {
-        background-color: #ffc107;
-        color: white;
-    }
-
-    .btn-delete {
-        background-color: #ff4c4c;
-        color: white;
-    }
-
-    /* Table */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: white;
-    }
-
-    table, th, td {
-        border: 1px solid #ddd;
-    }
-
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #007bff;
-        color: white;
-        font-weight: bold;
-    }
-</style>
 <body>
-
-    <div class="container">
+    <div class="container_form">
        
         <div class="main-content">
             <h1>Thời khóa biểu</h1>
@@ -307,19 +40,17 @@
                 </div>
             </div>
 
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th>Tiết học</th>
-                        <th>Thứ 2</th>
-                        <th>Thứ 3</th>
-                        <th>Thứ 4</th>
-                        <th>Thứ 5</th>
-                        <th>Thứ 6</th>
-                        <th>Thứ 7</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="list-container">
+                <ul class="styled-top">
+                        <li>Tiết học</li>
+                        <li>Thứ 2</li>
+                        <li>Thứ 3</li>
+                        <li>Thứ 4</li>
+                        <li>Thứ 5</li>
+                        <li>Thứ 6</li>
+                        <li>Thứ 7</li>
+                    </ul>
+                <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
@@ -327,37 +58,35 @@
 
                         foreach (var lessonGroup in schedulesGroupedByLesson)
                         {
-                            <tr>
-                                <td>@stt</td>
+                            <ul>
+                                <li>@stt</li>
 
                                 @for (int day = 1; day <= 6; day++)
                                 {
                                     var schedule = lessonGroup.FirstOrDefault(s => s.DayOfWeek == day);
                                     if (schedule != null)
                                     {
-                                        <td>
+                                        <li>
                                             @schedule.SubjectName, @schedule.ClassRoom, @schedule.StartTime, @schedule.EndTime
                                             <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a> |
                                             <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
-                                        </td>
+                                        </li>
                                     }
                                     else
                                     {
-                                        <td>---</td>
+                                        <li>---</li>
                                     }
                                 }
-                            </tr>
+                            </ul>
                             stt++;
                         }
                     }
                     else
                     {
-                        <tr>
-                            <td colspan="7">Không có dữ liệu thời khóa biểu.</td>
-                        </tr>
+                            <li colspan="7">Không có dữ liệu thời khóa biểu.</li>
                     }
-                </tbody>
-            </table>
+                </div>
+            </div>
 
         </div>
     </div>

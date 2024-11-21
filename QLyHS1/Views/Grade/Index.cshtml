@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Điểm</title>
     <link rel="stylesheet" href="~/css/Base.css">
-    <link rel="stylesheet" href="~/css/student.css">
+    <link rel="stylesheet" href="~/css/Score.css">
 </head>
-
-    <div class="container">
+<body>
+    <div class="container_form">
         <div class="main-content">
             <h1>Hồ sơ Điểm số</h1>
 
@@ -36,19 +36,16 @@
             </div>
 
             <div class="list-container">
-                <ul class="styled-top"">
-                    <ul class="styled-top">
-                        <li>STT</li>
-                        <li>Tên học sinh</li>
-                        <li>Học kì</li>
-                        <li>Tên môn</li>
-                        <li>Năm học</li>
-                        <li>Điểm hệ số 1</li>
-                        <li>Điểm hệ số 2</li>
-                        <li>Điểm hệ số 3</li>
-                    </ul>
-
-                    </ul>
+                <ul class="styled-top">
+                    <li>STT</li>
+                    <li>Tên học sinh</li>
+                    <li>Học kì</li>
+                    <li>Tên môn</li>
+                    <li>Năm học</li>
+                    <li>Điểm hệ số 1</li>
+                    <li>Điểm hệ số 2</li>
+                    <li>Điểm hệ số 3</li>
+                </ul>
                 <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
@@ -64,7 +61,6 @@
                                 <li>@student.GradeI</li>
                                 <li>@student.GradeII</li>
                                 <li>@student.GradeIII</li>
-
                                 <li>
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
@@ -79,8 +75,9 @@
                     {
                             <li colspan="7">Không có dữ liệu Điểm.</li>
                     }
-                </tbody>
+                 </div>
             </div>
         </div>
     </div>
+</body>
 </html>
