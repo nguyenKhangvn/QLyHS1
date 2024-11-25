@@ -14,14 +14,18 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="#"><span class="icon">&#127968;</span>Trang Chủ</a></li>
+            <li><a href="@Url.Action("Index", "Home")"><span class="icon">&#127968;</span>Trang Chủ</a></li>
         </ul>
+
 
         <div class="user-dropdown">
             <button>Admin ▼</button>
             <div class="user-dropdown-content">
                 <a href="#">Đổi mật khẩu</a>
-                <a href="#">Thoát</a>
+                <form asp-action="Signout" asp-controller="User" method="post">
+                    <button type="submit">Thoát</button>
+                </form>
+
             </div>
         </div>
     </nav>

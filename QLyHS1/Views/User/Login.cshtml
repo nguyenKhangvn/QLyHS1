@@ -1,0 +1,36 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý học sinh - Đăng nhập</title>
+    <link rel="stylesheet" href="css/Login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <img src="https://sie.tlu.edu.vn/Portals/0/icon_bachelor.png" alt="Graduation Image" class="login-image">
+        </div>
+        <div class="login-right">
+            <h2>Đăng nhập</h2>
+            <form asp-action="Login" asp-controller="User" method="post">
+                <label for="username">Tên đăng nhập</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Mật khẩu</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit" class="btn-login">Đăng nhập</button>
+            </form>
+          
+        </div>
+    </div>
+</body>
+</html>
+
+

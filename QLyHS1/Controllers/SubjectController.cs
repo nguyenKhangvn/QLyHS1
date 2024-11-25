@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLyHS1.Data;
 using QLyHS1.Models;
 namespace QLyHS1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SubjectController : Controller
     {
         private readonly QlyHs1Context _context;

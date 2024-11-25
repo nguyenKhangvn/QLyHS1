@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thời khóa biểu Học sinh</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="~/css/Base.css">
+@*     <link rel="stylesheet" href="~/css/Base.css">*@
     <link rel="stylesheet" href="~/css/Schedule.css">
 </head>
 <body>
@@ -17,12 +17,20 @@
 
             <div class="filter-section">
                 <div class="filter-group">
-                    <label for="class">Lớp:</label>
-                    <select id="class">
-                        <option value="10A1">10A1</option>
-                        <option value="10A2">10A2</option>
-                        <option value="10A3">10A3</option>
-                    </select>
+                   
+                    <form method="get" asp-action="Index">
+                        <label for="className">Lọc theo lớp:</label>
+                        <select name="className" id="className" onchange="this.form.submit()">
+                            <option value="">-- Chọn lớp --</option>
+                            @if (ViewBag.Classrooms != null)
+                            {
+                                foreach (SelectListItem classroom in ViewBag.Classrooms)
+                                {
+                                    <option value="@classroom.Value">@classroom.Text</option>
+                                }
+                            }
+                        </select>
+                    </form>
 
                     <label for="semester">Học kỳ:</label>
                     <select id="semester">
@@ -35,59 +43,49 @@
                     <input type="text" placeholder="Tìm kiếm học sinh">
                     <button class="btn-search">Tìm kiếm</button>
                     <button class="btn-add" onclick="location.href='@Url.Action("Add", "Schedule")'">+</button>
-                    <button class="btn-edit">&#9998;</button>
-                    <button class="btn-delete">&#128465;</button>
                 </div>
             </div>
 
-            <div class="list-container">
+            <div class="schedule-container">
+                <h2>Thời khóa biểu</h2>
                 <ul class="styled-top">
-                        <li>Tiết học</li>
-                        <li>Thứ 2</li>
-                        <li>Thứ 3</li>
-                        <li>Thứ 4</li>
-                        <li>Thứ 5</li>
-                        <li>Thứ 6</li>
-                        <li>Thứ 7</li>
-                    </ul>
+                    <li>Số thứ tự</li>
+                    <li>Tên môn học</li>
+                    <li>Tên giáo viên</li>
+                    <li>Phòng học</li>
+                    <li>Thông tin</li>
+                    <li>Giờ bắt đầu</li>
+                    <li>Giờ kết thúc</li>
+                </ul>
+
                 <div class="styled-list">
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
-                        var schedulesGroupedByLesson = Model.GroupBy(s => s.DayOfWeek);
-
-                        foreach (var lessonGroup in schedulesGroupedByLesson)
+                        foreach (var schedule in Model)
                         {
                             <ul>
                                 <li>@stt</li>
-
-                                @for (int day = 1; day <= 6; day++)
-                                {
-                                    var schedule = lessonGroup.FirstOrDefault(s => s.DayOfWeek == day);
-                                    if (schedule != null)
-                                    {
-                                        <li>
-                                            @schedule.SubjectName, @schedule.ClassRoom, @schedule.StartTime, @schedule.EndTime
-                                            <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a> |
-                                            <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>---</li>
-                                    }
-                                }
+                                <li>@schedule.SubjectName</li>
+                                <li>@schedule.TeacherName</li>
+                                <li>@schedule.ClassRoom</li>
+                                <li>@schedule.Infomation</li>
+                                <li>@schedule.StartTime</li>
+                                <li>@schedule.EndTime</li>
+                                <li>
+                                    <a asp-action="Edit" asp-route-id="@schedule.Id">Edit</a> |
+                                    <a asp-action="Delete" asp-route-id="@schedule.Id">Delete</a>
+                                </li>
                             </ul>
                             stt++;
                         }
+
                     }
                     else
                     {
-                            <li colspan="7">Không có dữ liệu thời khóa biểu.</li>
+                        <li colspan="7">Không có dữ liệu thời khóa biểu.</li>
                     }
                 </div>
-            </div>
-
         </div>
     </div>
 </body>

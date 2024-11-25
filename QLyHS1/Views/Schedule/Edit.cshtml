@@ -74,6 +74,11 @@
                     <span asp-validation-for="SubjectId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="TeacherId" class="control-label"></label>
+                    <select asp-for="TeacherId" class="form-control" asp-items="ViewBag.TeacherId"></select>
+                    <span asp-validation-for="TeacherId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="ClassRoom" class="control-label"></label>
                     <input asp-for="ClassRoom" class="form-control" />
                     <span asp-validation-for="ClassRoom" class="text-danger"></span>
@@ -82,6 +87,11 @@
                     <label asp-for="DayOfWeek" class="control-label"></label>
                     <input asp-for="DayOfWeek" class="form-control" />
                     <span asp-validation-for="DayOfWeek" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Infomation" class="control-label"></label>
+                    <input asp-for="Infomation" class="form-control" />
+                    <span asp-validation-for="Infomation" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="StartTime" class="control-label"></label>
