@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLyHS1.Data;
@@ -7,6 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QLyHS1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TeacherController : Controller
     {
         private readonly QlyHs1Context _context;
@@ -111,7 +113,7 @@ namespace QLyHS1.Controllers
                     DateOfBirth = model.DateOfBirth,
                     Phone = model.Phone,
                     Address = model.Address,
-                    Token = "",
+                    Token = Util.GenerateRamdomKey(),
                     Role = false,
                     CreateAt = DateTime.Now,
                     UpdateAt = DateTime.Now,
