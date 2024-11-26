@@ -134,6 +134,7 @@ header {
 
 /* Định kiểu danh sách */
 .styled-list {
+    padding-left: 20px; /* Căn chỉnh danh sách */
     margin: 0;
     width: 100%; /* Chiều rộng khung */
     border: 0px solid #3498db; /* Đường viền */
@@ -145,20 +146,21 @@ header {
 }
     .styled-list ul {
         display: flex; /* Sử dụng flexbox */
-        justify-content: space-between;
         padding: 10px 0; /* Khoảng cách bên trong mỗi hàng */
         border-bottom: 1px solid #ddd; /* Viền dưới ngăn cách từng hàng */
     }
  
     /* Định kiểu từng mục */
     .styled-list li {
-        list-style: none;
-        word-wrap: break-word;
-        /* padding: 5px; */
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
+        flex: 1; /* Độ rộng các mục */
+        text-align: center; /* Căn giữa chữ */
+        list-style: none; /* Loại bỏ dấu đầu dòng */
+        word-wrap: break-word; /* Ngắt từ nếu quá dài */
+        padding: 5px;
+        white-space: nowrap; /* Ngăn xuống dòng */
+        overflow: hidden; /* Ẩn nội dung vượt quá kích thước */
+        text-overflow: ellipsis; /* Thêm ba chấm */
+        width: 200px;
     }
         .styled-list li a {
             color: #007bff; /* Màu xanh */
@@ -176,11 +178,10 @@ header {
     color: white;
     margin: 0;
     display: flex;
-    padding: 0px;
 }
 
     .styled-top li {
-        padding: 10px 0 10px 0;
+        padding: 10px 55px 10px 50px;
     }
 .student-table li {
     background-color: #007bff;

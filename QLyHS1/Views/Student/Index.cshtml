@@ -38,18 +38,15 @@
             </div>
 
             <div class="list-container">
-                <div class="div_top">
-                    <ul class="styled-top">
-                        <li class="Stt_li">STT</li>
-                        <li class="Name_li">Họ tên</li>
-                        <li class="Gender_li">Giới tính</li>
-                        <li class="Birthday_li">Ngày sinh</li>
-                        <li class="ClassName_li">Lớp</li>
-                        <li class="Address_li">Địa chỉ</li>
-                        <li class="ParentPhone_li">Liên hệ phụ huynh</li>
-                        <li class="combo_li"></li>
-                    </ul>
-                </div>
+                <ul class="styled-top">            
+                    <li>STT</li>
+                    <li>Họ tên</li>
+                    <li>Giới tính</li>
+                    <li>Ngày sinh</li>
+                    <li>Lớp</li>
+                    <li>Địa chỉ</li>
+                    <li>Liên hệ phụ huynh</li>      
+                </ul>
                 <div class="styled-list">              
                     @if (Model != null && Model.Any())
                     {
@@ -57,14 +54,14 @@
                         foreach (var student in Model)
                         {
                             <ul>
-                                <li class="Stt_li">@stt</li>
-                                <li class="Name_li">@student.Name</li>
-                                <li class="Gender_li">@student.Gender</li>
-                                <li class="Birthday_li">@student.Birthday</li>
-                                <li class="ClassName_li">@student.ClassName</li>
-                                <li class="Address_li">@student.Address</li>
-                                <li class="ParentPhone_li">@student.ParentPhone</li>
-                                <li class="combo_li">
+                                <li>@stt</li>
+                                <li>@student.Name</li>
+                                <li>@student.Gender</li>
+                                <li>@student.Birthday</li>
+                                <li>@student.ClassName</li>
+                                <li>@student.Address</li>
+                                <li>@student.ParentPhone</li>
+                                <li>
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
                                     <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
