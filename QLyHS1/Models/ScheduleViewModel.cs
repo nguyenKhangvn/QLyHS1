@@ -4,8 +4,12 @@
     {
         public int Id { get; set; }
         public string SubjectName { get; set; }
+
+        public string TeacherName { get; set; }
         public string ClassRoom { get; set; }
         public int DayOfWeek { get; set; }
+
+        public string Infomation { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }
@@ -13,8 +17,11 @@
     public class ScheduleDetailViewModel
     {
         public int SubjectId { get; set; }
+        public int TeacherId { get; set; }
+
         public string ClassRoom { get; set; }
         public int DayOfWeek { get; set; }
+        public string Infomation { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }
@@ -22,8 +29,11 @@
     {
         public int Id { get; set; }
         public int SubjectId { get; set; }
+        public int TeacherId { get; set; }
         public string ClassRoom { get; set; }
         public int DayOfWeek { get; set; }
+
+        public string Infomation { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
     }

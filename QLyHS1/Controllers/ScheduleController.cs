@@ -5,6 +5,7 @@ using QLyHS1.Data;
 using QLyHS1.Models;
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace QLyHS1.Controllers
@@ -20,19 +21,53 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var schedules = from sch in _context.Schedules
-                            join s in _context.Subjects on sch.SubjectId equals s.Id
-                            select new ScheduleViewModel
-                            {
-                                Id = sch.Id,
-                                SubjectName = s.Name,
-                                ClassRoom = sch.ClassRoom,
-                                DayOfWeek = sch.DayOfWeek,
-                                StartTime = sch.StartTime,
-                                EndTime = sch.EndTime
-                            };
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            return View(schedules.ToList());
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            if (role == "Admin")
+            {
+                var schedules = from sch in _context.Schedules
+                                join s in _context.Subjects on sch.SubjectId equals s.Id
+                                join t in _context.Teachers on sch.SubjectId equals t.Id
+                                select new ScheduleViewModel
+                                {
+                                    Id = sch.Id,
+                                    SubjectName = s.Name,
+                                    TeacherName = t.Name,
+                                    ClassRoom = sch.ClassRoom,
+                                    DayOfWeek = sch.DayOfWeek,
+                                    Infomation = sch.Infomation ?? "Không có thông tin",
+                                    StartTime = sch.StartTime,
+                                    EndTime = sch.EndTime
+                                };
+
+                return View(schedules.ToList());
+            }
+            else
+            {
+                var schedules = from sch in _context.Schedules
+                                join t in _context.Teachers on sch.SubjectId equals t.Id
+                                join s in _context.Subjects on sch.SubjectId equals s.Id
+                                where (sch.TeacherId == userId)
+                                select new ScheduleViewModel
+                                {
+                                    Id = sch.Id,
+                                    SubjectName = s.Name,
+                                    TeacherName = t.Name,
+                                    ClassRoom = sch.ClassRoom,
+                                    DayOfWeek = sch.DayOfWeek,
+                                    Infomation = sch.Infomation,
+                                    StartTime = sch.StartTime,
+                                    EndTime = sch.EndTime
+                                };
+
+                return View(schedules.ToList());
+            }  
         }
 
 
@@ -41,13 +76,16 @@ namespace QLyHS1.Controllers
         {
             var schedules = _context.Schedules
                 .Include(s => s.Subject)
+                 .Include(s => s.Teacher)
                 .Where(s => s.Subject.Name.Contains(query) || s.ClassRoom.Contains(query))
                 .Select(s => new ScheduleViewModel
                 {
                     Id = s.Id,
                     SubjectName = s.Subject.Name,
+                    TeacherName = s.Teacher.Name,
                     ClassRoom = s.ClassRoom,
                     DayOfWeek = s.DayOfWeek,
+                    Infomation = s.Infomation,
                     StartTime = s.StartTime,
                     EndTime = s.EndTime
                 });
@@ -63,6 +101,19 @@ namespace QLyHS1.Controllers
 
         public IActionResult Add()
         {
+            var Subject = _context.Subjects
+                            .Where(s => s.Status == true)
+                            .Select(s => new { s.Id, s.Name })
+                            .ToList();
+
+            ViewBag.Subject = new SelectList(Subject, "Id", "Name");
+
+            var Teacher = _context.Teachers
+                           .Where(s => s.Status == true)
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
+
+            ViewBag.Teacher = new SelectList(Teacher, "Id", "Name");
             //ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name");
             return View();
         }
@@ -75,16 +126,18 @@ namespace QLyHS1.Controllers
             {
                 return View(model);
             }
-            var student = new Schedule
+            var schedule = new Schedule
             {
                 SubjectId = model.SubjectId,
+                TeacherId = model.TeacherId,
                 ClassRoom = model.ClassRoom,
                 DayOfWeek = model.DayOfWeek,
+                Infomation = model.Infomation,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime
             };
 
-            _context.Schedules.Add(student);
+            _context.Schedules.Add(schedule);
             _context.SaveChanges();
 
             return RedirectToAction("Index");
@@ -108,13 +161,17 @@ namespace QLyHS1.Controllers
             {
                 Id = schedule.Id,
                 SubjectId = schedule.SubjectId,
+                TeacherId = schedule.TeacherId,
                 ClassRoom = schedule.ClassRoom,
                 DayOfWeek = schedule.DayOfWeek,
+                Infomation = schedule.Infomation,
                 StartTime = schedule.StartTime,
                 EndTime = schedule.EndTime
             };
 
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
+
+            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", schedule.TeacherId);
             return View(model);
         }
 
@@ -136,17 +193,21 @@ namespace QLyHS1.Controllers
                 }
 
                 schedule.SubjectId = model.SubjectId;
+                schedule.TeacherId = model.TeacherId;
                 schedule.ClassRoom = model.ClassRoom;
                 schedule.DayOfWeek = model.DayOfWeek;
+                schedule.Infomation = model.Infomation;
                 schedule.StartTime = model.StartTime;
                 schedule.EndTime = model.EndTime;
 
                 _context.Update(schedule);
                 await _context.SaveChangesAsync();
+
+                ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
+
+                ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", schedule.TeacherId);
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", model.SubjectId);
             return View(model);
         }
 

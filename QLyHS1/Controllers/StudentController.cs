@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using QLyHS1.Models;
 using QLyHS1.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace QLyHS1.Controllers
 {
@@ -17,35 +18,74 @@ namespace QLyHS1.Controllers
             _context = context;
         }
 
-        // Danh sách học sinh và tìm kiếm
         public IActionResult Index(string? className)
         {
-        
-            ViewBag.Classrooms = _context.Classrooms.Select(c => new SelectListItem
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
             {
-                Value = c.Name,
-                Text = c.Name
-            }).ToList();
+                return RedirectToAction("Login", "User");
+            }
 
-         
-            var studentVM = from st in _context.Students
-                            join cl in _context.Classrooms on st.ClassId equals cl.Id
-                            where string.IsNullOrEmpty(className) || cl.Name == className
-                            select new StudentViewModel
-                            {
-                                Id = st.Id,
-                                Name = st.Name,
-                                Gender = st.Gender,
-                                Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
-                                ClassName = cl.Name,
-                                Address = st.Address,
-                                ParentPhone = st.PhoneParent
-                            };
+            if (role == "Admin")
+            {
+                ViewBag.Classrooms = _context.Classrooms
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Name,
+                    Text = c.Name
+                }).ToList();
 
-            return View(studentVM.ToList());
+
+                var studentVM = from st in _context.Students
+                                join cl in _context.Classrooms on st.ClassId equals cl.Id
+                                where (string.IsNullOrEmpty(className) || cl.Name == className)
+                                select new StudentViewModel
+                                {
+                                    Id = st.Id,
+                                    Name = st.Name,
+                                    Gender = st.Gender,
+                                    Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
+                                    ClassName = cl.Name,
+                                    Address = st.Address,
+                                    ParentPhone = st.PhoneParent
+                                };
+
+                return View(studentVM.ToList());
+            }
+            else
+            {
+                ViewBag.Classrooms = _context.Classrooms
+                .Where(c => c.TeacherId == userId)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Name,
+                    Text = c.Name
+                }).ToList();
+
+
+                var studentVM = from st in _context.Students
+                                join cl in _context.Classrooms on st.ClassId equals cl.Id
+                                where cl.TeacherId == userId &&
+                                      (string.IsNullOrEmpty(className) || cl.Name == className)
+                                select new StudentViewModel
+                                {
+                                    Id = st.Id,
+                                    Name = st.Name,
+                                    Gender = st.Gender,
+                                    Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
+                                    ClassName = cl.Name,
+                                    Address = st.Address,
+                                    ParentPhone = st.PhoneParent
+                                };
+
+                return View(studentVM.ToList());
+            }
         }
 
-        // Xem chi tiết học sinh
+
+            // Xem chi tiết học sinh
         [Route("Student/Search")]
         public IActionResult Search(string? query)
         {
