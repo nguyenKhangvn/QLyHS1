@@ -13,13 +13,11 @@ public partial class Schedule
 
     public int DayOfWeek { get; set; }
 
-    public string Infomation { get; set; }
-
     public DateTime StartTime { get; set; }
 
     public DateTime EndTime { get; set; }
 
-    public int TeacherId { get; set; }
+    public int? TeacherId { get; set; }
 
     public virtual WeekDay DayOfWeekNavigation { get; set; } = null!;
 

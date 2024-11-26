@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using QLyHS1.Data;
 using QLyHS1.Models;
-using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QLyHS1.Controllers
@@ -19,56 +18,26 @@ namespace QLyHS1.Controllers
         }
         public IActionResult Index(String? grandLevel)
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            ViewBag.GrandLevel = _context.GrandLevels.Select(c => new SelectListItem
             {
-                return RedirectToAction("Login", "User");
-            }
+                Value = c.Name,
+                Text = c.Name
+            }).ToList();
+            var schedules = from cl in _context.Classrooms
+                            join t in _context.Teachers on cl.TeacherId equals t.Id
+                            join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
+                            where string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
+                            select new ClassroomViewModel
+                            {
+                                Id = cl.Id,
+                                Name = cl.Name,
+                                Quantity = cl.Quantity,
+                                GrandLevelName = gl.Name,
+                                TeacherName = t.Name,
+                                
+                            };
 
-            ViewBag.GrandLevel = _context.GrandLevels
-               .Select(c => new SelectListItem
-               {
-                   Value = c.Name,
-                   Text = c.Name
-               }).ToList();
-
-            if (role == "Admin")
-            {
-                var schedules = from cl in _context.Classrooms
-                                join t in _context.Teachers on cl.TeacherId equals t.Id
-                                join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
-                                where string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
-                                select new ClassroomViewModel
-                                {
-                                    Id = cl.Id,
-                                    Name = cl.Name,
-                                    Quantity = cl.Quantity,
-                                    GrandLevelName = gl.Name,
-                                    TeacherName = t.Name,
-
-                                };
-
-                return View(schedules.ToList());
-            } else
-            {
-                var schedules = from cl in _context.Classrooms
-                                join t in _context.Teachers on cl.TeacherId equals t.Id
-                                join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
-                                where cl.TeacherId == userId && string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
-                                select new ClassroomViewModel
-                                {
-                                    Id = cl.Id,
-                                    Name = cl.Name,
-                                    Quantity = cl.Quantity,
-                                    GrandLevelName = gl.Name,
-                                    TeacherName = t.Name,
-
-                                };
-
-                return View(schedules.ToList());
-            }
+            return View(schedules.ToList());
         }
 
         [Route("Classroom/Search")]

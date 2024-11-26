@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLyHS1.Data;
 using QLyHS1.Models;
-using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QLyHS1.Controllers
@@ -18,67 +17,31 @@ namespace QLyHS1.Controllers
         }
         public IActionResult Index(String? className)
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var role = User.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
-            {
-                return RedirectToAction("Login", "User");
-            }
-
             ViewBag.Classrooms = _context.Classrooms.Select(c => new SelectListItem
             {
                 Value = c.Name,
                 Text = c.Name
             }).ToList();
-            
-            if (role == "Admin")
-            {
-                var schedules = from g in _context.Grades
-                                join s in _context.Students on g.StudentId equals s.Id
-                                join sm in _context.Semesters on g.SemesterId equals sm.Id
-                                join sc in _context.SchoolYears on g.SchoolYearId equals sc.Id
-                                join su in _context.Subjects on g.SubjectId equals su.Id
-                                join cl in _context.Classrooms on g.SubjectId equals cl.Id
-                                where string.IsNullOrEmpty(className) || cl.Name == className
-                                select new GradeViewModel
-                                {
-                                    Id = g.Id,
-                                    StudentName = s.Name,
-                                    SemesterName = sm.Name,
-                                    SubjectName = su.Name,
-                                    SchoolYearName = sc.Year,
-                                    GradeI = g.GradeI,
-                                    GradeII = g.GradeII,
-                                    GradeIII = g.GradeSemester
-                                };
+            var schedules = from g in _context.Grades
+                            join s in _context.Students on g.StudentId equals s.Id
+                            join sm in _context.Semesters on g.SemesterId equals sm.Id
+                            join sc in _context.SchoolYears on g.SchoolYearId equals sc.Id
+                            join su in _context.Subjects on g.SubjectId equals su.Id
+                            join cl in _context.Classrooms on g.SubjectId equals cl.Id
+                            where string.IsNullOrEmpty(className) || cl.Name == className
+                            select new GradeViewModel
+                            {
+                                Id = g.Id,
+                                StudentName = s.Name, 
+                                SemesterName = sm.Name,
+                                SubjectName = su.Name,
+                                SchoolYearName = sc.Year,
+                                GradeI = g.GradeI,
+                                GradeII = g.GradeII,
+                                GradeIII = g.GradeSemester
+                            };
 
-                return View(schedules.ToList());
-            } 
-            else
-            {
-                var schedules = from g in _context.Grades
-                                join s in _context.Students on g.StudentId equals s.Id
-                                join sm in _context.Semesters on g.SemesterId equals sm.Id
-                                join sc in _context.SchoolYears on g.SchoolYearId equals sc.Id
-                                join su in _context.Subjects on g.SubjectId equals su.Id
-                                join cl in _context.Classrooms on g.SubjectId equals cl.Id
-                                where cl.TeacherId == userId && string.IsNullOrEmpty(className) || cl.Name == className
-                                select new GradeViewModel
-                                {
-                                    Id = g.Id,
-                                    StudentName = s.Name,
-                                    SemesterName = sm.Name,
-                                    SubjectName = su.Name,
-                                    SchoolYearName = sc.Year,
-                                    GradeI = g.GradeI,
-                                    GradeII = g.GradeII,
-                                    GradeIII = g.GradeSemester
-                                };
-
-                return View(schedules.ToList());
-            }
-            
+            return View(schedules.ToList());
         }
 
         [Route("Grade/Search")]
@@ -120,9 +83,8 @@ namespace QLyHS1.Controllers
         {
 
             var Student = _context.Students
-                            .Where(s => s.Status == true)
-                            .Select(s => new { s.Id, s.Name })
-                            .ToList();
+                           .Select(s => new { s.Id, s.Name })
+                           .ToList();
 
             ViewBag.Student = new SelectList(Student, "Id", "Name");
                   var Semester = _context.Semesters
@@ -131,7 +93,6 @@ namespace QLyHS1.Controllers
 
             ViewBag.Semester = new SelectList(Semester, "Id", "Name");
                   var Subject = _context.Subjects
-                           .Where(s => s.Status == true)
                            .Select(s => new { s.Id, s.Name })
                            .ToList();
 

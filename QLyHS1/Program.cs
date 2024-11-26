@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using QLyHS1.Data;
 
 namespace QLyHS1
@@ -16,21 +16,6 @@ namespace QLyHS1
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Qly"));
             });
 
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-
-            builder.Services.AddAuthentication("Cookies")
-            .AddCookie(options =>
-            {
-                options.LoginPath = "/User/Login";
-                options.AccessDeniedPath = "/User/AccessDenied";
-            });
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -46,14 +31,11 @@ namespace QLyHS1
 
             app.UseRouting();
 
-            app.UseSession();
-
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=User}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

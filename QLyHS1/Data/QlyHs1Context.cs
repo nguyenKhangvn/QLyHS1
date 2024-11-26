@@ -160,10 +160,6 @@ public partial class QlyHs1Context : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("classRoom");
             entity.Property(e => e.DayOfWeek).HasColumnName("dayOfWeek");
-                entity.Property(e => e.Infomation)
-              .HasColumnType("nvarchar(max)")
-              .HasColumnName("infomation");
-
             entity.Property(e => e.EndTime)
                 .HasColumnType("datetime")
                 .HasColumnName("endTime");
