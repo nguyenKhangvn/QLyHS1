@@ -45,6 +45,21 @@ CREATE TABLE Schedules (
 );
 ALTER TABLE Schedules
 ADD teacherID INT;
+--bo sung 25/11 them truong infomation
+ALTER TABLE Schedules
+ADD infomation text;
+-- chuyen sang nvarchar để ghi dấu được
+ALTER TABLE Schedules
+ADD NewInfomation NVARCHAR(MAX);
+UPDATE Schedules
+SET NewInfomation = CAST(infomation AS NVARCHAR(MAX));
+ALTER TABLE Schedules
+DROP COLUMN infomation;
+EXEC sp_rename 'Schedules.NewInfomation', 'infomation', 'COLUMN';
+
+select * from Schedules
+
+
 ALTER TABLE Schedules
 ADD CONSTRAINT FK_Teacher_Schedule FOREIGN KEY (teacherID) REFERENCES Teacher(id);
 ALTER TABLE Schedules
@@ -159,6 +174,8 @@ CREATE TABLE Assignment (
 	FOREIGN KEY (TeacherID) REFERENCES Teacher(id),
     FOREIGN KEY (SubjectID) REFERENCES Subject(id)
 );
+ALTER TABLE Assignment
+ADD Id INT IDENTITY(1,1) PRIMARY KEY;
 
 use QLyHS1
 
@@ -232,6 +249,7 @@ select * from SchoolYear
 select * from Semester
 select * from GrandLevel where id = 1
 select * from Grade
+select * from Teacher
 
 SELECT [s].[id] AS [Id], [s0].[SubjectName], [s].[classRoom] AS [ClassRoom], [s].[dayOfWeek] AS [DayOfWeek], [s].[startTime] AS [StartTime], [s].[endTime] AS [EndTime]
       FROM [Schedules] AS [s]
@@ -250,3 +268,19 @@ VALUES (1, 'Room A1', 2, '2024-11-11 08:00:00', '2024-11-11 10:00:00');
       INNER JOIN [Teacher] AS [t] ON [c].[teacherID] = [t].[id]
       INNER JOIN [GrandLevel] AS [g] ON [c].[gradeLevelID] = [g].[id]
       WHERE [c].[id] = 1
+use QLyHS1
+
+	  SELECT [t].[id], [t].[name], [s].[name], [t].[email], [t].[address], [t].[dateOfBirth], [t].[phone]
+      FROM [Teacher] AS [t]
+      INNER JOIN [Assignment] AS [a] ON [t].[id] = [a].[TeacherID]
+      INNER JOIN [Subject] AS [s] ON [a].[SubjectID] = [s].[id]
+
+	  select * from Classroom
+
+
+
+DELETE FROM Schedules
+
+DELETE FROM 
+
+DELETE FROM Schedules
