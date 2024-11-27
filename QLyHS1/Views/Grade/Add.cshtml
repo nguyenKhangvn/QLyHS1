@@ -85,33 +85,40 @@
 </head>
 <body>
     <div class="container">
-        <h1>Thêm lớp học</h1>
+        <h1>Thêm học sinh để vào điểm</h1>
+
         <form asp-action="Add" asp-controller="Grade" method="post">
             <div class="form-group">
-                <label for="StudentId" class="control-label">Student ID:</label>
+                <label for="ClassNameId" class="control-label">Lớp:</label>
+                <select id="ClassNameId" asp-for="ClassNameId" asp-items="ViewBag.Classroom" class="form-control">
+                    <option value="">-- Chọn lớp--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="StudentId" class="control-label">Tên học sinh:</label>
                  <select id="StudentId" asp-for="StudentId" asp-items="ViewBag.Student" class="form-control">
                     <option value="">-- Chọn học sinh--</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="SemesterId" class="control-label">SemesterId ID:</label>
+                <label for="SemesterId" class="control-label">Học kì:</label>
                 <select id="SemesterId" asp-for="SemesterId" asp-items="ViewBag.Semester" class="form-control">
                     <option value="">-- Chọn kì học--</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="SubjectId" class="control-label">SubjectId ID:</label>
+                <label for="SubjectId" class="control-label">Tên môn học:</label>
                <select id="SubjectId" asp-for="SubjectId" asp-items="ViewBag.Subject" class="form-control">
                     <option value="">-- Chọn môn học--</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="SchoolYearId" class="control-label">SchoolYearId ID:</label>
+                <label for="SchoolYearId" class="control-label">Năm học:</label>
                  <select id="SchoolYearId" asp-for="SchoolYearId" asp-items="ViewBag.SchoolYear" class="form-control">
                     <option value="">-- Chọn năm học--</option>
                 </select>
             </div>
-            <div class="form-group">
+           @*  <div class="form-group">
                 <label for="GradeI" class="control-label">GradeI:</label>
                 <input type="text" id="GradeI" name="GradeI" required />
             </div>
@@ -123,8 +130,8 @@
                 <label for="GradeIII" class="control-label">GradeII:</label>
                 <input type="quantity" id="GradeIII" name="GradeIII" required />
             </div>
-
-            <button type="submit" name="Add" value="Add">Add Grade</button>
+ *@
+            <button type="submit" name="Add" value="Add">Thêm điểm</button>
         </form>
         <div>
             <a asp-action="Index">Back to List</a>

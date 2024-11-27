@@ -19,8 +19,11 @@
                     <input type="text" placeholder="Tìm kiếm" name="query">
                     <button class="btn-search">Tìm kiếm</button>
                 </form>
+                
                 <button class="btn-add" onclick="location.href='@Url.Action("Add", "Student")'">+</button>
-          
+                
+                <a asp-action="ExportToExcel" class="btn btn-success">Xuất Excel</a>
+
                <form method="get" asp-action="Index">
                     <label for="className">Lọc theo lớp:</label>
                     <select name="className" id="className" onchange="this.form.submit()">
@@ -47,6 +50,8 @@
                         <li class="ClassName_li">Lớp</li>
                         <li class="Address_li">Địa chỉ</li>
                         <li class="ParentPhone_li">Liên hệ phụ huynh</li>
+                        <li class="ParentPhone_li">Hạnh kiểm<li>
+                        <li class="ParentPhone_li">Trạng thái<li>
                         <li class="combo_li"></li>
                     </ul>
                 </div>
@@ -64,6 +69,8 @@
                                 <li class="ClassName_li">@student.ClassName</li>
                                 <li class="Address_li">@student.Address</li>
                                 <li class="ParentPhone_li">@student.ParentPhone</li>
+                                <li class="ParentPhone_li">@student.Conduct</li>
+                                <li class="ParentPhone_li">@student.Status</li>
                                 <li class="combo_li">
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
                                     <a asp-action="Details" asp-route-id="@student.Id">Details</a> |

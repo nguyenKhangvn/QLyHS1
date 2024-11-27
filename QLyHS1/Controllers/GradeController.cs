@@ -12,6 +12,7 @@ namespace QLyHS1.Controllers
     {
         private readonly QlyHs1Context _context;
 
+
         public GradeController(QlyHs1Context context)
         {
             _context = context;
@@ -48,9 +49,10 @@ namespace QLyHS1.Controllers
                                     SemesterName = sm.Name,
                                     SubjectName = su.Name,
                                     SchoolYearName = sc.Year,
-                                    GradeI = g.GradeI,
-                                    GradeII = g.GradeII,
-                                    GradeIII = g.GradeSemester
+                                    GradeI = g.GradeI.HasValue ? g.GradeI.Value.ToString("0.##") : "-",
+                                    GradeII = g.GradeII.HasValue ? g.GradeII.Value.ToString("0.##") : "-",
+                                    GradeIII = g.GradeSemester.HasValue ? g.GradeSemester.Value.ToString("0.##") : "-"
+
                                 };
 
                 return View(schedules.ToList());
@@ -118,32 +120,110 @@ namespace QLyHS1.Controllers
 
         public IActionResult Add()
         {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            var Student = _context.Students
-                            .Where(s => s.Status == true)
-                            .Select(s => new { s.Id, s.Name })
-                            .ToList();
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "User");
+            }
 
-            ViewBag.Student = new SelectList(Student, "Id", "Name");
-                  var Semester = _context.Semesters
-                           .Select(s => new { s.Id, s.Name })
-                           .ToList();
+            if (role == "Admin")
+            {
+                var Classroom = from st in _context.Classrooms
+                                where st.Status == true
+                                select new
+                                {
+                                    st.Id,
+                                    st.Name,
+                                };
+                ViewBag.Classroom = new SelectList(Classroom, "Id", "Name");
+
+                var Student = from st in _context.Students
+                              join cl in _context.Classrooms on st.ClassId equals cl.Id
+                              where st.Status == true
+                              select new
+                              {
+                                  st.Id,
+                                  st.Name,
+                                  st.ClassId
+                              };
+                ViewBag.Student = new SelectList(Student, "Id", "Name");
+
+               
+            } 
+            else
+            {
+                var Classroom = from st in _context.Classrooms
+                                where st.Status == true && st.TeacherId == userId
+                                select new
+                                {
+                                    st.Id,
+                                    st.Name,
+                                };
+                ViewBag.Classroom = new SelectList(Classroom, "Id", "Name");
+
+                var Student = from st in _context.Students
+                              join cl in _context.Classrooms on st.ClassId equals cl.Id
+                              where st.Status == true && cl.TeacherId == userId
+                              select new
+                              {
+                                  st.Id,
+                                  st.Name,
+                                  st.ClassId
+                              };
+                ViewBag.Student = new SelectList(Student, "Id", "Name");
+            }
+
+            var Semester = _context.Semesters
+                     .Select(s => new { s.Id, s.Name })
+                     .ToList();
 
             ViewBag.Semester = new SelectList(Semester, "Id", "Name");
-                  var Subject = _context.Subjects
-                           .Where(s => s.Status == true)
-                           .Select(s => new { s.Id, s.Name })
-                           .ToList();
+            var Subject = _context.Subjects
+                     .Where(s => s.Status == true)
+                     .Select(s => new { s.Id, s.Name })
+                     .ToList();
 
             ViewBag.Subject = new SelectList(Subject, "Id", "Name");
-                  var SchoolYear = _context.SchoolYears
-                           .Select(s => new { s.Id, s.Year })
-                           .ToList();
+            var SchoolYear = _context.SchoolYears
+                     .Select(s => new { s.Id, s.Year })
+                     .ToList();
 
             ViewBag.SchoolYear = new SelectList(SchoolYear, "Id", "Year");
 
             return View();
         }
+
+        public IActionResult AddGrade(int gradeType)
+        {
+            
+            ViewBag.GradeType = gradeType; 
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddGrade(GradeAdd model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var student = new Grade
+            {
+                GradeI = model.GradeI,
+                GradeII = model.GradeII,
+                GradeSemester = model.GradeIII,
+                CreateAt = DateTime.Now,
+                UpdateAt = DateTime.Now,
+                Status = true
+            };
+
+            _context.Grades.Add(student);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
 
         [HttpPost]
         public IActionResult Add(GradeDetailViewModel model)
@@ -176,14 +256,11 @@ namespace QLyHS1.Controllers
             }
             var student = new Grade
             {
-
+                ClassNameID = model.ClassNameId,
                 StudentId = model.StudentId,
                 SemesterId = model.SemesterId,
                 SubjectId = model.SubjectId,
                 SchoolYearId = model.SchoolYearId,
-                GradeI = model.GradeI,
-                GradeII = model.GradeII,
-                GradeSemester = model.GradeIII,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 Status = true

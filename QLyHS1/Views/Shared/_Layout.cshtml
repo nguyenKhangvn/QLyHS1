@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
+    <title>Trang chủ</title>
     <link rel="stylesheet" href="css/site.css">
     <link rel="stylesheet" href="css/Login.css">
 </head>
 <body>
     @await Html.PartialAsync("_Header")
 
-    <div style="min-height:450px;" class="container">
+    <div class="container">
         <div class="sidebar">
             <ul>
                 <li><a href="@Url.Action("Index", "Student")"><span class="icon">&#127891;</span>Hồ sơ Học sinh</a></li>
@@ -24,8 +24,9 @@
         </div>
 
         @RenderSection("BreadCum", required: false)
-
-        @RenderBody()
+         <main>
+            @RenderBody()
+        </main>
     </div>
 
 

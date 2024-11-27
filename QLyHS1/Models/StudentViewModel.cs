@@ -12,6 +12,10 @@ namespace QLyHS1.Models
         public string ClassName { get; set; }
         public string Address { get; set; }
         public string ParentPhone { get; set; }
+
+        public string Conduct { get; set; }
+
+        public string Status { get; set; }
     }
 
     public class StudentDetailViewModel
@@ -24,6 +28,7 @@ namespace QLyHS1.Models
         public string Phone { get; set; }
         public string PhoneParent { get; set; }
         public string Address { get; set; }
+        public string Conduct { get; set; }
     }
 
     public class StudentDetailToEditViewModel
@@ -37,6 +42,7 @@ namespace QLyHS1.Models
         public string Phone { get; set; } = string.Empty;
         public string PhoneParent { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        public string Conduct { get; set; }
         public bool Status { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }

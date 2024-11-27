@@ -7,9 +7,9 @@
         public string SemesterName {get; set;}
         public string SubjectName {get; set;}
         public int SchoolYearName {get; set;}
-        public double GradeI {get; set;}
-        public double GradeII {get; set;}
-        public double GradeIII { get; set; }
+        public double? GradeI {get; set;}
+        public double? GradeII {get; set;}
+        public double? GradeIII { get; set; }
     }
 
     public class GradeDetailViewModel 
@@ -17,9 +17,7 @@
         public int SemesterId { get; set; }
         public int SubjectId { get; set; }
         public int SchoolYearId { get; set; }
-        public double GradeI { get; set; }
-        public double GradeII { get; set; }
-        public double GradeIII { get; set; }
+        public int ClassNameId { get; set; }
     }
     public class GradeDetailToEditViewModel
     {
@@ -44,5 +42,12 @@
         public DateTime UpdateAt { get; set; }
 
         public bool? Status { get; set; }
+    }
+
+    public class GradeAdd
+    {
+        public double GradeI { get; set; }
+        public double GradeII { get; set; }
+        public double GradeIII { get; set; }
     }
 }

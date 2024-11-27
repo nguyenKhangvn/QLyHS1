@@ -16,11 +16,11 @@ public partial class Grade
     public int SchoolYearId { get; set; }
     public int ClassNameID { get; set; }
 
-    public double GradeI { get; set; }
+    public double? GradeI { get; set; }
 
-    public double GradeII { get; set; }
+    public double? GradeII { get; set; }
 
-    public double GradeSemester { get; set; }
+    public double? GradeSemester { get; set; }
 
     public DateTime CreateAt { get; set; }
 
@@ -35,5 +35,5 @@ public partial class Grade
     public virtual Student Student { get; set; } = null!;
 
     public virtual Subject Subject { get; set; } = null!;
-    public virtual Classroom Classroom { get; set; }
+    public virtual Classroom Classroom { get; set; } = null!;
 }

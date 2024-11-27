@@ -20,11 +20,10 @@ namespace QLyHS1.Controllers
            var sub = from st in _context.Subjects
                              .Where(t => t.Status == true)
                              select new SubjectViewModel
-                                   {
+                             {
                                        Id = st.Id,
-                                       Name = st.Name,
-                               
-                              };
+                                       Name = st.Name,                               
+                             };
 
             return View(sub.ToList());
         }
@@ -69,13 +68,12 @@ namespace QLyHS1.Controllers
                 return NotFound();
             }
 
-            // Ánh xạ dữ liệu từ `Student` sang `StudentDetailToEditViewModel`
             var subViewModel = new SubjectViewModel
             {
                 Id = sub.Id,          
                 Name = sub.Name, 
                 CreateAt = sub.CreateAt,
-                UpdateAt = sub.UpdateAt,
+                UpdateAt = DateTime.Now,
                 Status = sub.Status
             };
             return View(subViewModel);
@@ -101,8 +99,6 @@ namespace QLyHS1.Controllers
                     {
                         return NotFound();
                     }
-
-                    // Cập nhật các thuộc tính cần thiết
                 
                     student.Name = subViewModel.Name;
                     student.CreateAt = subViewModel.CreateAt;

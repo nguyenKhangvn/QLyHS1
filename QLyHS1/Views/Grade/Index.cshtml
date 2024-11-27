@@ -42,9 +42,19 @@
                     <li>Học kì</li>
                     <li>Tên môn</li>
                     <li>Năm học</li>
-                    <li>Điểm hệ số 1</li>
-                    <li>Điểm hệ số 2</li>
-                    <li>Điểm hệ số 3</li>
+                    <li>
+                        Điểm hệ số 1
+                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 1 })'">+</button>
+                    </li>
+                    <li>
+                        Điểm hệ số 2
+                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 2 })'">+</button>
+                    </li>
+                    <li>
+                        Điểm hệ số 3
+                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 3 })'">+</button>
+                    </li>
+
                 </ul>
                 <div class="styled-list">
                     @if (Model != null && Model.Any())

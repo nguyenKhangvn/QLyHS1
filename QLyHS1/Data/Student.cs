@@ -29,7 +29,7 @@ public partial class Student
 
     public bool Status { get; set; }
 
-    public string? Conduct { get; set; }
+    public string Conduct { get; set; }
 
     public virtual Classroom Class { get; set; } = null!;
 
