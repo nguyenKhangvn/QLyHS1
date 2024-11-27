@@ -19,7 +19,7 @@ namespace QLyHS1.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? Semester)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -29,17 +29,32 @@ namespace QLyHS1.Controllers
                 return RedirectToAction("Login", "User");
             }
 
+           /* ViewBag.Classrooms = _context.Classrooms
+               .Where(c => c.TeacherId == userId)
+               .Select(c => new SelectListItem
+               {
+                   Value = c.Name,
+                   Text = c.Name
+               }).ToList();
+
+            ViewBag.Semester = _context.Semesters
+             .Select(c => new SelectListItem
+             {
+                 Value = c.Name,
+                 Text = c.Name
+             }).ToList();*/
+
             if (role == "Admin")
             {
                 var schedules = from sch in _context.Schedules
-                                join s in _context.Subjects on sch.SubjectId equals s.Id
+                                join s in _context.Subjects on sch.TeacherId equals s.Id
                                 join t in _context.Teachers on sch.SubjectId equals t.Id
                                 select new ScheduleViewModel
                                 {
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                    ClassRoom = sch.ClassRoom,
+                                   /* ClassRoom = sch.ClassRoom,*/
                                     DayOfWeek = sch.DayOfWeek,
                                     Infomation = sch.Infomation ?? "Không có thông tin",
                                     StartTime = sch.StartTime,
@@ -51,7 +66,7 @@ namespace QLyHS1.Controllers
             else
             {
                 var schedules = from sch in _context.Schedules
-                                join t in _context.Teachers on sch.SubjectId equals t.Id
+                                join t in _context.Teachers on sch.TeacherId equals t.Id
                                 join s in _context.Subjects on sch.SubjectId equals s.Id
                                 where (sch.TeacherId == userId)
                                 select new ScheduleViewModel
@@ -59,9 +74,9 @@ namespace QLyHS1.Controllers
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                    ClassRoom = sch.ClassRoom,
+                                   /* ClassRoom = sch.ClassRoom,*/
                                     DayOfWeek = sch.DayOfWeek,
-                                    Infomation = sch.Infomation,
+                                    Infomation = sch.Infomation ?? "Không có thông tin",
                                     StartTime = sch.StartTime,
                                     EndTime = sch.EndTime
                                 };
@@ -83,9 +98,9 @@ namespace QLyHS1.Controllers
                     Id = s.Id,
                     SubjectName = s.Subject.Name,
                     TeacherName = s.Teacher.Name,
-                    ClassRoom = s.ClassRoom,
+                  /*  ClassRoom = s.ClassRoom,*/
                     DayOfWeek = s.DayOfWeek,
-                    Infomation = s.Infomation,
+                    Infomation = s.Infomation ?? "Không có thông tin",
                     StartTime = s.StartTime,
                     EndTime = s.EndTime
                 });
@@ -194,7 +209,7 @@ namespace QLyHS1.Controllers
 
                 schedule.SubjectId = model.SubjectId;
                 schedule.TeacherId = model.TeacherId;
-                schedule.ClassRoom = model.ClassRoom;
+               /* schedule.ClassRoom = model.ClassRoom;*/
                 schedule.DayOfWeek = model.DayOfWeek;
                 schedule.Infomation = model.Infomation;
                 schedule.StartTime = model.StartTime;

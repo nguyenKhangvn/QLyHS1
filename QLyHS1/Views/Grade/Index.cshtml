@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<QLyHS1.Models.GradeViewModel>
+@{
+    ViewData["Title"] = "Quản lý Điểm";
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -20,7 +23,7 @@
                 </form>
                 <button class="btn-add" onclick="location.href='@Url.Action("Add", "Grade")'">+</button>
                 <form method="get" asp-action="Index">
-                    <label for="className">Lọc theo lớp:</label>
+                    <label for="className">Lọc theo lớp</label>
                     <select name="className" id="className" onchange="this.form.submit()">
                         <option value="">-- Chọn lớp --</option>
                         @if (ViewBag.Classrooms != null)
@@ -32,7 +35,9 @@
                         }
                     </select>
                 </form>
+
                 <button class="btn-refresh">⟲</button>
+                <a asp-action="ExportToExcel" asp-controller="Grade" class="btn btn-success">Xuất Excel</a>
             </div>
 
             <div class="list-container">
@@ -44,16 +49,16 @@
                     <li>Năm học</li>
                     <li>
                         Điểm hệ số 1
-                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 1 })'">+</button>
-                    </li>
+@*                         <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 1 })'">+</button>
+ *@                    </li>
                     <li>
                         Điểm hệ số 2
-                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 2 })'">+</button>
+                       
                     </li>
                     <li>
                         Điểm hệ số 3
-                        <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 3 })'">+</button>
-                    </li>
+@*                         <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 3 })'">+</button>
+ *@                    </li>
 
                 </ul>
                 <div class="styled-list">
@@ -68,13 +73,22 @@
                                 <li>@student.SemesterName</li>
                                 <li>@student.SubjectName</li>
                                 <li>@student.SchoolYearName</li>
-                                <li>@student.GradeI</li>
-                                <li>@student.GradeII</li>
-                                <li>@student.GradeIII</li>
+                                <td>
+                                    <input type="number" name="Grades[@student.Id].GradeI" value="@student.GradeI" class="form-control" />
+                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
+                                </td>
+                                <td>
+                                    <input type="number" name="Grades[@student.Id].GradeII" value="@student.GradeII" class="form-control" />
+                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
+                                </td>
+                                <td>
+                                    <input type="number" name="Grades[@student.Id].GradeIII" value="@student.GradeIII" class="form-control" />
+                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
+                                </td>
                                 <li>
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
+                                 @*    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a> *@
                                 </li>
                             </ul>
                             stt++;

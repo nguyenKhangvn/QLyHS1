@@ -352,7 +352,6 @@ namespace QLyHS1.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            // Lấy dữ liệu
             IQueryable<StudentViewModel> studentVM;
 
             if (role == "Admin")

@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<QLyHS1.Models.ScheduleViewModel>
+@{
+    ViewData["Title"] = "Thời khóa biểu";
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -15,7 +18,7 @@
         <div class="main-content">
             <h1>Thời khóa biểu</h1>
 
-            <div class="filter-section">
+           @*  <div class="filter-section">
                 <div class="filter-group">
                    
                     <form method="get" asp-action="Index">
@@ -32,11 +35,19 @@
                         </select>
                     </form>
 
-                    <label for="semester">Học kỳ:</label>
-                    <select id="semester">
-                        <option value="HK1">HK1</option>
-                        <option value="HK2">HK2</option>
-                    </select>
+                    <form method="get" asp-action="Index">
+                        <label for="Semester">Học kì:</label>
+                        <select name="Semester" id="Semester" onchange="this.form.submit()">
+                            <option value="">-- Chọn học kì --</option>
+                            @if (ViewBag.Semester != null)
+                            {
+                                foreach (SelectListItem classroom in ViewBag.Semester)
+                                {
+                                    <option value="@classroom.Value">@classroom.Text</option>
+                                }
+                            }
+                        </select>
+                    </form> 
                 </div>
 
                 <div class="search-group">
@@ -44,18 +55,18 @@
                     <button class="btn-search">Tìm kiếm</button>
                     <button class="btn-add" onclick="location.href='@Url.Action("Add", "Schedule")'">+</button>
                 </div>
-            </div>
-
+            </div> *@
+            <button class="btn-add" onclick="location.href='@Url.Action("Add", "Schedule")'">+</button>
             <div class="schedule-container">
-                <h2>Thời khóa biểu</h2>
+              
                 <ul class="styled-top">
                     <li>Số thứ tự</li>
                     <li>Tên môn học</li>
                     <li>Tên giáo viên</li>
                     <li>Phòng học</li>
                     <li>Thông tin</li>
-                    <li>Giờ bắt đầu</li>
-                    <li>Giờ kết thúc</li>
+                    <li>Ngày bắt đầu</li>
+                    <li>Ngày kết thúc</li>
                 </ul>
 
                 <div class="styled-list">

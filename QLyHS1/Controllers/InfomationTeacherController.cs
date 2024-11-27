@@ -15,38 +15,32 @@ namespace QLyHS1.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            // Lấy UserId từ Claims
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            // Kiểm tra và chuyển đổi userId
             if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
             {
                 return RedirectToAction("Login", "User");
             }
 
-            // Lấy danh sách môn học (Subjects) mà giáo viên này giảng dạy
-            var subjects = await _context.Subjects
-    .Join(_context.Assignments, s => s.Id, sch => sch.SubjectId, (s, sch) => new { s, sch })
-    .Where(x => x.sch.TeacherId == userId) // Giả sử bảng Assignments có cột TeacherId liên kết với userId
-    .Select(x => new { x.s.Id, x.s.Name })
-    .ToListAsync();
+            var subject = (from sub in _context.Subjects
+                           join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                           join tea in _context.Teachers on sch.TeacherId equals tea.Id
+                           where tea.Id == userId
+                           select sub).FirstOrDefault();
 
+            ViewBag.SubjectName = subject?.Name ?? "Chưa có";
 
-            // Đưa danh sách môn học vào ViewBag để hiển thị trong SelectList
-            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
-
-            // Lấy thông tin giáo viên
-            var teacher = await _context.Teachers
-                .FirstOrDefaultAsync(m => m.Id == userId);
+            var teacher = _context.Teachers
+                .FirstOrDefault(m => m.Id == userId);
 
             if (teacher == null)
             {
-                return NotFound(); // Nếu không tìm thấy giáo viên
+                return NotFound(); 
             }
 
-            return View(teacher); // Trả lại view với thông tin giáo viên
+            return View(teacher); 
         }
     }
 }

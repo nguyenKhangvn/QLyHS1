@@ -21,7 +21,7 @@ public partial class Schedule
 
     public int TeacherId { get; set; }
 
-    public virtual WeekDay DayOfWeekNavigation { get; set; } = null!;
+  /*  public virtual WeekDay DayOfWeekNavigation { get; set; } = null!;*/
 
     public virtual Subject Subject { get; set; } = null!;
 

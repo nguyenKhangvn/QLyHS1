@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QLyHS1.Data;
 using QLyHS1.Models;
+using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QLyHS1.Controllers
@@ -151,17 +152,25 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;  
+
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                return RedirectToAction("Login", "User");
+            }
             if (id == null)
             {
                 return NotFound();
             }
 
-            var subjects = _context.Subjects
-                              .Where(s => s.Status)
-                              .Select(s => new { s.Id, s.Name })
-                              .ToList();
+            var subject = (from sub in _context.Subjects
+                           join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                           join tea in _context.Teachers on sch.TeacherId equals tea.Id
+                           where tea.Id == userId
+                           select sub).FirstOrDefault();
 
-            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
+            ViewBag.SubjectName = subject?.Name ?? "Chưa có";
+
             var student = await _context.Teachers
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (student == null)

@@ -35,7 +35,7 @@ public partial class QlyHs1Context : DbContext
 
     public virtual DbSet<Teacher> Teachers { get; set; }
 
-    public virtual DbSet<WeekDay> WeekDays { get; set; }
+ /*   public virtual DbSet<WeekDay> WeekDays { get; set; }*/
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -173,10 +173,10 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.SubjectId).HasColumnName("subjectID");
             entity.Property(e => e.TeacherId).HasColumnName("teacherID");
 
-            entity.HasOne(d => d.DayOfWeekNavigation).WithMany(p => p.Schedules)
+          /*  entity.HasOne(d => d.DayOfWeekNavigation).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.DayOfWeek)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_WeekDays_Schedule");
+                .HasConstraintName("FK_WeekDays_Schedule");*/
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.SubjectId)
@@ -337,12 +337,12 @@ public partial class QlyHs1Context : DbContext
                 .HasColumnName("userName");
         });
 
-        modelBuilder.Entity<WeekDay>(entity =>
+       /* modelBuilder.Entity<WeekDay>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__WeekDays__3214EC07BC126F2E");
 
             entity.Property(e => e.DayName).HasMaxLength(20);
-        });
+        });*/
 
         OnModelCreatingPartial(modelBuilder);
     }
