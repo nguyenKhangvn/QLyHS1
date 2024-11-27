@@ -1,0 +1,38 @@
+﻿.Add_Student {
+    display: flex;
+    width: 900px;
+    height: 80%;
+    margin: 20px 0 0 10px;
+}
+.form-group {
+    display: flex;
+    justify-content: space-between;  
+    align-items: center;
+    margin-top: 15px;
+    margin-right: 30px;
+}
+
+.Form_Add {
+    width: 100%;
+    margin-top: 20px;
+    margin: 0;
+}
+
+.control-label{
+    padding-left: 50px;
+    font-size: 16px;
+}
+
+.Form_Text {
+    margin : 20px 50px 50px 350px;
+}
+
+.form-control {
+    width: 60%;
+    height: 25px;
+}
+
+.size_1 {
+    width: 30%;
+}
+

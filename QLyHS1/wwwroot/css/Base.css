@@ -89,6 +89,7 @@ header {
 .container {
     display: flex;
     min-height: 550px;
+/*    background-color: #ccc;*/
 }
 
 .sidebar {
