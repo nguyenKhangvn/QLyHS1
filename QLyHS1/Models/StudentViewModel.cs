@@ -28,7 +28,8 @@ namespace QLyHS1.Models
         public string Phone { get; set; }
         public string PhoneParent { get; set; }
         public string Address { get; set; }
-        public string Conduct { get; set; }
+
+      /*  public string Contact { get; set; }*/
     }
 
     public class StudentDetailToEditViewModel

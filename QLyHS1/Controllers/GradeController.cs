@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using QLyHS1.Data;
 using QLyHS1.Models;
 using System.Security.Claims;
@@ -11,8 +12,6 @@ namespace QLyHS1.Controllers
     public class GradeController : Controller
     {
         private readonly QlyHs1Context _context;
-
-
         public GradeController(QlyHs1Context context)
         {
             _context = context;
@@ -239,11 +238,14 @@ namespace QLyHS1.Controllers
             }
             var student = new Grade
             {
-                ClassNameID = model.ClassNameId,
                 StudentId = model.StudentId,
                 SemesterId = model.SemesterId,
                 SubjectId = model.SubjectId,
                 SchoolYearId = model.SchoolYearId,
+                ClassNameID = model.ClassNameId,
+                GradeI = model.GradeI ?? 0,
+                GradeII = model.GradeII ?? 0,
+                GradeSemester = model.GradeIII ?? 0,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 Status = true
@@ -279,15 +281,19 @@ namespace QLyHS1.Controllers
 
             var student = new Grade
             {
+               
+                StudentId = model.StudentId,
+                SemesterId = model.SemesterId,
+                SubjectId = model.SubjectId,
+                SchoolYearId = model.SchoolYearId,
+                ClassNameID = model.ClassNameId,
                 GradeI = model.GradeI ?? 0.0,
                 GradeII = model.GradeII ?? 0.0,
                 GradeSemester = model.GradeSemester ?? 0.0,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 Status = true,
-                ClassNameID = model.ClassNameId,
-                StudentId = model.StudentId,
-                SubjectId = model.SubjectId 
+                
             };
 
             _context.Grades.Add(student);
@@ -297,8 +303,6 @@ namespace QLyHS1.Controllers
         }
 
 
-
-        // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -320,25 +324,30 @@ namespace QLyHS1.Controllers
                 SemesterId = student.SemesterId,
                 SubjectId = student.SubjectId,
                 SchoolYearId = student.SchoolYearId,
+                ClassNameId = student.ClassNameID,
                 GradeI = student.GradeI ?? 0.0,
                 GradeII = student.GradeII ?? 0.0,
                 GradeSemester = student.GradeSemester ?? 0.0,
                 CreateAt = student.CreateAt,
                 UpdateAt = student.UpdateAt,
-                Status = true
+                Status = student.Status ?? true
             };
-            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name", studentViewModel.StudentId);
+
+            // Populating dropdown data
+            ViewData["StudentId"] = new SelectList(_context.Students.Where(s => s.Status == true), "Id", "Name", studentViewModel.StudentId);
             ViewData["SemesterId"] = new SelectList(_context.Semesters, "Id", "Name", studentViewModel.SemesterId);
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", studentViewModel.SubjectId);
+            ViewData["SubjectId"] = new SelectList(_context.Subjects.Where(s => s.Status == true), "Id", "Name", studentViewModel.SubjectId);
             ViewData["SchoolYearId"] = new SelectList(_context.SchoolYears, "Id", "Year", studentViewModel.SchoolYearId);
+            ViewData["ClassNameId"] = new SelectList(_context.Classrooms.Where(c => c.Status == true), "Id", "Name", studentViewModel.ClassNameId);
+
             return View(studentViewModel);
         }
 
 
-        // POST: Student/Edit/5
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,SemesterId,SubjectId,SchoolYearId,GradeI,GradeII,GradeSemester,Status")] GradeDetailToEditViewModel studentViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,SemesterId,SubjectId,SchoolYearId,ClassNameId,GradeI,GradeII,GradeSemester,Status")] GradeDetailToEditViewModel studentViewModel)
         {
             if (id != studentViewModel.Id)
             {
@@ -355,17 +364,17 @@ namespace QLyHS1.Controllers
                         return NotFound();
                     }
 
+                    // Update the entity with new values
                     student.StudentId = studentViewModel.StudentId;
                     student.SemesterId = studentViewModel.SemesterId;
                     student.SubjectId = studentViewModel.SubjectId;
                     student.SchoolYearId = studentViewModel.SchoolYearId;
+                    student.ClassNameID = studentViewModel.ClassNameId;
                     student.GradeI = studentViewModel.GradeI;
                     student.GradeII = studentViewModel.GradeII;
                     student.GradeSemester = studentViewModel.GradeSemester;
-                    student.CreateAt = studentViewModel.CreateAt;
                     student.UpdateAt = DateTime.Now;
-                    student.Status = true;
-
+                    student.Status = studentViewModel.Status;
 
                     _context.Update(student);
                     await _context.SaveChangesAsync();
@@ -383,12 +392,17 @@ namespace QLyHS1.Controllers
                     }
                 }
             }
-            ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name", studentViewModel.StudentId);
+
+            // Repopulate dropdown data for invalid model state
+            ViewData["StudentId"] = new SelectList(_context.Students.Where(s => s.Status == true), "Id", "Name", studentViewModel.StudentId);
             ViewData["SemesterId"] = new SelectList(_context.Semesters, "Id", "Name", studentViewModel.SemesterId);
-            ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", studentViewModel.SubjectId);
-            ViewData["SchoolYearId"] = new SelectList(_context.SchoolYears, "Id", "Name", studentViewModel.SchoolYearId);
+            ViewData["SubjectId"] = new SelectList(_context.Subjects.Where(s => s.Status == true), "Id", "Name", studentViewModel.SubjectId);
+            ViewData["SchoolYearId"] = new SelectList(_context.SchoolYears, "Id", "Year", studentViewModel.SchoolYearId);
+            ViewData["ClassNameId"] = new SelectList(_context.Classrooms.Where(c => c.Status == true), "Id", "Name", studentViewModel.ClassNameId);
+
             return View(studentViewModel);
         }
+
 
         private bool StudentExists(int id)
         {
@@ -552,6 +566,113 @@ namespace QLyHS1.Controllers
                 return File(stream, contentType, fileName);
             }
         }
+
+        public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
+        {
+            if (excelFile == null || excelFile.Length == 0)
+            {
+                ModelState.AddModelError(string.Empty, "Vui lòng chọn file Excel.");
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await excelFile.CopyToAsync(stream);
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets[0];
+                        int rowCount = worksheet.Dimension.Rows;
+
+                        for (int row = 6; row <= rowCount; row++)
+                        {
+                            var studentName = worksheet.Cells[row, 1].Value?.ToString();
+                            var semesterName = worksheet.Cells[row, 2].Value?.ToString();
+                            var subjectName = worksheet.Cells[row, 3].Value?.ToString();
+                            var schoolYearName = int.TryParse(worksheet.Cells[row, 4].Value?.ToString(), out var y) ? y : (int?)null;
+                            var className = worksheet.Cells[row, 5].Value?.ToString();
+                            var gradeI = double.TryParse(worksheet.Cells[row, 6].Value?.ToString(), out var g1) ? g1 : (double?)null;
+                            var gradeII = double.TryParse(worksheet.Cells[row, 7].Value?.ToString(), out var g2) ? g2 : (double?)null;
+                            var gradeIII = double.TryParse(worksheet.Cells[row, 8].Value?.ToString(), out var g3) ? g3 : (double?)null;
+
+                            // Tìm các bản ghi tương ứng trong database
+                            var student = _context.Students.FirstOrDefault(s => s.Name == studentName);
+                            var semester = _context.Semesters.FirstOrDefault(s => s.Name == semesterName);
+                            var subject = _context.Subjects.FirstOrDefault(s => s.Name == subjectName);
+                            var schoolYear = _context.SchoolYears.FirstOrDefault(sy => sy.Year == schoolYearName);
+                            var classObj = _context.Classrooms.FirstOrDefault(c => c.Name == className);
+
+                            if (semester != null && subject != null && schoolYear != null && classObj != null)
+                            {/*
+                                if (student == null)
+                                {
+                                    student = new grade
+                                    {
+                                        Name = studentName,
+                                        ClassId = classObj.Id,
+                                        CreateAt = DateTime.Now,
+                                        UpdateAt = DateTime.Now,
+                                        Status = true
+                                    };
+                                    _context.Students.Add(student);
+                                    await _context.SaveChangesAsync(); 
+                                }*/
+
+                      
+                                var grade = _context.Grades.FirstOrDefault(g =>
+                                    g.StudentId == student.Id &&
+                                    g.SemesterId == semester.Id &&
+                                    g.SubjectId == subject.Id &&
+                                    g.SchoolYearId == schoolYear.Id);
+
+                                var isStudent = _context.Grades.FirstOrDefault(g => g.StudentId == student.Id);
+
+                                if (isStudent == null)
+                                {
+                                    
+                                    grade = new Grade
+                                    {
+                                        StudentId = student.Id,
+                                        SemesterId = semester.Id,
+                                        SubjectId = subject.Id,
+                                        SchoolYearId = schoolYear.Id,
+                                        ClassNameID = classObj.Id,
+                                        GradeI = gradeI,
+                                        GradeII = gradeII,
+                                        GradeSemester = gradeIII,
+                                        CreateAt = DateTime.Now,
+                                        UpdateAt = DateTime.Now,
+                                        Status = true
+                                    };
+                                    _context.Grades.Add(grade);
+                                }
+                                else
+                                {
+                                    grade.GradeI = gradeI;
+                                    grade.GradeII = gradeII;
+                                    grade.GradeSemester = gradeIII;
+                                    grade.UpdateAt = DateTime.Now;
+                                }
+                            }
+                        }
+
+                        // Lưu thay đổi vào database
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Nhập dữ liệu từ file Excel thành công!";
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Đã xảy ra lỗi: {ex.Message}";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
 
     }
 }

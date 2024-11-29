@@ -18,6 +18,9 @@
         public int SubjectId { get; set; }
         public int SchoolYearId { get; set; }
         public int ClassNameId { get; set; }
+        public double? GradeI { get; set; }
+        public double? GradeII { get; set; }
+        public double? GradeIII { get; set; }
     }
     public class GradeDetailToEditViewModel
     {

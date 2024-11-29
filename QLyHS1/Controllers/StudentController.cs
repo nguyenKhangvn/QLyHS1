@@ -88,8 +88,6 @@ namespace QLyHS1.Controllers
             }
         }
 
-
-            // Xem chi tiết học sinh
         [Route("Student/Search")]
         public IActionResult Search(string? query)
         {
@@ -140,9 +138,7 @@ namespace QLyHS1.Controllers
 
                 ViewBag.Classroom = new SelectList(classroom, "Id", "Name");
                 return View();
-            }
-
-           
+            }    
         }
 
         [HttpPost]
@@ -159,7 +155,6 @@ namespace QLyHS1.Controllers
             {
                 return View(model);
             }
-           
 
             if (!_context.Classrooms.Any(t => t.Id == model.ClassID))
             {
@@ -177,7 +172,7 @@ namespace QLyHS1.Controllers
                 Phone = model.Phone,
                 PhoneParent = model.PhoneParent,
                 Address = model.Address,
-                Conduct = model.Conduct,
+                Conduct = "Chưa có",
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
                 Status = true
@@ -203,6 +198,12 @@ namespace QLyHS1.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.GenderOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "true", Text = "Nam" },
+                new SelectListItem { Value = "false", Text = "Nữ" }
+            };
 
             var studentViewModel = new StudentDetailToEditViewModel
             {

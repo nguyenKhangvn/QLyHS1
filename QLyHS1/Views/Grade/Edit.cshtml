@@ -13,41 +13,67 @@
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
+
                 <div class="form-group">
-                    <label asp-for="StudentId" class="control-label"></label>
+                    <label asp-for="StudentId" class="control-label">Học sinh:</label>
                     <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
                     <span asp-validation-for="StudentId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="SemesterId" class="control-label"></label>
+                    <label asp-for="SemesterId" class="control-label">Học kì:</label>
                     <select asp-for="SemesterId" class="form-control" asp-items="ViewBag.SemesterId"></select>
                     <span asp-validation-for="SemesterId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="SubjectId" class="control-label"></label>
+                    <label asp-for="SubjectId" class="control-label">Môn học:</label>
                     <select asp-for="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
                     <span asp-validation-for="SubjectId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="SchoolYearId" class="control-label"></label>
+                    <label asp-for="SchoolYearId" class="control-label">Năm học:</label>
                     <select asp-for="SchoolYearId" class="form-control" asp-items="ViewBag.SchoolYearId"></select>
                     <span asp-validation-for="SchoolYearId" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="GradeI" class="control-label"></label>
+                    <label asp-for="ClassNameId" class="control-label">Lớp học:</label>
+                    <select asp-for="ClassNameId" class="form-control" asp-items="ViewBag.ClassName"></select>
+                    <span asp-validation-for="ClassNameId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="GradeI" class="control-label">Điểm giữa kì I:</label>
                     <input asp-for="GradeI" class="form-control" />
                     <span asp-validation-for="GradeI" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="GradeII" class="control-label"></label>
+                    <label asp-for="GradeII" class="control-label">Điểm giữa kì II:</label>
                     <input asp-for="GradeII" class="form-control" />
                     <span asp-validation-for="GradeII" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
-                    <label asp-for="GradeSemester" class="control-label"></label>
+                    <label asp-for="GradeSemester" class="control-label">Điểm tổng kết:</label>
                     <input asp-for="GradeSemester" class="form-control" />
                     <span asp-validation-for="GradeSemester" class="text-danger"></span>
                 </div>
+
+                <div class="form-group">
+                    <label asp-for="CreateAt" class="control-label">Ngày tạo:</label>
+                    <input asp-for="CreateAt" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="CreateAt" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="UpdateAt" class="control-label">Ngày cập nhật:</label>
+                    <input asp-for="UpdateAt" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="UpdateAt" class="text-danger"></span>
+                </div>
+
                 <div class="form-group">
                     <label asp-for="Status" class="control-label">Trạng thái: </label>
                     <select asp-for="Status" class="form-control">
@@ -56,16 +82,7 @@
                     </select>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="CreateAt" class="control-label"></label>
-                    <input asp-for="CreateAt" class="form-control" />
-                    <span asp-validation-for="CreateAt" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="UpdateAt" class="control-label"></label>
-                    <input asp-for="UpdateAt" class="form-control" />
-                    <span asp-validation-for="UpdateAt" class="text-danger"></span>
-                </div>
+
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
                 </div>

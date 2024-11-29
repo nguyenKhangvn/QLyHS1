@@ -38,6 +38,14 @@
 
                 <button class="btn-refresh">⟲</button>
                 <a asp-action="ExportToExcel" asp-controller="Grade" class="btn btn-success">Xuất Excel</a>
+                <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="excelFile">Chọn file Excel:</label>
+                        <input type="file" name="excelFile" class="form-control" required />
+                    </div>
+                    <button type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
+                </form>
+
             </div>
 
             <div class="list-container">
@@ -87,8 +95,8 @@
                                 </td>
                                 <li>
                                     <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                 @*    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a> *@
+                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
                                 </li>
                             </ul>
                             stt++;
