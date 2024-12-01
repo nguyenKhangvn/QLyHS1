@@ -16,7 +16,6 @@
     <div class="grid">
         @if (!(ViewData["Title"]?.ToString() == "Trang chủ"))
         {
-            <div class="menu">
                 <div class="app">
                     <div class="menu">
                         <div class="menu_text">
@@ -49,13 +48,11 @@
                             </ul>
                         </div>
                     </div>
+                    <main>
+                        @RenderBody()
+                    </main>
                 </div>
-            </div>
-        }
--->
-        <main>
-            @RenderBody()
-        </main>
+        }    
     </div>
 </body>
 

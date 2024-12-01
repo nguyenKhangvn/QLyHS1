@@ -2,114 +2,112 @@
 @{
     ViewData["Title"] = "Quản lý Điểm";
 }
+
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Điểm</title>
-    <link rel="stylesheet" href="~/css/Base.css">
-    <link rel="stylesheet" href="~/css/Score.css">
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="~/CSSP/Students.css">
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<body>
-    <div class="container_form">
-        <div class="main-content">
-            <h1>Hồ sơ Điểm số</h1>
 
-            <div class="search-container">
-                <form name="SearchForm" asp-action="Search" asp-controller="Grade">
-                    <input type="text" placeholder="Tìm kiếm" name="query">
-                    <button class="btn-search">Tìm kiếm</button>
-                </form>
-                <button class="btn-add" onclick="location.href='@Url.Action("Add", "Grade")'">+</button>
-                <form method="get" asp-action="Index">
-                    <label for="className">Lọc theo lớp</label>
-                    <select name="className" id="className" onchange="this.form.submit()">
-                        <option value="">-- Chọn lớp --</option>
-                        @if (ViewBag.Classrooms != null)
-                        {
-                            foreach (SelectListItem classroom in ViewBag.Classrooms)
-                            {
-                                <option value="@classroom.Value">@classroom.Text</option>
-                            }
-                        }
-                    </select>
-                </form>
+<body class="body">
+    <div class="grid">
 
-                <button class="btn-refresh">⟲</button>
-                <a asp-action="ExportToExcel" asp-controller="Grade" class="btn btn-success">Xuất Excel</a>
-                <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="excelFile">Chọn file Excel:</label>
-                        <input type="file" name="excelFile" class="form-control" required />
+            <div class="table-container">
+                <div class="table_top">
+                    <div class="group_top">
+                        <form name="SearchForm" asp-action="Search" asp-controller="Student">
+                            <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
+                            <button class="btn-search">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </form>
+                        <button class="btn-add" onclick="">+</button>
+                        <button class="btn-refresh">⟲</button>
                     </div>
-                    <button type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
-                </form>
-
-            </div>
-
-            <div class="list-container">
-                <ul class="styled-top">
-                    <li>STT</li>
-                    <li>Tên học sinh</li>
-                    <li>Học kì</li>
-                    <li>Tên môn</li>
-                    <li>Năm học</li>
-                    <li>
-                        Điểm hệ số 1
-@*                         <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 1 })'">+</button>
- *@                    </li>
-                    <li>
-                        Điểm hệ số 2
-                       
-                    </li>
-                    <li>
-                        Điểm hệ số 3
-@*                         <button class="btn-add" onclick="location.href='@Url.Action("AddGrade", "Grade", new { gradeType = 3 })'">+</button>
- *@                    </li>
-
-                </ul>
-                <div class="styled-list">
-                    @if (Model != null && Model.Any())
-                    {
-                        int stt = 1;
-                        foreach (var student in Model)
-                        {
-                            <ul>
-                                <li>@stt</li>
-                                <li>@student.StudentName</li>
-                                <li>@student.SemesterName</li>
-                                <li>@student.SubjectName</li>
-                                <li>@student.SchoolYearName</li>
-                                <td>
-                                    <input type="number" name="Grades[@student.Id].GradeI" value="@student.GradeI" class="form-control" />
-                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
-                                </td>
-                                <td>
-                                    <input type="number" name="Grades[@student.Id].GradeII" value="@student.GradeII" class="form-control" />
-                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
-                                </td>
-                                <td>
-                                    <input type="number" name="Grades[@student.Id].GradeIII" value="@student.GradeIII" class="form-control" />
-                                    <a asp-action="AddGrade" asp-route-id="@student.Id">+</a>
-                                </td>
-                                <li>
-                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
-                                </li>
-                            </ul>
-                            stt++;
-                        }
-
-                    }
-                    else
-                    {
-                            <li colspan="7">Không có dữ liệu Điểm.</li>
-                    }
-                 </div>
+                    <div class="group_top">
+                        <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="excelFile">Chọn file Excel:</label>
+                                <input type="file" name="excelFile" class="form-control" required />
+                            </div>
+                            <button type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
+                        </form>
+                        <a asp-action="ExportToExcel" asp-controller="Grade" class="btn btn-success">Xuất Excel</a>
+                        <form method="get" asp-action="Index" class="group_class">
+                            <label for="text_className" class="btn-text">Lọc theo lớp:</label>
+                            <select name="className" id="className" onchange="this.form.submit()" class="assds">
+                                <option value="">-- Chọn lớp --</option>
+                                @if (ViewBag.Classrooms != null)
+                                {
+                                    foreach (SelectListItem classroom in ViewBag.Classrooms)
+                                    {
+                                        <option value="@classroom.Value">@classroom.Text</option>
+                                    }
+                                }
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="table_form">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th class="wide">STT</th>
+                                <th>MSHS</th>
+                                <th>Họ tên</th>
+                                <th>Môn học</th>
+                                <th>Điểm hệ số 1</th>
+                                <th>Điểm hệ số 2</th>
+                                <th>Điểm hệ số 3</th>
+                                <th>Thiết lập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                int stt = 1;
+                                foreach (var student in Model)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>//</td>
+                                        <td>@student.StudentName</td>
+                                        <td>@student.SubjectName</td>
+                                        <td>@student.GradeI</td>
+                                        <td>@student.GradeII</td>
+                                        <td>@student.GradeIII</td>
+                                        <td>
+                                            <div class="table_funtion">
+                                                <a asp-action="Details" asp-route-id="@student.Id">Xem chi tiết</a>
+                                                <span>|</span>
+                                                <a asp-action="Edit" asp-route-id="@student.Id">Cập nhập thông tin</a>
+                                                <span>|</span>
+                                                <a asp-action="Delete" asp-route-id="@student.Id">Xóa</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8" class="text-center">Không có dữ liệu</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 </body>
+
 </html>
