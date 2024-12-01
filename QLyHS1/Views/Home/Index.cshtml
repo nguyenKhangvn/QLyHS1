@@ -1,34 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Trang chủ";
 }
+<link rel="stylesheet" href="~/CSSP/Home.css">
+<body class="body">
+    <div class="grid">
+        <div class="home">
+            <div class="home_text">
+                <p class="p_1">Chức năng</p>
+            </div>
+            <div class="home_style">
+                <div class="home_style-detail detail_1">
+                    <p>Quản lí học sinh</p>
+                    <button onclick="window.location.href='@Url.Action("Index", "Student")'">Chi tiết</button>
+                </div>
 
-<div class="main-content">
-    <h2>Tổng quan</h2>
-    <div class="overview-grid">
-        <div class="overview-tile">
-            <h3>Quản lý học sinh</h3>
-            <p>Tổng số học sinh: </p>
-            <button>Xem thêm</button>
-        </div>
-        <div class="overview-tile">
-            <h3>Quản lý lớp học</h3>
-            <p>Tổng số lớp học: </p>
-            <button>Xem thêm</button>
-        </div>
-        <div class="overview-tile">
-            <h3>Quản lý điểm số</h3>
-            <p>Điểm trung bình: </p>
-            <button>Xem thêm</button>
-        </div>
-        <div class="overview-tile">
-            <h3>Thời khóa biểu</h3>
-            <p>Lớp học đang diễn ra: </p>
-            <button>Xem thêm</button>
-        </div>
-        <div class="overview-tile">
-            <h3>Phân công giáo viên</h3>
-            <p>Giáo viên phụ trách: </p>
-            <button>Xem thêm</button>
+                <div class="home_style-detail detail_2">
+                    <p>Quản lí lớp học</p>
+                    <button onclick="window.location.href='@Url.Action("Index", "Classroom")'">Chi tiết</button>
+                </div>
+                <div class="home_style-detail detail_4">
+                    <p>Thời khóa biểu</p>
+                    <button onclick="window.location.href='@Url.Action("Index", "Schedule")'">Chi tiết</button>
+                </div>
+                <div class="home_style-detail detail_5">
+                    <p>Phân công giáo viên</p>
+                    <button onclick="window.location.href='@Url.Action("Index", "Teacher")'">Chi tiết</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</body>
+
+</html>

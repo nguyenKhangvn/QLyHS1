@@ -1,0 +1,75 @@
+.form-group {
+    display: flex;
+    align-items: baseline;
+    /* Căn giữa dọc theo dòng chữ */
+    margin: 13px 0 0 300px;
+}
+
+label {
+    min-width: 150px;
+    /* Độ rộng cố định cho các tiêu đề */
+    font-weight: bold;
+    color: #333;
+}
+
+input {
+    min-width: 250px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+    border-radius: 7px;
+}
+
+
+input:focus {
+    background-color: #f0f0f0;
+    /* Giảm màu nền */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Thêm hiệu ứng shadow nếu cần */
+    outline: none;
+    /* Bỏ khung outline mặc định */
+}
+
+select {
+    width: 260px;
+    height: 30px;
+    border-radius: 7px;
+    padding-left: 50px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 15px;
+}
+
+/* button */
+.btn_form {
+    width: 260px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 13px 0 0 450px;
+}
+
+.btn_save {
+    width: 100px;
+    height: 40px;
+    font-size: 1.4rem;
+
+}
+
+.btn_save:hover {
+    background-color: #231ce2;
+}
+
+.cancel-btn {
+
+    color: #dc3545;
+    text-decoration: none;
+
+}
+
+.cancel-btn:hover {
+    text-decoration: underline;
+}

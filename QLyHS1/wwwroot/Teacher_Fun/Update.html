@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="../CSS/Base.css">
+    <link rel="stylesheet" href="../CSS/Hearder.css">
+    <link rel="stylesheet" href="../CSS/Menu.css">
+    <link rel="stylesheet" href="../fontawesome-free-6.7.1-web/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Update.css">
+</head>
+
+<body class="body">
+    <div class="grid">
+        <div class="app">
+            <!-- -------------------------------------- -->
+            <div class="table_Detail">
+                <div class="Detail_form">
+                    <p>Chỉnh Sửa Thông Tin Giáo Viên</p>
+                    <button onclick="location.href='@Url.Action()'" class="btn-back">Quay lại</button>
+                </div>
+                <form asp-action="Edit" asp-controller="Teacher" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group">
+                        <label asp-for="Name">Họ Tên:</label>
+                        <input type="text" asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectId">Môn Học:</label>
+                        <select asp-for="SubjectId" asp-items="ViewBag.Subjects" class="form-control" required>
+                            <option class="aa" value="">----- Chọn Môn Học -----</option>
+                        </select>
+                        <span asp-validation-for="SubjectId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email">Email:</label>
+                        <input type="email" asp-for="Email" class="form-control" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="DateOfBirth">Ngày Sinh:</label>
+                        <input type="date" asp-for="DateOfBirth" class="form-control" required />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Phone">Số Điện Thoại:</label>
+                        <input type="tel" asp-for="Phone" class="form-control" required />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Address">Địa Chỉ:</label>
+                        <input type="text" asp-for="Address" class="form-control" required />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password">Mật Khẩu:</label>
+                        <input type="password" asp-for="Password" class="form-control" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="btn_form">
+                        <a asp-action="Index" class="cancel-btn">Hủy</a>
+                        <button class="btn-back btn_save" type="submit">Lưu Thay Đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="../CSS/Base.css">
+    <link rel="stylesheet" href="../CSS/Hearder.css">
+    <link rel="stylesheet" href="../CSS/Menu.css">
+    <link rel="stylesheet" href="../fontawesome-free-6.7.1-web/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Delete.css">
+</head>
+
+<body class="body">
+    <div class="grid">
+        <div class="header">
+            <div class="Text_U">
+                <span class="icon">🎓</span>
+                <h1 class="QLHS">Phầm mềm quản lí học sinh</h1>
+                <p class="QLHS">|</p>
+                <!-- sửa phần này thành title gì theo từng form -->
+                <h3 class="QLHS_min">fghfghfghfh</h3>
+            </div>
+            <div class="account">
+                <div class="account_icon">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <p>Name</p>
+                <div class="account_form">
+                    <div class="change_pass">
+                        <a class="a" href="">Đổi mật khẩu</a>
+                    </div>
+                    <div class="change_out">
+                        <a class="a" href="">Thoát</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app">
+
+            <!-- --------------------------------------- -->
+            <div class="menu">
+                <div class="menu_text">
+                    <i class="fa-solid fa-bars"></i>
+                    <p>Mục lục</p>
+                </div>
+                <div class="sidebar">
+                    <ul>
+                        <li><a href="@Url.Action(" Index", "Student" )"><span class="icon">&#127891;</span>Hồ sơ học
+                                sinh</a></li>
+                        <li><a href="@Url.Action(" Index", "Classroom" )"><span class="icon">&#128214;</span>Lớp học</a>
+                        </li>
+                        <li><a href="@Url.Action(" Index", "Grade" )"><span class="icon">&#128200;</span>Điểm số</a>
+                        </li>
+                        <li><a href="@Url.Action(" Index", "Schedule" )"><span class="icon">&#128197;</span>Thời khóa
+                                biểu</a></li>
+                        <li><a href="@Url.Action(" Index", "Subject" )"><span class="icon">&#128197;</span>Quản lý môn
+                                học</a></li>
+                        <li><a href="@Url.Action(" Index", "Teacher" )"><span class="icon">&#128100;</span>Phân công
+                                giáo viên</a></li>
+                        <li><a href="@Url.Action(" Index", "InfomationTeacher" )"><span class="icon">&#128100;</span>Hồ
+                                sơ giáo viên</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- -------------------------------------- -->
+            <div class="table_Detail">
+                <div class="Detail_form">
+                    <p>Xóa giáo viên</p>
+                    <button onclick="location.href='@Url.Action()'" class="btn-back">Quay lại</button>
+                </div>
+                <div class="detail-item">
+                    <strong>Họ và tên:</strong> @Model.Name
+                </div>
+                <div class="detail-item">
+                    <strong>Tên môn học:</strong>
+
+                    <span>Không có môn học</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Tên đăng nhập:</strong> @Model.UserName
+                </div>
+                <div class="detail-item">
+                    <strong>Email:</strong> @Model.Email
+                </div>
+                <div class="detail-item">
+                    <strong>Ngày sinh:</strong> @Model.DateOfBirth.ToString("dd/MM/yyyy")
+                </div>
+                <div class="detail-item">
+                    <strong>Số điện thoại:</strong> @Model.Phone
+                </div>
+                <div class="detail-item">
+                    <strong>Địa chỉ:</strong> @Model.Address
+                </div>
+                <div class="detail-item">
+                    <strong>Vai trò:</strong> @(Model.Role ? "Quản trị viên" : "Giáo viên")
+                </div>
+                <div class="detail-item">
+                    <strong>Trạng thái:</strong> @(Model.Status ? "Hoạt động" : "Tạm dừng")
+                </div>
+                <div class="detail-item">
+                    <strong>Ngày tạo:</strong> @Model.CreateAt
+                </div>
+                <div class="detail-item">
+                    <strong>Cập nhật lần cuối:</strong> @Model.UpdateAt
+                </div>
+                <div class="btn_form">
+                    <button class="btn-back btn_view" type="submit">Xóa</button>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

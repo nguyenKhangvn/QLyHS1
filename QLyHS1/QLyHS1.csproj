@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\Socre_Fun\" />
+    <Folder Include="wwwroot\Student_Fun\" />
   </ItemGroup>
 
 </Project>

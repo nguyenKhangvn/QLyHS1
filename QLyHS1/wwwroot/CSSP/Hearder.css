@@ -1,0 +1,139 @@
+.header {
+    position: relative;
+    height: var(--header-height);
+    background-color: var(--background-color);
+    margin: 30px 30px 30px 30px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0.1px solid #70adee;
+    box-shadow: 10px 10px 10px #5fa2e9;
+}
+
+.QLHS {
+    margin-left: 20px;
+    font-size: 3rem;
+    color: #d3d3dd;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.QLHS_min{
+    margin-left: 20px;
+    font-size: 2rem;
+    color: #d3d3dd;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+/* header text */
+.Text_U {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Text_U .icon {
+    font-size: 4rem;
+    margin-left: 20px;
+}
+
+/* account */
+.account {
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.account:hover {
+    cursor: pointer;
+}
+
+.account:hover .account_form {
+    display: block;
+}
+
+.account_icon {
+    margin-right: 5px;
+    font-size: 25px;
+}
+
+.account p {
+    font-size: 2rem;
+    color: #d3d3dd;
+    margin-left: 5px;
+}
+
+/* account form */
+.account_form {
+    position: absolute;
+    width: 150px;
+    height: 100px;
+    top: 70%;
+    right: 0;
+    border: 1px solid #d3d3dd;
+    border-radius: 16px;
+    animation: headerNotifyGrowth ease-in 0.25s;
+    transform-origin: 100% top;
+    background-color: aliceblue;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    z-index: 1;
+}
+
+.account_form::before {
+    content: "";
+    border: 16px solid;
+    border-color: transparent transparent white transparent;
+    position: absolute;
+    top: -25px;
+    right: 20px;
+}
+
+.account_form::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    width: 70%;
+    height: 20px;
+}
+
+@keyframes headerNotifyGrowth {
+    form {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.change_pass {
+    margin: 30px 0 0 15px;
+
+}
+
+.change_out::before {
+    content: "";
+    border: 1px solid;
+    border-color: black;
+    position: absolute;
+}
+
+.change_out {
+    margin: 20px 0 0 15px;
+}
+
+.a {
+    font-size: 2rem;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.a:hover {
+    color: var(--black-color);
+}

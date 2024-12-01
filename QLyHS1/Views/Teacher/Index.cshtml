@@ -3,89 +3,83 @@
     ViewData["Title"] = "Phân công giáo viên";
 }
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phân công giáo viên</title>
-    <link rel="stylesheet" href="~/css/Teacher.css">
-    <link rel="stylesheet" href="~/css/Base.css">
-
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="~/CSSP/Students.css">
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<style>
 
-</style>
-
-<body>
-    <div class="container_form">
-
-        <div class="main-content">
-            <h1>Phân công giáo viên</h1>
-
-            <div class="filter-section">
-               @*  <div class="filter-group">
-                    <label for="semester">Học kỳ:</label>
-                    <select id="semester">
-                        <option value="HK1">HK1</option>
-                        <option value="HK2">HK2</option>
-                    </select>
-
-                    <label for="year">Niên khoá:</label>
-                    <select id="year">
-                        <option value="2022-2023">2022-2023</option>
-                        <option value="2023-2024">2023-2024</option>
-                        <option value="2024-2025">2024-2025</option>
-                    </select> 
-                </div> *@
-
-                <div class="search-group">
-                    <form name="SearchForm" asp-action="Search" asp-controller="Teacher">
-                        <input type="text" placeholder="Tìm kiếm" name="query">
-                        <button class="btn-search">Tìm kiếm</button>
-                    </form>
-                    <button class="btn-add" onclick="location.href='@Url.Action("Add", "Teacher")'">+</button>
+<body class="body">
+    <div class="grid">
+        <div class="app">
+            
+            <div class="table-container">
+                <div class="table_top">
+                    <div class="group_top">
+                        <form name="SearchForm" asp-action="Search" asp-controller="Student">
+                            <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
+                            <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                        <button class="btn-add" onclick="">+</button>
+                        <button class="btn-refresh">⟲</button>
+                    </div>
+                    <div class="group_top">
+                        <a href="" class="btn-text">Xuất Excel</a>
+                    </div>
                 </div>
-            </div>
+                <div class="table_form">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th class="wide">STT</th>
+                                <th>Họ tên</th>
+                                <th>Bộ môn</th>
+                                <th>Năm sinh</th>
+                                <th>Liên lạc</th>
+                                <th>Thiết lập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                int stt = 1;
+                                foreach (var teacher in Model)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@teacher.Name</td>
+                                        <td>@teacher.SubjectName</td>
+                                        <td>@teacher.DateOfBirth</td>
+                                        <td>@teacher.Phone</td>
+                                        <td>
+                                            <div class="table_funtion">
+                                                <a asp-action="Details" asp-route-id="@teacher.Id">Xem chi tiết</a>
+                                                <p>|</p>
+                                                <a asp-action="Edit" asp-route-id="@teacher.Id">Cập nhật thông tin</a>
+                                                <p>|</p>
+                                                <a asp-action="Delete" asp-route-id="@teacher.Id">Xóa</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6">Không có dữ liệu giáo viên.</td>
+                                </tr>
+                            }
+                        </tbody>
 
-            <div class="list-container">
-                <ul class="styled-top">
-                        <li>STT</li>
-                        <li>Giáo Viên</li>
-                        <li>Tên môn học</li>
-                        <li>Email</li>
-                        <li>Sinh nhât</li>
-                        <li>Địa chỉ</li>
-                        <li>Số điện thoại</li>
-                    </ul>
-                <div class="styled-list">
-                    @if (Model != null && Model.Any())
-                    {
-                        int stt = 1;
-                        foreach (var teacher in Model)
-                        {
-                            <ul>
-                                <li>@stt</li>
-                                <li>@teacher.Name</li>
-                                <li>@teacher.SubjectName</li>
-                                <li>@teacher.Email</li>
-                                <li>@teacher.DateOfBirth</li>
-                                <li>@teacher.Address</li>
-                                <li>@teacher.Phone</li>
-                                <li>
-                                    <a asp-action="Edit" asp-route-id="@teacher.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@teacher.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@teacher.Id">Delete</a>
-                                </li>
-                            </ul>
-                            stt++;
-                        }
-
-                    }
-                    else
-                    {
-                            <li colspan="7">Không có dữ liệu giáo viên.</li>
-                    }
+                    </table>
                 </div>
             </div>
         </div>
