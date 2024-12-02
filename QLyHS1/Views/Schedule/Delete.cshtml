@@ -1,52 +1,43 @@
-﻿@model QLyHS1.Data.Schedule
+﻿<!DOCTYPE html>
+<html lang="en">
 
-@{
-    ViewData["Title"] = "Thời khóa biểu";
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="../CSS/Base.css">
+    <link rel="stylesheet" href="../CSS/Hearder.css">
+    <link rel="stylesheet" href="../CSS/Menu.css">
+    <link rel="stylesheet" href="../fontawesome-free-6.7.1-web/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Delete.css">
+</head>
 
-<h1>Xóa Thời khóa biểu</h1>
+<body class="body">
+    <div class="grid">
+        <div class="app">
+            <!-- -------------------------------------- -->
+            <div class="table_Detail">
+                <div class="detail-item">
+                    <strong>Tên lớp</strong> @Model.ClassRoom
+                </div>
+                <div class="detail-item">
+                    <strong>Ngày trong tuần</strong> @Model.DayOfWeek
+                </div>
+                <div class="detail-item">
+                    <strong>Ngày bắt đầu</strong> @Model.StartTime
+                </div>
+                <div class="detail-item">
+                    <strong>Ngày kết thúc</strong> @Model.EndTime
+                </div>
+                <div class="detail-item">
+                    <strong>MMH</strong> @Model.Subject.Id
+                </div>
+                <div class="btn_form">
+                    <button class="btn-back btn_view" type="submit">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
-<h3>Bạn có muốn xóa Thời khóa biểu?</h3>
-<div>
-    <h4>Student</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ClassRoom)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ClassRoom)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DayOfWeek)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DayOfWeek)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
- 
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SubjectId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Subject.Id)
-        </dd>
-    </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+</html>
