@@ -1,80 +1,94 @@
 ﻿@model IEnumerable<QLyHS1.Models.ClassroomViewModel>
+@{
+    ViewData["Title"] = "Quản lí lớp học";
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý hồ sơ học sinh</title>
-    <link rel="stylesheet" href="~/css/Base.css">
-    <link rel="stylesheet" href="~/css/Class.css">
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="~/CSSP/Students.css">
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<body>
-    <div class="container_form">
-
-        <div class="main-content">
-            <h1>Hồ sơ lớp học</h1>
-
-            <div class="search-container">
-                <form name="SearchForm" asp-action="Search" asp-controller="Classroom">
-                    <input type="text" placeholder="Tìm kiếm" name="query">
-                    <button class="btn-search">Tìm kiếm</button>
+<body class="body">
+    <div class="table-container">
+        <div class="table_top">
+            <div class="group_top">
+                <form name="SearchForm" asp-action="Search" asp-controller="Student">
+                    <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
+                    <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
-                <button class="btn-add" onclick="location.href='@Url.Action("Add", "Classroom")'">+</button>
-                <form method="get" asp-action="Index">
-                    <label for="grandLevel">Lọc theo khối:</label>
-                    <select name="grandLevel" id="grandLevel" onchange="this.form.submit()">
+                <button class="btn-add" onclick="">+</button>
+                <button class="btn-refresh">⟲</button>
+            </div>
+            <div class="group_top">
+                <a href="" class="btn-text">Xuất Excel</a>
+                <form method="get" asp-action="Index" class="group_class">
+                    <label for="text_className" class="btn-text">Lọc theo lớp:</label>
+                    <select name="className" id="className" onchange="this.form.submit()" class="assds">
                         <option value="">-- Chọn lớp --</option>
-                        @if (ViewBag.GrandLevel != null)
+                        @if (ViewBag.Classrooms != null)
                         {
-                            foreach (SelectListItem classroom in ViewBag.GrandLevel)
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
                             {
                                 <option value="@classroom.Value">@classroom.Text</option>
                             }
                         }
                     </select>
                 </form>
-                <button class="btn-refresh">⟲</button>
             </div>
-
-            <div class="list-container">
-                <ul class="styled-top">
-                        <li>STT</li>
-                        <li>Tên lớp</li>
-                        <li>Số lượng</li>
-                        <li>Khối lớp</li>
-                        <li>Giáo viên chủ nhiệm</li>
-                
-                    </ul>
-             
-                <div class="styled-list">
+        </div>
+        <div class="table_form">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th class="wide">STT</th>
+                        <th>Khối</th>
+                        <th>Tên lớp</th>
+                        <th>Giáo viên</th>
+                        <th>Số lượng</th>
+                        <th>Thiết lập</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
                         foreach (var student in Model)
                         {
-                            <ul>
-                                <li>@stt</li>
-                                <li>@student.Name</li>
-                                <li>@student.Quantity</li>
-                                <li>@student.GrandLevelName</li>
-                                <li>@student.TeacherName</li>
-                             
-                                <li>
-                                    <a asp-action="Edit" asp-route-id="@student.Id">Edit</a> |
-                                    <a asp-action="Details" asp-route-id="@student.Id">Details</a> |
-                                    <a asp-action="Delete" asp-route-id="@student.Id">Delete</a>
-                                </li>
-                            </ul>
+                            <tr>
+                                <td>color</td>
+                                <td>Thiết lập màu sắc của văn bản.</td>
+                                <td>Thiết lập màu sắc của văn bản.</td>
+                                <td>Thiết lập màu sắc của văn bản.</td>
+                                <td>Thiết lập màu sắc của văn bản.</td>
+                                <td>
+                                    <div class="table_funtion" style="display: block;">
+                                        <a href="">Xem chi tiết</a>
+                                        <p></p>
+                                        <a href="">Cập nhập thông tin</a>
+                                        <p></p>
+                                        <a href="">Xóa</a>
+                                    </div>
+                                </td>
+                            </tr>
                             stt++;
                         }
 
                     }
                     else
                     {
-                        <li colspan="7">Không có dữ liệu học sinh.</li>
+                        <tr>
+                            <td colspan="6">Không có dữ liệu lớp học.</td>
+                        </tr>
                     }
-                </div>
-            </div>
+                </tbody>
+
+            </table>
         </div>
     </div>
 </body>
