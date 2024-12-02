@@ -68,13 +68,13 @@ body {
     text-align: left;
 }
 
-.custom-table thead {
-    position: relative;
-    top: 0px;
-    color: white;
-    /* Đảm bảo thead nằm trên tbody */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+    .custom-table thead {
+        position: sticky;
+        top: 0px;
+        color: white;
+        /* Đảm bảo thead nằm trên tbody */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
 .custom-table thead tr {
     background-color: var(--background-color);
