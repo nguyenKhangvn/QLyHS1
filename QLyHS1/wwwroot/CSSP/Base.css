@@ -125,7 +125,7 @@ body {
 /* form : all for one */
 .table-container {
     display: block;
-    width: 80%;
+    width: 100%;
 }
 
 .table_top {
@@ -294,4 +294,8 @@ body {
 
 .btn_save:hover {
     background-color: #231ce2;
+}
+
+.main_form {
+    width: 80%;
 }
