@@ -2,7 +2,7 @@
     display: flex;
     align-items: baseline;
     /* Căn giữa dọc theo dòng chữ */
-    margin: 13px 0 0 300px;
+    margin: 10px 0 0 300px;
 }
 
 label {

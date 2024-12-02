@@ -20,10 +20,10 @@
     <div class="table_Detail">
         <div class="Detail_form">
             <p>Thêm Giáo Viên</p>
-            <a asp-action="Index" class="btn-back">Quay lại</a>
+            <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
         </div>
 
-        <form asp-action="Add" asp-controller="Teacher" method="post">
+        <form asp-action="Add" asp-controller="Teacher" method="post" class="form_1">
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">

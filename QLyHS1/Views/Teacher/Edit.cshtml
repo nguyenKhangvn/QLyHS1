@@ -24,7 +24,7 @@
             <p>Chỉnh Sửa Thông Tin Giáo Viên</p>
             <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
         </div>
-        <form asp-action="Edit" asp-controller="Teacher" method="post">
+        <form asp-action="Edit" asp-controller="Teacher" method="post" class="form_1">
             <input type="hidden" asp-for="Id" />
 
             <div class="form-group">

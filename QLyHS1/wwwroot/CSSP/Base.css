@@ -205,7 +205,7 @@ body {
 
 /* Form add, delete, update */
 .table_Detail {
-    width: 80%;
+    width: 100%;
     background-color: #ffff;
     border: 0.1px solid #ded0d0;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.25);
@@ -282,7 +282,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 15px 0 0 450px;
+    margin: 15px 0 20px 450px;
 }
 
 .btn_view {
@@ -298,4 +298,8 @@ body {
 
 .main_form {
     width: 80%;
+}
+
+.form_1 {
+    margin-bottom: 20px;
 }
