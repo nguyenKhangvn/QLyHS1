@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QLyHS1.Data;
 using QLyHS1.Models;
 using System.Security.Claims;
@@ -26,6 +27,7 @@ namespace QLyHS1.Controllers
                             from ass in assGroup.DefaultIfEmpty()
                             join su in _context.Subjects on ass.SubjectId equals su.Id into suGroup
                             from su in suGroup.DefaultIfEmpty()
+                            where(te.Status == true)
                             select new TeacherViewModel
                             {
                                 Id = te.Id,
@@ -80,11 +82,11 @@ namespace QLyHS1.Controllers
         public IActionResult Add()
         {
             var subjects = _context.Subjects
-                              .Where(s => s.Status)
+                              .Where(s => s.Status == true)
                               .Select(s => new { s.Id, s.Name })
                               .ToList();
 
-            ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
+            ViewBag.Subjects = new SelectList(_context.Subjects, "Id", "Name");
             return View();
         }
 
@@ -97,10 +99,17 @@ namespace QLyHS1.Controllers
                 
                 {
                     foreach (var error in state.Value.Errors)
-                    {     
-                        Console.WriteLine(error.ErrorMessage);
+                    {
+                        Console.WriteLine($"Key: {state.Key}, Error: {error.ErrorMessage}");
                     }
                 }
+
+                var subjects = _context.Subjects
+                     .Where(s => s.Status == true)
+                     .Select(s => new { s.Id, s.Name })
+                     .ToList();
+                ViewBag.Subjects = new SelectList(_context.Subjects, "Id", "Name");
+
                 return View(model);
             }
             if (ModelState.IsValid)
@@ -152,38 +161,54 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            // Kiểm tra đăng nhập
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
             if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
             {
                 return RedirectToAction("Login", "User");
             }
-
-            // Kiểm tra tham số id
+/*
             if (!id.HasValue || id <= 0)
             {
                 return NotFound();
-            }
+            }*/
 
-            // Truy vấn dữ liệu môn học
-            var subject = await (from sub in _context.Subjects
-                                 join sch in _context.Assignments on sub.Id equals sch.SubjectId
-                                 join tea in _context.Teachers on sch.TeacherId equals tea.Id
-                                 where tea.Id == userId
-                                 select sub).FirstOrDefaultAsync();
-
-            // Truy vấn giáo viên
-            var teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.Id == id.Value);
-
-            if (teacher == null)
+            if (role == "Admin")
             {
-                return NotFound();
-            }
+                var teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.Id == id.Value);
 
-            // Truyền dữ liệu sang View
-            ViewBag.SubjectName = subject?.Name ?? "Chưa có";
-            return View(teacher);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+
+
+                var subject = await (from sub in _context.Subjects
+                                     join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                                     where sch.TeacherId == teacher.Id
+                                     select sub).FirstOrDefaultAsync();
+
+                ViewBag.SubjectName = subject?.Name ?? "Chưa có";
+                return View(teacher);
+            }
+            else
+            {
+                var subject = await (from sub in _context.Subjects
+                                     join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                                     join tea in _context.Teachers on sch.TeacherId equals tea.Id
+                                     where tea.Id == userId
+                                     select sub).FirstOrDefaultAsync();
+
+                var teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.Id == id.Value);
+
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+
+                ViewBag.SubjectName = subject?.Name ?? "Chưa có";
+                return View(teacher);
+            }   
         }
 
 
@@ -246,25 +271,21 @@ namespace QLyHS1.Controllers
             {
                 return NotFound();
             }
+
             var subjects = _context.Subjects
-                             .Where(s => s.Status)
-                             .Select(s => new { s.Id, s.Name })
-                             .ToList();
+                .Where(s => s.Status)
+                .Select(s => new { s.Id, s.Name })
+                .ToList();
 
             ViewBag.Subjects = new SelectList(subjects, "Id", "Name");
-            // Map data from `Teacher` to `TeacherDetailViewModel`
-            var teacherViewModel = new TeacherDetailViewModel
+            
+            var teacherViewModel = new TeacherDetailViewModelToEdit
             {
                 Id = teacher.Id,
-                Name = teacher.Name,
-                UserName = teacher.UserName,
-                Password = teacher.Password,
-                Email = teacher.Email,
-                DateOfBirth = teacher.DateOfBirth,
-                Phone = teacher.Phone,
-                Address = teacher.Address,
-                Role = teacher.Role,
-                CreateAt = teacher.CreateAt,
+                Name = teacher.Name ?? "N/A", 
+                Email = teacher.Email ?? "N/A",
+                DateOfBirth = teacher.DateOfBirth == DateTime.MinValue ? DateTime.Now : teacher.DateOfBirth, 
+                Address = teacher.Address ?? "N/A",
                 UpdateAt = teacher.UpdateAt,
                 Status = teacher.Status
             };
@@ -272,10 +293,11 @@ namespace QLyHS1.Controllers
             return View(teacherViewModel);
         }
 
+
         // POST: Teacher/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UserName,Password,Email,DateOfBirth,Phone,Address,Token,Role,Status")] TeacherDetailViewModel teacherViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,DateOfBirth,Phone,Address,Status,SubjectId")] TeacherDetailViewModelToEdit teacherViewModel)
         {
             if (id != teacherViewModel.Id)
             {
@@ -292,19 +314,39 @@ namespace QLyHS1.Controllers
                         return NotFound();
                     }
 
-                    // Update the necessary properties
                     teacher.Name = teacherViewModel.Name;
-                    teacher.UserName = teacherViewModel.UserName;
-                    teacher.Password = teacherViewModel.Password;
                     teacher.Email = teacherViewModel.Email;
                     teacher.DateOfBirth = teacherViewModel.DateOfBirth;
                     teacher.Phone = teacherViewModel.Phone;
                     teacher.Address = teacherViewModel.Address;
-                    teacher.Role = teacherViewModel.Role;
                     teacher.Status = teacherViewModel.Status;
                     teacher.UpdateAt = DateTime.Now;
 
-                    _context.Update(teacher);
+                    _context.Teachers.Update(teacher);
+                    await _context.SaveChangesAsync();
+
+                    var assignment = await _context.Assignments
+                        .FirstOrDefaultAsync(a => a.TeacherId == teacher.Id);
+
+                    if (assignment == null)
+                    {
+                        assignment = new Assignment
+                        {
+                            TeacherId = teacher.Id,
+                            SubjectId = teacherViewModel.SubjectId,
+                            StartDate = DateTime.Now,
+                            EndDate = DateTime.Now.AddMonths(6)
+                        };
+                        _context.Assignments.Add(assignment);
+                    }
+                    else
+                    {
+                        assignment.SubjectId = teacherViewModel.SubjectId;
+                        assignment.StartDate = DateTime.Now;
+                        assignment.EndDate = DateTime.Now.AddMonths(6);
+                        _context.Assignments.Update(assignment);
+                    }
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -320,8 +362,16 @@ namespace QLyHS1.Controllers
                     }
                 }
             }
+
+            var subjects = _context.Subjects
+                .Where(s => s.Status)
+                .Select(s => new { s.Id, s.Name })
+                .ToList();
+
+            ViewBag.Subjects = new SelectList(subjects, "Id", "Name", teacherViewModel.SubjectId);
             return View(teacherViewModel);
         }
+
 
         private bool TeacherExists(int id)
         {

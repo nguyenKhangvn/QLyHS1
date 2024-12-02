@@ -31,13 +31,12 @@ namespace QLyHS1.Controllers
 
             if (teacher != null)
             {
-                // Thêm thông tin vào Claims
-                var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, teacher.Id.ToString()), 
-            new Claim(ClaimTypes.Name, teacher.UserName),
-             new Claim(ClaimTypes.Role, teacher.Role ? "Admin" : "User"),
-        };
+                    var claims = new List<Claim>
+            {
+                    new Claim(ClaimTypes.NameIdentifier, teacher.Id.ToString()), 
+                    new Claim(ClaimTypes.Name, teacher.UserName),
+                    new Claim(ClaimTypes.Role, teacher.Role ? "Admin" : "User"),
+            };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

@@ -18,17 +18,19 @@ namespace QLyHS1.Controllers
         public IActionResult Index()
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
             if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
             {
                 return RedirectToAction("Login", "User");
             }
 
+
             var subject = (from sub in _context.Subjects
-                           join sch in _context.Assignments on sub.Id equals sch.SubjectId
-                           join tea in _context.Teachers on sch.TeacherId equals tea.Id
-                           where tea.Id == userId
-                           select sub).FirstOrDefault();
+                            join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                            join tea in _context.Teachers on sch.TeacherId equals tea.Id
+                            where tea.Id == userId
+                            select sub).FirstOrDefault();
 
             ViewBag.SubjectName = subject?.Name ?? "Chưa có";
 
@@ -37,10 +39,12 @@ namespace QLyHS1.Controllers
 
             if (teacher == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-            return View(teacher); 
+            return View(teacher);
+            
+          
         }
     }
 }

@@ -49,5 +49,36 @@ namespace QLyHS1.Models
         public bool Status { get; set; }
     }
 
+    public class TeacherDetailViewModelToEdit
+    {
+        public int Id { get; set; }
+        public int SubjectId { get; set; }
+
+        public string Name { get; set; } = null!;
+
+        public string Email { get; set; } = null!;
+
+        public DateTime DateOfBirth { get; set; }
+
+        public string Phone { get; set; } = null!;
+
+        public string Address { get; set; } = null!;
+
+
+        [HiddenInput(DisplayValue = false)]
+        public string? Token { get; set; }
+
+        [HiddenInput]
+        public bool Role { get; set; }
+
+        [HiddenInput]
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+
+        [HiddenInput]
+        public DateTime UpdateAt { get; set; } = DateTime.Now;
+
+        public bool Status { get; set; }
+    }
+
 
 }

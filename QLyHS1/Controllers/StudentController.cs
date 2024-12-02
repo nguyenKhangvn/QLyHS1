@@ -193,38 +193,69 @@ namespace QLyHS1.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
+            try
             {
-                return NotFound();
+               
+                ViewBag.GenderOptions = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "true", Text = "Nam" },
+                    new SelectListItem { Value = "false", Text = "Nữ" }
+                };
+
+                 var student = await _context.Students
+                .Where(s => s.Id == id)
+                .Select(s => new
+                {
+                    s.Id,
+                    s.ClassId,
+                    Name = s.Name ?? "N/A",
+                    s.Gender,
+                    Email = s.Email ?? "N/A",
+                    DateOfBirth = s.DateOfBirth == DateTime.MinValue ? DateTime.Now : s.DateOfBirth,
+                    Phone = s.Phone ?? "N/A",
+                    PhoneParent = s.PhoneParent ?? "N/A",
+                    Address = s.Address ?? "N/A",
+                    Conduct = s.Conduct ?? "N/A",
+                    s.Status,
+                    s.CreateAt,
+                    s.UpdateAt
+                })
+                .FirstOrDefaultAsync();
+
+                if (student == null)
+                {
+                    return NotFound();
+                }
+
+                var studentViewModel = new StudentDetailToEditViewModel
+                {
+                    Id = student.Id,
+                    ClassId = student.ClassId,
+                    Name = student.Name,
+                    Gender = student.Gender,
+                    Email = student.Email,
+                    DateOfBirth = student.DateOfBirth,
+                    Phone = student.Phone,
+                    PhoneParent = student.PhoneParent,
+                    Address = student.Address,
+                    Conduct = student.Conduct,
+                    Status = student.Status,
+                    CreateAt = student.CreateAt,
+                    UpdateAt = student.UpdateAt
+                };
+
+                ViewData["ClassId"] = new SelectList(_context.Classrooms, "Id", "Name", student.ClassId);
+
+                return View(studentViewModel);
             }
-
-            ViewBag.GenderOptions = new List<SelectListItem>
+            catch (Exception ex)
             {
-                new SelectListItem { Value = "true", Text = "Nam" },
-                new SelectListItem { Value = "false", Text = "Nữ" }
-            };
-
-            var studentViewModel = new StudentDetailToEditViewModel
-            {
-                Id = student.Id,
-                ClassId = student.ClassId,
-                Name = student.Name,
-                Gender = student.Gender,
-                Email = student.Email,
-                DateOfBirth = student.DateOfBirth,
-                Phone = student.Phone,
-                PhoneParent = student.PhoneParent,
-                Address = student.Address,
-                Conduct = student.Conduct,
-                Status = student.Status,
-                CreateAt = student.CreateAt,
-                UpdateAt = student.UpdateAt
-            };
-
-            ViewData["ClassId"] = new SelectList(_context.Classrooms, "Id", "Name", student.ClassId);
-            return View(studentViewModel);
+                
+                Console.WriteLine(ex.Message);
+            }
+            return View();
         }
+
 
 
         // POST: Student/Edit/5
@@ -241,13 +272,17 @@ namespace QLyHS1.Controllers
             {
                 try
                 {
-                    var student = await _context.Students.FindAsync(id);
-                    if (student == null)
-                    {
-                        return NotFound();
-                    }
+                     var student = await _context.Students
+                         .Where(s => s.Id == id)
+                         .FirstOrDefaultAsync();
 
-                    // Cập nhật các thuộc tính cần thiết
+
+                    if (student == null)
+                        {
+                            return NotFound();
+                        }
+
+
                     student.ClassId = studentViewModel.ClassId;
                     student.Name = studentViewModel.Name;
                     student.Gender = studentViewModel.Gender;
