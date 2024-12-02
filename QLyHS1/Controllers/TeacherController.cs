@@ -152,34 +152,40 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;  
+            // Kiểm tra đăng nhập
+            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
             {
                 return RedirectToAction("Login", "User");
             }
-            if (id == null)
+
+            // Kiểm tra tham số id
+            if (!id.HasValue || id <= 0)
             {
                 return NotFound();
             }
 
-            var subject = (from sub in _context.Subjects
-                           join sch in _context.Assignments on sub.Id equals sch.SubjectId
-                           join tea in _context.Teachers on sch.TeacherId equals tea.Id
-                           where tea.Id == userId
-                           select sub).FirstOrDefault();
+            // Truy vấn dữ liệu môn học
+            var subject = await (from sub in _context.Subjects
+                                 join sch in _context.Assignments on sub.Id equals sch.SubjectId
+                                 join tea in _context.Teachers on sch.TeacherId equals tea.Id
+                                 where tea.Id == userId
+                                 select sub).FirstOrDefaultAsync();
 
+            // Truy vấn giáo viên
+            var teacher = await _context.Teachers.FirstOrDefaultAsync(m => m.Id == id.Value);
+
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+
+            // Truyền dữ liệu sang View
             ViewBag.SubjectName = subject?.Name ?? "Chưa có";
-
-            var student = await _context.Teachers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return View(student);
+            return View(teacher);
         }
+
 
         public async Task<IActionResult> Delete(int? id)
         {

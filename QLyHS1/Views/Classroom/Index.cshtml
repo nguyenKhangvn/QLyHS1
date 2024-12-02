@@ -3,24 +3,27 @@
     ViewData["Title"] = "Quản lí lớp học";
 }
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lí học sinh</title>
+    <title>Quản lí lớp học</title>
     <link rel="stylesheet" href="~/CSSP/Students.css">
     <link rel="stylesheet" href="~/CSSP/Base.css">
     <link rel="stylesheet" href="~/CSSP/Hearder.css">
     <link rel="stylesheet" href="~/CSSP/Menu.css">
     <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
+
 <body class="body">
+
     <div class="table-container">
         <div class="table_top">
             <div class="group_top">
                 <form name="SearchForm" asp-action="Search" asp-controller="Student">
                     <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
-                    <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 <button class="btn-add" onclick="">+</button>
                 <button class="btn-refresh">⟲</button>
@@ -28,7 +31,7 @@
             <div class="group_top">
                 <a href="" class="btn-text">Xuất Excel</a>
                 <form method="get" asp-action="Index" class="group_class">
-                    <label for="text_className" class="btn-text">Lọc theo lớp:</label>
+                    <label for="className" class="btn-text">Lọc theo lớp:</label>
                     <select name="className" id="className" onchange="this.form.submit()" class="assds">
                         <option value="">-- Chọn lớp --</option>
                         @if (ViewBag.Classrooms != null)
@@ -42,6 +45,7 @@
                 </form>
             </div>
         </div>
+
         <div class="table_form">
             <table class="custom-table">
                 <thead>
@@ -58,38 +62,38 @@
                     @if (Model != null && Model.Any())
                     {
                         int stt = 1;
-                        foreach (var student in Model)
+                        foreach (var classroom in Model)
                         {
                             <tr>
-                                <td>color</td>
-                                <td>Thiết lập màu sắc của văn bản.</td>
-                                <td>Thiết lập màu sắc của văn bản.</td>
-                                <td>Thiết lập màu sắc của văn bản.</td>
-                                <td>Thiết lập màu sắc của văn bản.</td>
+                                <td>@stt</td>
+                                <td>@classroom.GrandLevelName</td>
+                                <td>@classroom.Name</td>
+                                <td>@classroom.TeacherName</td>
+                                <td>@classroom.Quantity</td>
                                 <td>
-                                    <div class="table_funtion" style="display: block;">
-                                        <a href="">Xem chi tiết</a>
-                                        <p></p>
-                                        <a href="">Cập nhập thông tin</a>
-                                        <p></p>
-                                        <a href="">Xóa</a>
+                                    <div class="table_funtion">
+                                        <a asp-action="Details" asp-route-id="@classroom.Id">Xem chi tiết</a>
+                                        <span>|</span>
+                                        <a asp-action="Edit" asp-route-id="@classroom.Id">Cập nhật thông tin</a>
+                                        <span>|</span>
+                                        <a asp-action="Delete" asp-route-id="@classroom.Id">Xóa</a>
                                     </div>
                                 </td>
                             </tr>
                             stt++;
                         }
-
                     }
                     else
                     {
                         <tr>
-                            <td colspan="6">Không có dữ liệu lớp học.</td>
+                            <td colspan="6" class="text-center">Không có dữ liệu</td>
                         </tr>
                     }
                 </tbody>
-
             </table>
         </div>
     </div>
+
 </body>
+
 </html>

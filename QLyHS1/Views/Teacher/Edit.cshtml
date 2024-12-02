@@ -1,89 +1,29 @@
 ﻿@model QLyHS1.Models.TeacherDetailViewModel
-
+@{
+    ViewData["Title"] = "Chỉnh Sửa Thông Tin Giáo Viên";
+}
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chỉnh Sửa Thông Tin Giáo Viên</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="date"],
-        input[type="tel"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-            button:hover {
-                background-color: #218838;
-            }
-
-        .cancel-btn {
-            display: inline-block;
-            margin-top: 10px;
-            text-align: center;
-            color: #dc3545;
-            text-decoration: none;
-        }
-
-            .cancel-btn:hover {
-                text-decoration: underline;
-            }
-
-        .text-danger {
-            color: #dc3545;
-            font-size: 0.9em;
-        }
-    </style>
+    <title>Quản lí học sinh</title>
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/CSSP/Update.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<body>
-    <div class="container">
-        <h2>Chỉnh Sửa Thông Tin Giáo Viên</h2>
+
+<body class="body">
+
+    <!-- -------------------------------------- -->
+    <div class="table_Detail">
+        <div class="Detail_form">
+            <p>Chỉnh Sửa Thông Tin Giáo Viên</p>
+            <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
+        </div>
         <form asp-action="Edit" asp-controller="Teacher" method="post">
             <input type="hidden" asp-for="Id" />
 
@@ -95,23 +35,10 @@
             <div class="form-group">
                 <label asp-for="SubjectId">Môn Học:</label>
                 <select asp-for="SubjectId" asp-items="ViewBag.Subjects" class="form-control" required>
-                    <option value="">-- Chọn Môn Học --</option>
+                    <option class="aa" value="">----- Chọn Môn Học -----</option>
                 </select>
                 <span asp-validation-for="SubjectId" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
-                <label asp-for="UserName">Tên Đăng Nhập:</label>
-                <input type="text" asp-for="UserName" class="form-control" required />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Password">Mật Khẩu:</label>
-                <input type="password" asp-for="Password" class="form-control" required />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-
             <div class="form-group">
                 <label asp-for="Email">Email:</label>
                 <input type="email" asp-for="Email" class="form-control" required />
@@ -135,12 +62,18 @@
                 <input type="text" asp-for="Address" class="form-control" required />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-
             <div class="form-group">
-                <button type="submit">Lưu Thay Đổi</button>
+                <label asp-for="Password">Mật Khẩu:</label>
+                <input type="password" asp-for="Password" class="form-control" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="btn_form">
                 <a asp-action="Index" class="cancel-btn">Hủy</a>
+                <button class="btn-back btn_save" type="submit">Lưu Thay Đổi</button>
             </div>
         </form>
     </div>
+
 </body>
+
 </html>
