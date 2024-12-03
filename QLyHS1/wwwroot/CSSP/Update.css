@@ -44,13 +44,6 @@ select {
 }
 
 /* button */
-.btn_form {
-    width: 260px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 13px 0 0 450px;
-}
 
 .btn_save {
     width: 100px;

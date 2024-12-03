@@ -1,21 +1,26 @@
 ﻿@model QLyHS1.Models.ScheduleDetailViewModel
 @{
-    ViewData["Title"] = "Thời khóa biểu";
+    ViewData["Title"] = "Thêm thời khóa biểu";
 }
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/tmpAdd.css">
-    <style>
-       
-    </style>
+    <title>Thêm Giáo Viên</title>
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/CSSP/Update.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Thêm thời khóa biểu</h1>
-        <form asp-action="Add" asp-controller="Schedule" method="post">
+<body class="body">
+    <div class="table_Detail">
+        <div class="Detail_form">
+            <p>Thêm lớp học</p>
+            <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
+        </div>
+        <form asp-action="Add" asp-controller="Schedule" method="Form_Add">
             <div class="form-group">
                 <label for="SubjectId" class="control-label">Tên môn:</label>
                 <select id="SubjectId" asp-for="SubjectId" asp-items="ViewBag.Subject" class="form-control">
@@ -50,12 +55,11 @@
                 <label for="EndTime" class="control-label">Ngày kết thúc:</label>
                 <input type="date" id="EndTime" name="EndTime" required />
             </div>
-
-            <button type="submit" name="Add" value="Add">Thêm thời khóa biểu</button>
+            <div class="btn_form">
+                <a asp-action="Index" class="cancel-btn">Hủy</a>
+                <button class="btn-back btn_save" type="submit">Thêm</button>
+            </div>
         </form>
-        <div>
-            <a asp-action="Index">Quay lại</a>
-        </div>
     </div>
 </body>
 </html>
