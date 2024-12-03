@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="~/CSSP/Base.css">
     <link rel="stylesheet" href="~/CSSP/Hearder.css">
     <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/CSSP/Socre.css">
     <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
 
 <body class="body">
-    <div class="grid">
 
             <div class="table-container">
                 <div class="table_top">
@@ -29,33 +29,35 @@
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </button>
                         </form>
-                    <button onclick="window.location.href='@Url.Action("Add", "Grade")'" class="btn-add" onclick="">+</button>
+                        <button onclick="window.location.href='@Url.Action("Add", "Grade")'" class="btn-add" onclick="">+</button>
                         <button class="btn-refresh">⟲</button>
                     </div>
                     <div class="group_top">
-                        <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="excelFile">Chọn file Excel:</label>
-                                <input type="file" name="excelFile" class="form-control" required />
-                            </div>
-                            <button type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
-                        </form>
-                        <a asp-action="ExportToExcel" asp-controller="Grade" class="btn btn-success">Xuất Excel</a>
-                        <form method="get" asp-action="Index" class="group_class">
-                            <label for="text_className" class="btn-text">Lọc theo lớp:</label>
-                            <select name="className" id="className" onchange="this.form.submit()" class="assds">
-                                <option value="">-- Chọn lớp --</option>
-                                @if (ViewBag.Classrooms != null)
-                                {
-                                    foreach (SelectListItem classroom in ViewBag.Classrooms)
-                                    {
-                                        <option value="@classroom.Value">@classroom.Text</option>
-                                    }
-                                }
-                            </select>
-                        </form>
+                         <div class="form_excel_1">
+                    <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
+                        <button class="form_11" type="button" onclick="document.getElementById('excelFile').click();">Tải Excel File</button>
+                        <input type="file" name="excelFile" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
+                    </form>
+                    <button class="form_11"  type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
+                         </div>
                     </div>
+                <div class="group_top">
+                    <a href="" class="btn-text">Xuất Excel</a>
+                    <form method="get" asp-action="Index" class="group_class">
+                        <label for="className" class="btn-text">Lọc theo lớp:</label>
+                        <select name="className" id="className" onchange="this.form.submit()" class="assds">
+                            <option value="">-- Chọn lớp --</option>
+                            @if (ViewBag.Classrooms != null)
+                            {
+                                foreach (SelectListItem classroom in ViewBag.Classrooms)
+                                {
+                                    <option value="@classroom.Value">@classroom.Text</option>
+                                }
+                            }
+                        </select>
+                    </form>
                 </div>
+            </div>
                 <div class="table_form">
                     <table class="custom-table">
                         <thead>
@@ -107,7 +109,6 @@
                     </table>
                 </div>
             </div>
-        </div>
 </body>
 
 </html>

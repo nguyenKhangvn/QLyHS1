@@ -14,18 +14,19 @@
     <link rel="stylesheet" href="~/CSSP/Menu.css">
     <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 </head>
-<body>
+<body class="body">
     <div class="table-container">
         <div class="table_top">
             <div class="group_top">
                 <form name="SearchForm" asp-action="Search" asp-controller="Student">
                     <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
-                    <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
+                    <button class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
-
-                <button onclick="window.location.href='@Url.Action("Add", "Student")'" class="btn-add" onclick="">+</button>
-                <button class="btn-refresh">⟲</button>
-
+                <button onclick="window.location.href='@Url.Action("Add", "Classroom")'" class="btn-add" onclick="">+</button>
+                <button class="btn-refresh" onclick="location.reload()">⟲</button>
+            </div>
+            <div class="group_top">
+                <a href="" class="btn-text">Xuất Excel</a>
                 <form method="get" asp-action="Index" class="group_class">
                     <label for="className" class="btn-text">Lọc theo lớp:</label>
                     <select name="className" id="className" onchange="this.form.submit()" class="assds">
@@ -39,10 +40,6 @@
                         }
                     </select>
                 </form>
-
-            </div>
-            <div class="group_top">
-                <a href="" class="btn-text">Xuất Excel</a>
             </div>
         </div>
         <div class="table_form">

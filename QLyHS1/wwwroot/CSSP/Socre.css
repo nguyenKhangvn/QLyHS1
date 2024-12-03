@@ -1,0 +1,19 @@
+.form_excel {
+    display:flex ;
+}
+
+.form-group {
+    display: flex;
+    margin-right: 20px;
+}
+
+.form_excel_1 {
+    display: flex;
+    width: 150px;
+}
+
+.form_11 {
+    font-size: 10px;
+    margin-left: 10px;
+    min-width: 70px;
+}
