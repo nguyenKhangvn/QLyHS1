@@ -250,7 +250,6 @@ public partial class QlyHs1Context : DbContext
                 .HasColumnName("email");
             entity.Property(e => e.Gender)
                 .HasMaxLength(5)
-                .IsUnicode(false)
                 .IsFixedLength()
                 .HasColumnName("gender");
             entity.Property(e => e.Name)
