@@ -24,42 +24,45 @@
             <p>Xóa học sinh</p>
             <button onclick="window.location.href='@Url.Action("Index", "Student")'" class="btn-back">Quay lại</button>
         </div>
-        <div class="detail-item">
-            <strong>Họ Tên:</strong> @Model.Name
-        </div>
-        <div class="detail-item">
-            <strong>Lớp học:</strong> @Model.Class.Id
-        </div>
-        <div class="detail-item">
-            <strong>Giới tính:</strong> @Model.Gender
-        </div>
-        <div class="detail-item">
-            <strong>Email:</strong> @Model.Email
-        </div>
-        <div class="detail-item">
-            <strong>Ngày sinh:</strong> @Model.DateOfBirth
-        </div>
-        <div class="detail-item">
-            <strong>Liên hệ:</strong> @Model.Phone
-        </div>
-        <div class="detail-item">
-            <strong>Liên hệ phụ huynh:</strong> @Model.PhoneParent
-        </div>
-        <div class="detail-item">
-            <strong>Địa chỉ:</strong> @Model.Address
-        </div>
-        <div class="detail-item">
-            <strong>Ngày tạo:</strong> @Model.CreateAt
-        </div>
-        <div class="detail-item">
-            <strong>Ngày cập nhập:</strong> @Model.UpdateAt
-        </div>
-        <div class="detail-item">
-            <strong>Trạng thái:</strong> @((Model.Status == true) ? "Học" : "Nghỉ học")
-        </div>
-        <div class="btn_form">
-            <button class="btn-back btn_view" type="submit">Xóa</button>
-        </div>
+         <form asp-action="Delete" asp-controller="Student" method="post" class="form_1">
+            <div class="detail-item">
+                <strong>Họ Tên:</strong> @Model.Name
+            </div>
+            <div class="detail-item">
+                <strong>Lớp học:</strong> @Model.Class.Id
+            </div>
+            <div class="detail-item">
+                <strong>Giới tính:</strong> @Model.Gender
+            </div>
+            <div class="detail-item">
+                <strong>Email:</strong> @Model.Email
+            </div>
+            <div class="detail-item">
+                <strong>Ngày sinh:</strong> @Model.DateOfBirth
+            </div>
+            <div class="detail-item">
+                <strong>Liên hệ:</strong> @Model.Phone
+            </div>
+            <div class="detail-item">
+                <strong>Liên hệ phụ huynh:</strong> @Model.PhoneParent
+            </div>
+            <div class="detail-item">
+                <strong>Địa chỉ:</strong> @Model.Address
+            </div>
+            <div class="detail-item">
+                <strong>Ngày tạo:</strong> @Model.CreateAt
+            </div>
+            <div class="detail-item">
+                <strong>Ngày cập nhập:</strong> @Model.UpdateAt
+            </div>
+            <div class="detail-item">
+                <strong>Trạng thái:</strong> @((Model.Status == true) ? "Học" : "Nghỉ học")
+            </div>
+            <div class="btn_form">
+                <a asp-action="Index" class="cancel-btn">Hủy</a>
+                <button class="btn-back btn_save" type="submit">Xóa</button>
+            </div>
+        </form>
     </div>
 
 </body>
