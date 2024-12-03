@@ -27,16 +27,19 @@
             </div>
             <div class="group_top">
                 <div class="form_excel_1">
-                    <form asp-action="ImportFromExcel" asp-controller="Student" method="post" enctype="multipart/form-data">
-                        <button class="form_11" type="button" onclick="document.getElementById('excelFile').click();">Tải Excel File</button>
-                        <input type="file" name="excelFile" id="excelFile" style="display: none;" required onchange="this.form.submit();" />
-                    </form>
+                      <div class="form_excel_1">
+                            <form asp-action="ImportFromExcel" asp-controller="Student" method="post" enctype="multipart/form-data">
+                                <button class="form_11" type="button" onclick="document.getElementById('excelFile').click();">Tải Excel File</button>
+                                <input type="file" name="file" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
+                            </form>
+                            <button class="form_11"  type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
+                       </div>
                 </div>
             </div>
 
 
             <div class="group_top">
-                <a href="" class="btn-text">Xuất Excel</a>
+                <a asp-action="ExportToExcel" asp-controller="Student" class="btn-text">Xuất Excel</a>
                 <form method="get" asp-action="Index" class="group_class">
                     <label for="className" class="btn-text">Lọc theo lớp:</label>
                     <select name="className" id="className" onchange="this.form.submit()" class="assds">

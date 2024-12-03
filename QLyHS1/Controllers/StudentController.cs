@@ -41,6 +41,7 @@ namespace QLyHS1.Controllers
                 var studentVM = from st in _context.Students
                                 join cl in _context.Classrooms on st.ClassId equals cl.Id
                                 where (string.IsNullOrEmpty(className) || cl.Name == className)
+                                orderby st.Name ascending
                                 select new StudentViewModel
                                 {
                                     Id = st.Id,
@@ -500,40 +501,43 @@ namespace QLyHS1.Controllers
                         var students = new List<Student>();
 
                         for (int row = 5; row <= rowCount; row++)
-                        {
-                            var id = worksheet.Cells[row, 1].Value?.ToString();
+                        {                       
                             var name = worksheet.Cells[row, 2].Value?.ToString();
                             var genderString = worksheet.Cells[row, 3].Value?.ToString()?.Trim();
-                            var className = worksheet.Cells[row, 5].Value?.ToString();
                             var dateOfBirth = worksheet.Cells[row, 4].Value as DateTime? ?? DateTime.Now;
-                           /* var address = worksheet.Cells[row, 6].Value?.ToString();
+                            var className = worksheet.Cells[row, 5].Value?.ToString();
+                            var phone = worksheet.Cells[row, 6].Value?.ToString();
                             var parentPhone = worksheet.Cells[row, 7].Value?.ToString();
-                            var conduct = worksheet.Cells[row, 8].Value?.ToString();*/
+                            var address = worksheet.Cells[row, 8].Value?.ToString();
+                            var email = worksheet.Cells[row, 9].Value?.ToString();
 
                             var classroom = _context.Classrooms.FirstOrDefault(c => c.Name == className);
                             if (classroom == null)
                             {
                                 TempData["Error"] = $"Lớp học '{className}' không tồn tại. Hãy thêm lớp học trước.";
-                                return RedirectToAction("Index");
+                                continue;
                             }
 
                             var student = new Student
                             {
-                                Id = int.TryParse(id, out var parsedId) ? parsedId : 0,
                                 Name = name,
                                 Gender = genderString,
+                                Email = email,
                                 DateOfBirth = dateOfBirth,
                                 ClassId = classroom.Id,
-                             /*   Address = address,
+                                Phone = phone,
+                                Address = address,
                                 PhoneParent = parentPhone,
-                                Conduct = conduct ?? "Không có thông tin",*/
+                                Conduct = "Không",
                                 Status = true,
-                                CreateAt = DateTime.Now
+                                CreateAt = DateTime.Now,
+                                UpdateAt = DateTime.Now
                             };
 
                             students.Add(student);
+                            //_context.Students.AddRange(students);
+                           
                         }
-
 
                         _context.Students.AddRange(students);
                         await _context.SaveChangesAsync();
