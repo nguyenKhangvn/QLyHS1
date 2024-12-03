@@ -1,105 +1,38 @@
 ﻿@model IEnumerable<QLyHS1.Models.SubjectDetailViewModel>
-
+@{
+    ViewData["Title"] = "Thêm Môn Học";
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý hồ sơ học sinh</title>
-    <link rel="stylesheet" href="~/css/student.css">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/CSSP/Update.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 
-        .container {
-            //max-width: 800px;
-            //margin: 50px auto;
-            background-color: #ffffff;
-            //padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin: 40px 40px 0 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .control-label {
-            display: block;
-            font-weight: bold;
-            //margin-bottom: 5px;
-            color: #555;
-            margin: 28px 0 0 0;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="date"],
-        input[type="number"],
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            margin: 0 0 0 200px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-            button:hover {
-                background-color: #0056b3;
-            }
-
-        a {
-            text-decoration: none;
-            color: #007bff;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-            a.btn-secondary {
-                background-color: #6c757d;
-                color: white;
-                padding: 10px 20px;
-                border-radius: 5px;
-            }
-
-                a.btn-secondary:hover {
-                    background-color: #5a6268;
-                }
-    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Thêm Môn học</h1>
-        <form asp-action="Add" asp-controller="Subject" method="post">
-            <div class="form-group">
-                <label for="Name" class="control-label">Tên môn học:</label>
-                <input type="text" id="Name" name="Name" required />
-            </div>  
-            <button type="submit" name="Add" value="Add">Thêm Môn học</button>
-        </form>
-        <div>
-            <a asp-action="Index">Quay lại danh sách</a>
+
+<body class="body">
+    <div class="table_Detail">
+        <div class="Detail_form">
+            <h1>Thêm Môn học</h1>
         </div>
+        <form asp-action="Add" asp-controller="Subject" method="post" class="form_1">
+            <div class="form-group">
+                <label for="Name">Tên môn học:</label>
+                <input type="text" id="Name" name="Name" class="form-control" required />
+            </div>  
+           
+            <div class="btn_form">
+                <a asp-action="Index" class="cancel-btn">Hủy</a>
+                <button type="submit" name="Add" value="Add" class="btn-back btn_save">Thêm</button>
+            </div>
+        </form>
+        
     </div>
 </body>
 </html>

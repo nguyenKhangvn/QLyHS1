@@ -26,8 +26,9 @@
                             <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
                             <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
                         </form>
-                        <button class="btn-add" onclick="">+</button>
-                        <button class="btn-refresh">⟲</button>
+                    <button onclick="window.location.href='@Url.Action("Add", "Subject")'" class="btn-add" onclick="">+</button>
+                    <button class="btn-refresh" onclick="location.reload()">⟲</button>
+
                     </div>
                     <div class="group_top">
                         <a href="" class="btn-text">Xuất Excel</a>
@@ -52,11 +53,11 @@
                                         <td>@stt</td>
                                         <td>@sub.Name</td>
                                         <td>
-                                            <div class="table_funtion">
+                                        <div class="table_funtion" style="display: block;">
                                                 <a asp-action="Details" asp-route-id="@sub.Id">Xem chi tiết</a>
-                                                <p>|</p>
+                                                <p></p>
                                                 <a asp-action="Edit" asp-route-id="@sub.Id">Cập nhật thông tin</a>
-                                                <p>|</p>
+                                                <p></p>
                                                 <a asp-action="Delete" asp-route-id="@sub.Id">Xóa</a>
                                             </div>
                                         </td>

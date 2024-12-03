@@ -278,9 +278,9 @@ namespace QLyHS1.Controllers
 
 
                     if (student == null)
-                        {
-                            return NotFound();
-                        }
+                    {
+                        return NotFound();
+                    }
 
 
                     student.ClassId = studentViewModel.ClassId;

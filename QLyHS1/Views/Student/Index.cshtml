@@ -22,8 +22,24 @@
                     <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
                     <button class="btn-search"> <i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
+
                 <button onclick="window.location.href='@Url.Action("Add", "Student")'" class="btn-add" onclick="">+</button>
                 <button class="btn-refresh">⟲</button>
+
+                <form method="get" asp-action="Index" class="group_class">
+                    <label for="className" class="btn-text">Lọc theo lớp:</label>
+                    <select name="className" id="className" onchange="this.form.submit()" class="assds">
+                        <option value="">-- Chọn lớp --</option>
+                        @if (ViewBag.Classrooms != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                </form>
+
             </div>
             <div class="group_top">
                 <a href="" class="btn-text">Xuất Excel</a>
@@ -34,7 +50,6 @@
                 <thead>
                     <tr>
                         <th class="wide">STT</th>
-                        <th>MSHS</th>
                         <th>Họ tên</th>
                         <th>Lớp</th>
                         <th>Giới tính</th>
@@ -50,7 +65,6 @@
                         {
                             <tr>
                                 <td>@stt</td>
-                                <td>HS001</td>
                                 <td>@student.Name</td>
                                 <td>@student.ClassName</td>
                                 <td>@student.Gender</td>
@@ -72,7 +86,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="6">Không có dữ liệu học sinh.</td>
+                            <td colspan="7">Không có dữ liệu học sinh.</td>
                         </tr>
                     }
                 </tbody>

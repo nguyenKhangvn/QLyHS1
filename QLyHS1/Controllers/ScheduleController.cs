@@ -46,6 +46,14 @@ namespace QLyHS1.Controllers
 
             if (role == "Admin")
             {
+                ViewBag.Classrooms = _context.Classrooms
+               .Where(c => c.TeacherId == userId)
+               .Select(c => new SelectListItem
+               {
+                   Value = c.Name,
+                   Text = c.Name
+               }).ToList();
+
                 var schedules = from sch in _context.Schedules
                                 join s in _context.Subjects on sch.TeacherId equals s.Id
                                 join t in _context.Teachers on sch.SubjectId equals t.Id
@@ -54,7 +62,7 @@ namespace QLyHS1.Controllers
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                   /* ClassRoom = sch.ClassRoom,*/
+                                    ClassRoom = sch.ClassRoom,
                                     DayOfWeek = sch.DayOfWeek,
                                     Infomation = sch.Infomation ?? "Không có thông tin",
                                     StartTime = sch.StartTime,
@@ -74,7 +82,7 @@ namespace QLyHS1.Controllers
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                   /* ClassRoom = sch.ClassRoom,*/
+                                    ClassRoom = sch.ClassRoom,
                                     DayOfWeek = sch.DayOfWeek,
                                     Infomation = sch.Infomation ?? "Không có thông tin",
                                     StartTime = sch.StartTime,
@@ -196,8 +204,9 @@ namespace QLyHS1.Controllers
         {
             if (id != model.Id)
             {
-                return NotFound();
+                return RedirectToAction("PageNotFound", "Home");
             }
+
 
             if (ModelState.IsValid)
             {

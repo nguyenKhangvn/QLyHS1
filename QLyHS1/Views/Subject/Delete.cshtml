@@ -3,48 +3,53 @@
 @{
     ViewData["Title"] = "Quản lý môn học";
 }
+<link rel="stylesheet" href="~/CSSP/Base.css">
+<link rel="stylesheet" href="~/CSSP/Hearder.css">
+<link rel="stylesheet" href="~/CSSP/Menu.css">
+<link rel="stylesheet" href="~/CSSP/Delete.css">
+<link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
 
-<h1>Xóa môn học</h1>
-
-<h3>Bạn có chắc chắn xóa môn học này?</h3>
-<br />
-<div class="form-container">
-    <h4>Môn học</h4>
-    <hr />
-    <dl class="row">
-        div
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdateAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdateAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-    </dl>
-
-    <form asp-action="Delete" class="form-delete">
-        <input type="hidden" asp-for="Id" />
-        <div class="form-actions">
-            <input type="submit" value="Delete" class="btn btn-danger" />
-            <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+<body class="body">
+    <div class="table_Detail">
+        <div class="Detail_form">
+            <p>Xóa môn học</p>
+            <h3>Bạn có chắc chắn xóa môn học này?</h3>
+            <button onclick="window.location.href='@Url.Action("Index", "Subject")'" class="btn-back">Quay lại</button>
         </div>
-    </form>
-</div>
+        <form asp-action="Delete" asp-controller="Subject" method="post" class="form_1">
+        <div class="detail-item">
+            <div>
+                <strong>Tên môn học:</strong>
+            </div>
+            <div>
+                @Model.Name
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div>
+                <strong>Ngày cập nhật:</strong>
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.UpdateAt)
+            </div>
+        </div>
+
+        <div class="detail-item">
+            <div>
+                <strong>Trạng thái:</strong>
+            </div>
+            <div>
+                @Html.DisplayFor(model => model.Status)
+            </div>
+        </div>
+
+            <div class="btn_form">
+                <a asp-action="Index" class="cancel-btn">Hủy</a>
+                <button class="btn-back btn_save" type="submit">Xóa</button>
+            </div>
+        </form>
+    </div>
+
+   
+</body>

@@ -15,7 +15,7 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(string? subjectName)
         {
            var sub = from st in _context.Subjects
                              .Where(t => t.Status == true)
@@ -24,6 +24,19 @@ namespace QLyHS1.Controllers
                                        Id = st.Id,
                                        Name = st.Name,                               
                              };
+
+            return View(sub.ToList());
+        }
+        [Route("Subject/Search")]
+        public IActionResult Search(string? subjectName)
+        {
+            var sub = from st in _context.Subjects
+                              .Where(t => t.Status == true && subjectName == t.Name)
+                      select new SubjectViewModel
+                      {
+                          Id = st.Id,
+                          Name = st.Name,
+                      };
 
             return View(sub.ToList());
         }
