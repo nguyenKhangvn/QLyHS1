@@ -1,22 +1,31 @@
-﻿<!DOCTYPE html>
+﻿@model QLyHS1.Data.Schedule
+@{
+    ViewData["Title"] = "Xóa Thời khóa biểu";
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lí học sinh</title>
-    <link rel="stylesheet" href="../CSS/Base.css">
-    <link rel="stylesheet" href="../CSS/Hearder.css">
-    <link rel="stylesheet" href="../CSS/Menu.css">
-    <link rel="stylesheet" href="../fontawesome-free-6.7.1-web/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/Delete.css">
+    <link rel="stylesheet" href="~/CSSP/Base.css">
+    <link rel="stylesheet" href="~/CSSP/Hearder.css">
+    <link rel="stylesheet" href="~/CSSP/Menu.css">
+    <link rel="stylesheet" href="~/CSSP/Detail.css">
+    <link rel="stylesheet" href="~/fontawesome-free-6.7.1-web/css/all.min.css">
+
 </head>
 
 <body class="body">
-    <div class="grid">
-        <div class="app">
+    <div class="table_Detail">
+        <div class="Detail_form">
+            <p>Xóa Thời khóa biểu</p>
+            <button onclick="window.location.href='@Url.Action("Index", "Student")'" class="btn-back">Quay lại</button>
+        </div>
             <!-- -------------------------------------- -->
-            <div class="table_Detail">
+            <form asp-action="Delete" asp-controller="Schedule" method="post" class="form_1">
+           
                 <div class="detail-item">
                     <strong>Tên lớp</strong> @Model.ClassRoom
                 </div>
@@ -30,14 +39,18 @@
                     <strong>Ngày kết thúc</strong> @Model.EndTime
                 </div>
                 <div class="detail-item">
-                    <strong>MMH</strong> @Model.Subject.Id
+                    <strong>Thông tin</strong> @Model.Infomation
+                </div>
+                <div class="detail-item">
+                    <strong>Môn học</strong> @Model.Subject.Name
                 </div>
                 <div class="btn_form">
-                    <button class="btn-back btn_view" type="submit">Xóa</button>
+                    <a asp-action="Index" class="cancel-btn">Hủy</a>
+                    <button class="btn-back btn_save" type="submit">Xóa</button>
                 </div>
-            </div>
-        </div>
+        </form>
     </div>
+
 </body>
 
 </html>

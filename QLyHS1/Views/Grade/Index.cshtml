@@ -34,17 +34,17 @@
                     </div>
                     <div class="group_top">
                          <div class="form_excel_1">
-                            <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
+                             <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
                                 <button class="form_11" type="button" onclick="document.getElementById('excelFile').click();">Tải Excel File</button>
-                                <input type="file" name="excelFile" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
+                                 <input type="file" name="excelFile" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
                             </form>
-                            <button class="form_11"  type="submit" class="btn btn-success mt-2">Nhập bằng Excel</button>
+                            <button class="form_11 btn btn-success mt-2" type="submit">Nhập bằng Excel</button>
                          </div>
                     </div>
                 <div class="group_top">
-                <a asp-action="ExportToExcel" asp-controller="Grade" class="btn-text">Xuất Excel</a>
+                    <a asp-action="ExportToExcel" asp-controller="Grade" class="btn-text">Xuất Excel</a>
                     <form method="get" asp-action="Index" class="group_class">
-                        <label for="className" class="btn-text">Lọc theo lớp:</label>
+                        <label for="className" class="btn-text"></label>
                         <select name="className" id="className" onchange="this.form.submit()" class="assds">
                             <option value="">-- Chọn lớp --</option>
                             @if (ViewBag.Classrooms != null)
@@ -55,6 +55,16 @@
                                 }
                             }
                         </select>
+                    <select name="subName" id="className" onchange="this.form.submit()" class="assds">
+                        <option value="">-- Chọn môn học --</option>
+                        @if (ViewBag.SubjectsForSpecificTeacher != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.SubjectsForSpecificTeacher)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
                     </form>
                 </div>
             </div>
@@ -63,9 +73,11 @@
                         <thead>
                             <tr>
                                 <th class="wide">STT</th>
-                                <th>MSHS</th>
+ 
                                 <th>Họ tên</th>
+                                <th>Học kỳ</th>
                                 <th>Môn học</th>
+                                <th>Năm học</th>
                                 <th>Điểm hệ số 1</th>
                                 <th>Điểm hệ số 2</th>
                                 <th>Điểm hệ số 3</th>
@@ -80,18 +92,20 @@
                                 {
                                     <tr>
                                         <td>@stt</td>
-                                        <td>//</td>
+
                                         <td>@student.StudentName</td>
+                                        <td>@student.SemesterName</td>
                                         <td>@student.SubjectName</td>
+                                        <td>@student.SchoolYearName</td>
                                         <td>@student.GradeI</td>
                                         <td>@student.GradeII</td>
                                         <td>@student.GradeIII</td>
                                         <td>
-                                            <div class="table_funtion">
+                                    <div class="table_funtion" style="display: block;">
                                                 <a asp-action="Details" asp-route-id="@student.Id">Xem chi tiết</a>
-                                                <span>|</span>
+                                                <p></p>
                                                 <a asp-action="Edit" asp-route-id="@student.Id">Cập nhập thông tin</a>
-                                                <span>|</span>
+                                                <p></p>
                                                 <a asp-action="Delete" asp-route-id="@student.Id">Xóa</a>
                                             </div>
                                         </td>
@@ -102,7 +116,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="8" class="text-center">Không có dữ liệu</td>
+                                    <td colspan="9" class="text-center">Không có dữ liệu</td>
                                 </tr>
                             }
                         </tbody>

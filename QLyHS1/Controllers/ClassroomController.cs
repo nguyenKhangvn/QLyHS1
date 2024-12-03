@@ -89,10 +89,10 @@ namespace QLyHS1.Controllers
         }
 
         [Route("Classroom/Search")]
-        public IActionResult Search(string? query)
+        public IActionResult Search(string? teacherName)
         {
             var stu = _context.Classrooms.AsQueryable();
-            if (query == null)
+            if (teacherName == null)
             {
                 return NotFound();
             }
@@ -100,7 +100,7 @@ namespace QLyHS1.Controllers
             var students = _context.Classrooms
                 .Include(t => t.Teacher)
                 .Include(gl => gl.GrandLevel)   
-                .Where(t => t.Name.Contains(query))
+                .Where(t => t.Name.Contains(teacherName))
                 .Select(cl => new ClassroomViewModel
                 {
                     Id = cl.Id,

@@ -55,8 +55,8 @@ namespace QLyHS1.Controllers
                }).ToList();
 
                 var schedules = from sch in _context.Schedules
-                                join s in _context.Subjects on sch.TeacherId equals s.Id
-                                join t in _context.Teachers on sch.SubjectId equals t.Id
+                                join t in _context.Teachers on sch.TeacherId equals t.Id
+                                join s in _context.Subjects on sch.SubjectId equals s.Id
                                 select new ScheduleViewModel
                                 {
                                     Id = sch.Id,
@@ -106,7 +106,7 @@ namespace QLyHS1.Controllers
                     Id = s.Id,
                     SubjectName = s.Subject.Name,
                     TeacherName = s.Teacher.Name,
-                  /*  ClassRoom = s.ClassRoom,*/
+                    ClassRoom = s.ClassRoom,
                     DayOfWeek = s.DayOfWeek,
                     Infomation = s.Infomation ?? "Không có thông tin",
                     StartTime = s.StartTime,

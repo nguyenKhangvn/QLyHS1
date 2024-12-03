@@ -22,7 +22,7 @@
         <div class="table_top">
             <div class="group_top">
                 <form name="SearchForm" asp-action="Search" asp-controller="Classroom">
-                    <input class="input_search" type="text" placeholder="Tìm kiếm theo tên giáo viên" name="query">
+                    <input class="input_search" type="text" placeholder="Tìm kiếm theo tên giáo viên" name="teacherName">
                     <button class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 <button onclick="window.location.href='@Url.Action("Add", "Classroom")'" class="btn-add" onclick="">+</button>

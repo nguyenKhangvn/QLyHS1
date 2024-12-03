@@ -19,7 +19,7 @@
             <p>Thêm thời khóa biểu</p>
             <button onclick="window.location.href='@Url.Action("Index", "Schedule")'" class="btn-back">Quay lại</button>
         </div>
-        <form asp-action="Add" asp-controller="Schedule" method="Form_Add">
+        <form asp-action="Add" asp-controller="Schedule" method="post" class="Form_Add">
             <div class="form-group">
                 <label for="SubjectId" class="control-label">Tên môn:</label>
                 <select id="SubjectId" asp-for="SubjectId" asp-items="ViewBag.Subject" class="form-control">

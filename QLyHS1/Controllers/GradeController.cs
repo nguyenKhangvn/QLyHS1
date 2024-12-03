@@ -16,7 +16,7 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(String? className)
+        public IActionResult Index(String? className, String? subName)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -26,13 +26,13 @@ namespace QLyHS1.Controllers
                 return RedirectToAction("Login", "User");
             }
 
-            ViewBag.Classrooms = _context.Classrooms
+          /*  ViewBag.Classrooms = _context.Classrooms
                 .Where(c => c.TeacherId == userId)
                 .Select(c => new SelectListItem
                 {
                     Value = c.Name,
                     Text = c.Name
-                }).ToList();
+                }).ToList();*/
             
             if (role == "Admin")
             {
@@ -42,13 +42,27 @@ namespace QLyHS1.Controllers
                                             Value = c.Name,
                                             Text = c.Name
                                         }).ToList();
+
+
+             ViewBag.SubjectsForSpecificTeacher = _context.Assignments
+                .Join(_context.Subjects,
+                      assignment => assignment.SubjectId,
+                      subject => subject.Id,
+                      (assignment, subject) => new SelectListItem
+                      {
+                          Value = subject.Id.ToString(),
+                          Text = subject.Name
+                      })
+                .ToList();
+
                 var schedules = from g in _context.Grades
                                 join s in _context.Students on g.StudentId equals s.Id
                                 join sm in _context.Semesters on g.SemesterId equals sm.Id
                                 join sc in _context.SchoolYears on g.SchoolYearId equals sc.Id
                                 join su in _context.Subjects on g.SubjectId equals su.Id
-                                join cl in _context.Classrooms on g.SubjectId equals cl.Id
-                                where string.IsNullOrEmpty(className) || cl.Name == className
+                                join cl in _context.Classrooms on g.ClassNameID equals cl.Id
+                                where (string.IsNullOrEmpty(className) || cl.Name == className) 
+                                            || (string.IsNullOrEmpty(subName) || su.Name == subName)
                                 select new GradeViewModel
                                 {
                                     Id = g.Id,
@@ -73,6 +87,15 @@ namespace QLyHS1.Controllers
                                          Value = c.Name,
                                          Text = c.Name
                                      }).ToList();
+
+                ViewBag.SubjectsForSpecificTeacher = _context.Assignments
+                        .Where(a => a.TeacherId == userId) 
+                        .Join(_context.Subjects, assignment => assignment.SubjectId, subject => subject.Id, (assignment, subject) => new SelectListItem
+                        {
+                            Value = subject.Id.ToString(),
+                            Text = subject.Name
+                        })
+                        .ToList();
                 var schedules = from g in _context.Grades
                                 join s in _context.Students on g.StudentId equals s.Id
                                 join sm in _context.Semesters on g.SemesterId equals sm.Id
@@ -80,7 +103,9 @@ namespace QLyHS1.Controllers
                                 join su in _context.Subjects on g.SubjectId equals su.Id
                                 join cl in _context.Classrooms on g.ClassNameID equals cl.Id
                                 join te in _context.Teachers on cl.TeacherId equals te.Id
-                                where te.Id == userId && string.IsNullOrEmpty(className) || cl.Name == className
+                                where te.Id == userId
+                       && (string.IsNullOrEmpty(className) || cl.Name == className)
+                       && (string.IsNullOrEmpty(subName) || su.Name == subName)
                                 select new GradeViewModel
                                 {
                                     Id = g.Id,
@@ -531,9 +556,9 @@ namespace QLyHS1.Controllers
             {
                 var worksheet = package.Workbook.Worksheets.Add("Students");
                 worksheet.Cells[1, 1].Value = "Trường: Đại học Quy Nhơn";
-                worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";
+             /*   worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";
                 worksheet.Cells[3, 1].Value = $"Học kì: {(string.IsNullOrEmpty(className) ? "---" : className)}";
-                worksheet.Cells[4, 1].Value = $"Học kì: {(string.IsNullOrEmpty(className) ? "---" : className)}";
+                worksheet.Cells[4, 1].Value = $"Học kì: {(string.IsNullOrEmpty(className) ? "---" : className)}";*/
                 
                 int headerCell = 5;
                 worksheet.Cells[headerCell, 2].Value = "Học kì";
@@ -567,6 +592,7 @@ namespace QLyHS1.Controllers
             }
         }
 
+        [HttpPost]
         public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
         {
             if (excelFile == null || excelFile.Length == 0)
@@ -585,16 +611,16 @@ namespace QLyHS1.Controllers
                         var worksheet = package.Workbook.Worksheets[0];
                         int rowCount = worksheet.Dimension.Rows;
 
-                        for (int row = 6; row <= rowCount; row++)
+                        for (int row = 5; row <= rowCount; row++)
                         {
-                            var studentName = worksheet.Cells[row, 1].Value?.ToString();
-                            var semesterName = worksheet.Cells[row, 2].Value?.ToString();
-                            var subjectName = worksheet.Cells[row, 3].Value?.ToString();
-                            var schoolYearName = int.TryParse(worksheet.Cells[row, 4].Value?.ToString(), out var y) ? y : (int?)null;
-                            var className = worksheet.Cells[row, 5].Value?.ToString();
-                            var gradeI = double.TryParse(worksheet.Cells[row, 6].Value?.ToString(), out var g1) ? g1 : (double?)null;
-                            var gradeII = double.TryParse(worksheet.Cells[row, 7].Value?.ToString(), out var g2) ? g2 : (double?)null;
-                            var gradeIII = double.TryParse(worksheet.Cells[row, 8].Value?.ToString(), out var g3) ? g3 : (double?)null;
+                            var studentName = worksheet.Cells[row, 2].Value?.ToString();
+                            var semesterName = worksheet.Cells[row, 3].Value?.ToString();
+                            var subjectName = worksheet.Cells[row, 4].Value?.ToString();
+                            var schoolYearName = int.TryParse(worksheet.Cells[row, 5].Value?.ToString(), out var y) ? y : (int?)null;
+                            var className = worksheet.Cells[row, 6].Value?.ToString();
+                            var gradeI = double.TryParse(worksheet.Cells[row, 7].Value?.ToString(), out var g1) ? g1 : (double?)null;
+                            var gradeII = double.TryParse(worksheet.Cells[row, 8].Value?.ToString(), out var g2) ? g2 : (double?)null;
+                            var gradeIII = double.TryParse(worksheet.Cells[row, 9].Value?.ToString(), out var g3) ? g3 : (double?)null;
 
                             // Tìm các bản ghi tương ứng trong database
                             var student = _context.Students.FirstOrDefault(s => s.Name == studentName);
@@ -627,7 +653,7 @@ namespace QLyHS1.Controllers
                                     g.SchoolYearId == schoolYear.Id);
 
                                 var isStudent = _context.Grades.FirstOrDefault(g => g.StudentId == student.Id);
-
+                                var isSub = _context.Grades.FirstOrDefault(g => g.SubjectId == subject.Id);
                                 if (isStudent == null)
                                 {
                                     
@@ -647,8 +673,27 @@ namespace QLyHS1.Controllers
                                     };
                                     _context.Grades.Add(grade);
                                 }
+                                else if (isStudent != null && isSub == null)
+                                {
+                                    grade = new Grade
+                                    {
+                                        StudentId = student.Id,
+                                        SemesterId = semester.Id,
+                                        SubjectId = subject.Id,
+                                        SchoolYearId = schoolYear.Id,
+                                        ClassNameID = classObj.Id,
+                                        GradeI = gradeI,
+                                        GradeII = gradeII,
+                                        GradeSemester = gradeIII,
+                                        CreateAt = DateTime.Now,
+                                        UpdateAt = DateTime.Now,
+                                        Status = true
+                                    };
+                                    _context.Grades.Add(grade);
+                                }
                                 else
                                 {
+                                    grade = isSub;
                                     grade.GradeI = gradeI;
                                     grade.GradeII = gradeII;
                                     grade.GradeSemester = gradeIII;

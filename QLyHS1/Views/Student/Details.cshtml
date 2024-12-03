@@ -49,9 +49,9 @@
             <strong>Địa chỉ:</strong> @Model.Address
         </div>
         <div class="detail-item">
-            <strong>Hạnh kiểm:</strong> @Model.Conduct ?? "Không có thông tin"
+            <strong>Hạnh kiểm:</strong>
+            @(string.IsNullOrEmpty(Model.Conduct) ? "Không có thông tin" : Model.Conduct)
         </div>
-
         <div class="detail-item">
             <strong>Ngày tạo:</strong> @Model.CreateAt
         </div>
