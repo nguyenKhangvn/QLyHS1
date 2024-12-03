@@ -21,12 +21,13 @@
     <div class="table-container">
         <div class="table_top">
             <div class="group_top">
-                <form name="SearchForm" asp-action="Search" asp-controller="Student">
-                    <input class="input_search" type="text" placeholder="Tìm kiếm" name="query">
+                <form name="SearchForm" asp-action="Search" asp-controller="Classroom">
+                    <input class="input_search" type="text" placeholder="Tìm kiếm theo tên giáo viên" name="query">
                     <button class="btn-search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
                 <button onclick="window.location.href='@Url.Action("Add", "Classroom")'" class="btn-add" onclick="">+</button>
-                <button class="btn-refresh" onclick="location.reload()">⟲</button>
+                <button class="btn-refresh" onclick="window.location.href='@Url.Action("Index", "Classroom")'">⟲</button>
+
             </div>
             <div class="group_top">
                 <a href="" class="btn-text">Xuất Excel</a>

@@ -24,6 +24,10 @@ namespace QLyHS1.Controllers
                                        Id = st.Id,
                                        Name = st.Name,                               
                              };
+            if (!string.IsNullOrEmpty(subjectName))
+            {
+                sub = sub.Where(s => s.Name.Contains(subjectName));
+            }
 
             return View(sub.ToList());
         }
@@ -37,6 +41,11 @@ namespace QLyHS1.Controllers
                           Id = st.Id,
                           Name = st.Name,
                       };
+
+            if (!string.IsNullOrEmpty(subjectName))
+            {
+                sub = sub.Where(s => s.Name.Contains(subjectName));
+            }
 
             return View(sub.ToList());
         }

@@ -25,16 +25,16 @@
             <button onclick="window.location.href='@Url.Action("Index", "Classroom")'" class="btn-back">Quay lại</button>
         </div>
         <div class="detail-item">
-            <strong>Khối:</strong> @Model.Name
+            <strong>Khối:</strong> @Model.GrandLevel
         </div>
         <div class="detail-item">
-            <strong>Lớp học:</strong> @ViewBag.SubjectName
+            <strong>Lớp học:</strong> @Model.Name
         </div>
         <div class="detail-item">
-            <strong>Số lượng:</strong> sfdfsdfsdfs
+            <strong>Số lượng:</strong> @Model.Quantity
         </div>
         <div class="detail-item">
-            <strong>Trạng thái:</strong>sdfsdfsdfsdf
+            <strong>Trạng thái:</strong>@Model.Status
         </div>
     </div>
 

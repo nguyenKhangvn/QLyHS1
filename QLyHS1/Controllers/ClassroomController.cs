@@ -19,7 +19,7 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(String? grandLevel)
+        public IActionResult Index(String? teacherName)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -38,10 +38,17 @@ namespace QLyHS1.Controllers
 
             if (role == "Admin")
             {
+                ViewBag.Classrooms = _context.Classrooms
+                            .Select(c => new SelectListItem
+                            {
+                                Value = c.Name,
+                                Text = c.Name
+                            }).ToList();
+
                 var schedules = from cl in _context.Classrooms
                                 join t in _context.Teachers on cl.TeacherId equals t.Id
                                 join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
-                                where string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
+                                where string.IsNullOrEmpty(teacherName) || t.Name == teacherName
                                 select new ClassroomViewModel
                                 {
                                     Id = cl.Id,
@@ -55,10 +62,18 @@ namespace QLyHS1.Controllers
                 return View(schedules.ToList());
             } else
             {
+                ViewBag.Classrooms = _context.Classrooms
+                            .Where(t => t.TeacherId == userId)
+                           .Select(c => new SelectListItem
+                           {
+                               Value = c.Name,
+                               Text = c.Name
+                           }).ToList();
+
                 var schedules = from cl in _context.Classrooms
                                 join t in _context.Teachers on cl.TeacherId equals t.Id
                                 join gl in _context.GrandLevels on cl.GrandLevelId equals gl.Id
-                                where cl.TeacherId == userId && string.IsNullOrEmpty(grandLevel) || gl.Name == grandLevel
+                                where cl.TeacherId == userId && string.IsNullOrEmpty(teacherName) || gl.Name == teacherName
                                 select new ClassroomViewModel
                                 {
                                     Id = cl.Id,
@@ -84,8 +99,8 @@ namespace QLyHS1.Controllers
 
             var students = _context.Classrooms
                 .Include(t => t.Teacher)
-                .Include(gl => gl.GrandLevel)
-                .Where(m => m.Name.Contains(query))
+                .Include(gl => gl.GrandLevel)   
+                .Where(t => t.Name.Contains(query))
                 .Select(cl => new ClassroomViewModel
                 {
                     Id = cl.Id,
