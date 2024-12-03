@@ -22,30 +22,48 @@
         </div>
         <form asp-action="Add" asp-controller="Student" method="post" class="Form_Add">
             <div class="form-group">
-                <label for="SubjectId" class="control-label">Tên môn:</label>
-                <select id="SubjectId" asp-for="SubjectId" asp-items="ViewBag.Subject" class="form-control">
-                    <option value="">-- Chọn môn --</option>
+                <label for="ClassID" class="control-label">Tên lớp:</label>
+                <select id="ClassID" asp-for="ClassID" asp-items="ViewBag.Classroom" class="form-control size_1">
+                    <option value="">-- Chọn lớp --</option>
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="TeacherId" class="control-label">Tên giáo viên:</label>
-                <select id="ClassID" asp-for="TeacherId" asp-items="ViewBag.Teacher" class="form-control">
-                    <option value="">-- Chọn giáo viên --</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ClassRoom" class="control-label">Phòng học:</label>
-                <input type="text" id="ClassRoom" name="ClassRoom" required />
             </div>
 
             <div class="form-group">
-                <label for="DayOfWeek" class="control-label">Số tuần:</label>
-                <input type="number" id="DayOfWeek" name="DayOfWeek" required />
+                <label asp-for="Name" class="control-label">Tên Học Sinh:</label>
+                <input asp-for="Name" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label for="Infomation" class="control-label">Thông tin:</label>
-                <input type="text" id="Infomation" name="Infomation" required />
+                <label asp-for="Gender" class="control-label">Giới Tính</label>
+                <select asp-for="Gender" class="form-control" class="size_1">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email:</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label">Ngày Sinh:</label>
+                <input asp-for="DateOfBirth" type="date" class="form-control size_1" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label">Số điện thoại:</label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneParent" class="control-label">Liên hệ phụ huynh:</label>
+                <input asp-for="PhoneParent" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address" class="control-label">Địa Chỉ:</label>
+                <input asp-for="Address" class="form-control" />
             </div>
             <div class="btn_form">
                 <a asp-action="Index" class="cancel-btn">Hủy</a>

@@ -503,13 +503,12 @@ namespace QLyHS1.Controllers
                         {
                             var id = worksheet.Cells[row, 1].Value?.ToString();
                             var name = worksheet.Cells[row, 2].Value?.ToString();
-                            var genderString = worksheet.Cells[row, 3].Value?.ToString()?.Trim();   
-                            bool gender = genderString == "Nam" ? true : false;
-                            var dateOfBirth = worksheet.Cells[row, 4].Value as DateTime? ?? DateTime.Now;
+                            var genderString = worksheet.Cells[row, 3].Value?.ToString()?.Trim();
                             var className = worksheet.Cells[row, 5].Value?.ToString();
-                            var address = worksheet.Cells[row, 6].Value?.ToString();
+                            var dateOfBirth = worksheet.Cells[row, 4].Value as DateTime? ?? DateTime.Now;
+                           /* var address = worksheet.Cells[row, 6].Value?.ToString();
                             var parentPhone = worksheet.Cells[row, 7].Value?.ToString();
-                            var conduct = worksheet.Cells[row, 8].Value?.ToString();
+                            var conduct = worksheet.Cells[row, 8].Value?.ToString();*/
 
                             var classroom = _context.Classrooms.FirstOrDefault(c => c.Name == className);
                             if (classroom == null)
@@ -522,12 +521,12 @@ namespace QLyHS1.Controllers
                             {
                                 Id = int.TryParse(id, out var parsedId) ? parsedId : 0,
                                 Name = name,
-                               /* Gender = gender,*/
+                                Gender = genderString,
                                 DateOfBirth = dateOfBirth,
                                 ClassId = classroom.Id,
-                                Address = address,
+                             /*   Address = address,
                                 PhoneParent = parentPhone,
-                                Conduct = conduct ?? "Không có thông tin",
+                                Conduct = conduct ?? "Không có thông tin",*/
                                 Status = true,
                                 CreateAt = DateTime.Now
                             };
