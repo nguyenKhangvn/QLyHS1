@@ -276,6 +276,8 @@ namespace QLyHS1.Controllers
             {
                 return NotFound();
             }
+
+
             var classroms = await _context.Classrooms
                 .Include(t => t.Teacher)
                 .Include(gl => gl.GrandLevel)

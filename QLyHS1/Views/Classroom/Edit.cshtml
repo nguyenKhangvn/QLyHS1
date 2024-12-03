@@ -28,22 +28,22 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="TeacherID" class="control-label"></label>
+                <label asp-for="TeacherID" class="control-label">Giáo viên:</label>
                 <select asp-for="TeacherID" class="form-control" asp-items="ViewBag.TeacherId"></select>
                 <span asp-validation-for="TeacherID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GrandLevelID" class="control-label"></label>
+                <label asp-for="GrandLevelID" class="control-label">Khối:</label>
                 <select asp-for="GrandLevelID" class="form-control" asp-items="ViewBag.GrandLevelId"></select>
                 <span asp-validation-for="GrandLevelID" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Lớp:</label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
+                <label asp-for="Quantity" class="control-label">Số lượng:</label>
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
@@ -57,12 +57,12 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreateAt" class="control-label"></label>
+                <label asp-for="CreateAt" class="control-label">Ngày tạo:</label>
                 <input asp-for="CreateAt" class="form-control" />
                 <span asp-validation-for="CreateAt" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdateAt" class="control-label"></label>
+                <label asp-for="UpdateAt" class="control-label">Ngày chỉnh sửa:</label>
                 <input asp-for="UpdateAt" class="form-control" />
                 <span asp-validation-for="UpdateAt" class="text-danger"></span>
             </div>

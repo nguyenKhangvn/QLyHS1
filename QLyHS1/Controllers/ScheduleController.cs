@@ -141,7 +141,6 @@ namespace QLyHS1.Controllers
             return View();
         }
 
-        // Add a new schedule
         [HttpPost]
         public IActionResult Add(ScheduleDetailViewModel model)
         {
@@ -218,7 +217,7 @@ namespace QLyHS1.Controllers
 
                 schedule.SubjectId = model.SubjectId;
                 schedule.TeacherId = model.TeacherId;
-               /* schedule.ClassRoom = model.ClassRoom;*/
+                schedule.ClassRoom = model.ClassRoom;
                 schedule.DayOfWeek = model.DayOfWeek;
                 schedule.Infomation = model.Infomation;
                 schedule.StartTime = model.StartTime;

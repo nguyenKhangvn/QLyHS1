@@ -28,11 +28,11 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="ClassId" class="control-label"></label>
+                <label asp-for="ClassId" class="control-label">Lớp</label>
                 <select asp-for="ClassId" class="form-control" asp-items="ViewBag.ClassId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="control-label">Họ và tên</label>
                 <input asp-for="Name" class="form-control" />
             </div>
             <div class="form-group">
@@ -43,27 +43,27 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
+                <label asp-for="Email" class="control-label">Email</label>
                 <input asp-for="Email" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
+                <label asp-for="DateOfBirth" class="control-label">Sinh nhật</label>
                 <input asp-for="DateOfBirth" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
+                <label asp-for="Phone" class="control-label">Số điện thoại</label>
                 <input asp-for="Phone" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="PhoneParent" class="control-label"></label>
+                <label asp-for="PhoneParent" class="control-label">Liên hệ phụ huynh</label>
                 <input asp-for="PhoneParent" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
+                <label asp-for="Address" class="control-label">Địa chỉ</label>
                 <input asp-for="Address" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Conduct" class="control-label">Hạnh kiểm:</label>>
+                <label asp-for="Conduct" class="control-label">Hạnh kiểm</label>>
                 <select asp-for="Conduct" class="form-control" class="size_1">
                     <option value="Giỏi">Giỏi</option>
                     <option value="Khá">Khá</option>
@@ -72,18 +72,18 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label">Trạng thái: </label>
+                <label asp-for="Status" class="control-label">Trạng thái</label>
                 <select asp-for="Status" class="form-control">
                     <option value="true">Còn</option>
                     <option value="false">Nghỉ</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="CreateAt" class="control-label"></label>
+                <label asp-for="CreateAt" class="control-label">Ngày thêm</label>
                 <input asp-for="CreateAt" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="UpdateAt" class="control-label"></label>
+                <label asp-for="UpdateAt" class="control-label">Ngày chỉnh sửa</label>
                 <input asp-for="UpdateAt" class="form-control" />
             </div>
             <div class="btn_form">

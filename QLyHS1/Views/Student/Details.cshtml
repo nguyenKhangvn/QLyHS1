@@ -28,7 +28,7 @@
             <strong>Họ Tên:</strong> @Model.Name
         </div>
         <div class="detail-item">
-            <strong>Lớp học:</strong> @Model.Class.Id
+            <strong>Lớp học:</strong> @Model.Class.Name
         </div>
         <div class="detail-item">
             <strong>Giới tính:</strong> @Model.Gender
@@ -55,7 +55,7 @@
             <strong>Ngày cập nhập:</strong> @Model.UpdateAt
         </div>
         <div class="detail-item">
-            <strong>Trạng thái:</strong> @((Model.Status == true) ? "Học" : "Nghỉ học")
+            <strong>Trạng thái:</strong> @((Model.Status == true) ? "Còn Học" : "Nghỉ học")
         </div>
     </div>
 

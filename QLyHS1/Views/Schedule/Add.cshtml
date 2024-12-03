@@ -7,7 +7,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm Giáo Viên</title>
     <link rel="stylesheet" href="~/CSSP/Base.css">
     <link rel="stylesheet" href="~/CSSP/Hearder.css">
     <link rel="stylesheet" href="~/CSSP/Menu.css">
@@ -17,8 +16,8 @@
 <body class="body">
     <div class="table_Detail">
         <div class="Detail_form">
-            <p>Thêm lớp học</p>
-            <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
+            <p>Thêm thời khóa biểu</p>
+            <button onclick="window.location.href='@Url.Action("Index", "Schedule")'" class="btn-back">Quay lại</button>
         </div>
         <form asp-action="Add" asp-controller="Schedule" method="Form_Add">
             <div class="form-group">
