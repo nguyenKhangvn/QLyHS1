@@ -40,10 +40,20 @@
                     </select>
                 </form>
 
+                <form asp-action="ImportFromExcel" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Chọn tệp Excel:</label>
+                        <input type="file" name="file" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Nhập dữ liệu</button>
+                </form>
+
+
             </div>
             <div class="group_top">
-                <a href="" class="btn-text">Xuất Excel</a>
+                <a href="@Url.Action("ExportToExcel", "Student")" class="btn-text">Xuất Excel</a>
             </div>
+
         </div>
         <div class="table_form">
             <table class="custom-table">

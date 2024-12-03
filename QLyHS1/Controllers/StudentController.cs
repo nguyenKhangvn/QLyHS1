@@ -400,11 +400,12 @@ namespace QLyHS1.Controllers
                                 Id = st.Id,
                                 Name = st.Name,
                                 Gender = st.Gender,
-                                Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
                                 ClassName = cl.Name,
-                                Address = st.Address,
+                                Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
+                               
+                    /*            Address = st.Address,
                                 ParentPhone = st.PhoneParent,
-                                Conduct = st.Conduct ?? "Không có thông tin"
+                                Conduct = st.Conduct ?? "Không có thông tin"*/
                             };
             }
             else
@@ -418,12 +419,12 @@ namespace QLyHS1.Controllers
                                 Id = st.Id,
                                 Name = st.Name,
                                 Gender = st.Gender,
-                                Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
                                 ClassName = cl.Name,
-                                Address = st.Address,
+                                Birthday = st.DateOfBirth.ToString("dd/MM/yyyy"),
+                              /*  Address = st.Address,
                                 ParentPhone = st.PhoneParent,
                                 Conduct = st.Conduct ?? "Không có thông tin"
-                            };
+                            */};
             }
 
             var data = studentVM.ToList();
@@ -433,30 +434,32 @@ namespace QLyHS1.Controllers
             {
                 var worksheet = package.Workbook.Worksheets.Add("Students");
                 worksheet.Cells[1, 1].Value = "Trường: Đại học Quy Nhơn";
-                worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";
+               /* worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";*/
 
                 int headerCell = 4;
-                worksheet.Cells[headerCell, 1].Value = "ID";
+                worksheet.Cells[headerCell, 1].Value = "STT";
                 worksheet.Cells[headerCell, 2].Value = "Họ và tên";
                 worksheet.Cells[headerCell, 3].Value = "Giới tính";
-                worksheet.Cells[headerCell, 4].Value = "Sinh nhật";
                 worksheet.Cells[headerCell, 5].Value = "Lớp";
-                worksheet.Cells[headerCell, 6].Value = "Địa chỉ";
-                worksheet.Cells[headerCell, 7].Value = "Liên hệ phụ huynh";
-                worksheet.Cells[headerCell, 8].Value = "Hạnh kiểm";
+                worksheet.Cells[headerCell, 4].Value = "Sinh nhật";
+                /*                worksheet.Cells[headerCell, 6].Value = "Địa chỉ";
+                                worksheet.Cells[headerCell, 7].Value = "Liên hệ phụ huynh";
+                                worksheet.Cells[headerCell, 8].Value = "Hạnh kiểm";*/
 
-
+                int stt = 1;
                 int row = headerCell + 1;
                 foreach (var student in data)
                 {
-                    worksheet.Cells[row, 1].Value = student.Id;
+                    worksheet.Cells[row, 1].Value = stt;
                     worksheet.Cells[row, 2].Value = student.Name;
                     worksheet.Cells[row, 3].Value = student.Gender;
-                    worksheet.Cells[row, 4].Value = student.Birthday;
                     worksheet.Cells[row, 5].Value = student.ClassName;
-                    worksheet.Cells[row, 6].Value = student.Address;
-                    worksheet.Cells[row, 7].Value = student.ParentPhone;
-                    worksheet.Cells[row, 8].Value = student.Conduct ?? "Không có thông tin";
+                    worksheet.Cells[row, 4].Value = student.Birthday;
+                    /* worksheet.Cells[row, 6].Value = student.Address;
+                   worksheet.Cells[row, 7].Value = student.ParentPhone;
+                   worksheet.Cells[row, 8].Value = student.Conduct ?? "Không có thông tin";*/
+                   
+                    stt++;
                     row++;
                 }
                 
@@ -470,6 +473,85 @@ namespace QLyHS1.Controllers
                 return File(stream, contentType, fileName);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ImportFromExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["Error"] = "Vui lòng chọn một tệp Excel.";
+                return RedirectToAction("Index");
+            }
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    using (var package = new OfficeOpenXml.ExcelPackage(stream))
+                    {
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            TempData["Error"] = "Tệp Excel không có dữ liệu.";
+                            return RedirectToAction("Index");
+                        }
+
+                        var rowCount = worksheet.Dimension.Rows;
+                        var students = new List<Student>();
+
+                        for (int row = 5; row <= rowCount; row++)
+                        {
+                            var id = worksheet.Cells[row, 1].Value?.ToString();
+                            var name = worksheet.Cells[row, 2].Value?.ToString();
+                            var genderString = worksheet.Cells[row, 3].Value?.ToString()?.Trim();   
+                            bool gender = genderString == "Nam" ? true : false;
+                            var dateOfBirth = worksheet.Cells[row, 4].Value as DateTime? ?? DateTime.Now;
+                            var className = worksheet.Cells[row, 5].Value?.ToString();
+                            var address = worksheet.Cells[row, 6].Value?.ToString();
+                            var parentPhone = worksheet.Cells[row, 7].Value?.ToString();
+                            var conduct = worksheet.Cells[row, 8].Value?.ToString();
+
+                            var classroom = _context.Classrooms.FirstOrDefault(c => c.Name == className);
+                            if (classroom == null)
+                            {
+                                TempData["Error"] = $"Lớp học '{className}' không tồn tại. Hãy thêm lớp học trước.";
+                                return RedirectToAction("Index");
+                            }
+
+                            var student = new Student
+                            {
+                                Id = int.TryParse(id, out var parsedId) ? parsedId : 0,
+                                Name = name,
+                               /* Gender = gender,*/
+                                DateOfBirth = dateOfBirth,
+                                ClassId = classroom.Id,
+                                Address = address,
+                                PhoneParent = parentPhone,
+                                Conduct = conduct ?? "Không có thông tin",
+                                Status = true,
+                                CreateAt = DateTime.Now
+                            };
+
+                            students.Add(student);
+                        }
+
+
+                        _context.Students.AddRange(students);
+                        await _context.SaveChangesAsync();
+
+                        TempData["Success"] = "Nhập dữ liệu thành công.";
+                    }
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Đã xảy ra lỗi: {ex.Message}";
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
