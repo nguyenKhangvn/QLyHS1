@@ -1,5 +1,7 @@
-﻿@{
+﻿@model IEnumerable<QLyHS1.Models.ScheduleViewModel>
+@{
     ViewData["Title"] = "Thời khóa biểu";
+    Layout = "_Layout";
 }
-<h1>Search</h1>
+@await Html.PartialAsync("Index", Model)
 

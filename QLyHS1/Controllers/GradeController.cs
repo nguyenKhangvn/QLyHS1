@@ -51,7 +51,7 @@ namespace QLyHS1.Controllers
                       subject => subject.Id,
                       (assignment, subject) => new SelectListItem
                       {
-                          Value = subject.Id.ToString(),
+                          Value = subject.Name,
                           Text = subject.Name
                       })
                 .ToList();
