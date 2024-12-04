@@ -1,4 +1,5 @@
-﻿@model IEnumerable<QLyHS1.Models.GradeViewModel>
+﻿@using Azure.Core
+@model IEnumerable<QLyHS1.Models.GradeViewModel>
 @{
     ViewData["Title"] = "Quản lý Điểm";
 }
@@ -42,7 +43,7 @@
                          </div>
                     </div>
                 <div class="group_top">
-                    <a asp-action="ExportToExcel" asp-controller="Grade" class="btn-text">Xuất Excel</a>
+                <a asp-action="ExportToExcel" asp-controller="Grade" class="btn-text">Xuất Excel</a>
                     <form method="get" asp-action="Index" class="group_class">
                         <label for="className" class="btn-text"></label>
                         <select name="className" id="className" onchange="this.form.submit()" class="assds">
@@ -55,6 +56,8 @@
                                 }
                             }
                         </select>
+                    </form>
+                    <form method="get" asp-action="Index" class="group_class">
                         <select name="subName" id="className" onchange="this.form.submit()" class="assds">
                             <option value="">-- Chọn môn học --</option>
                             @if (ViewBag.SubjectsForSpecificTeacher != null)

@@ -5,6 +5,7 @@ using OfficeOpenXml;
 using QLyHS1.Data;
 using QLyHS1.Models;
 using System.Security.Claims;
+using System.Web;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace QLyHS1.Controllers
@@ -62,7 +63,7 @@ namespace QLyHS1.Controllers
                                 join su in _context.Subjects on g.SubjectId equals su.Id
                                 join cl in _context.Classrooms on g.ClassNameID equals cl.Id
                                 where (string.IsNullOrEmpty(className) || cl.Name == className) 
-                                            || (string.IsNullOrEmpty(subName) || su.Name == subName)
+                                            && (string.IsNullOrEmpty(subName) || su.Name == subName)
                                 select new GradeViewModel
                                 {
                                     Id = g.Id,
@@ -92,7 +93,7 @@ namespace QLyHS1.Controllers
                         .Where(a => a.TeacherId == userId) 
                         .Join(_context.Subjects, assignment => assignment.SubjectId, subject => subject.Id, (assignment, subject) => new SelectListItem
                         {
-                            Value = subject.Id.ToString(),
+                            Value = subject.Name,
                             Text = subject.Name
                         })
                         .ToList();
@@ -105,7 +106,7 @@ namespace QLyHS1.Controllers
                                 join te in _context.Teachers on cl.TeacherId equals te.Id
                                 where te.Id == userId
                        && (string.IsNullOrEmpty(className) || cl.Name == className)
-                       && (string.IsNullOrEmpty(subName) || su.Name == subName)
+                        && (string.IsNullOrEmpty(subName) || su.Name == subName)
                                 select new GradeViewModel
                                 {
                                     Id = g.Id,
@@ -496,8 +497,12 @@ namespace QLyHS1.Controllers
 
 
         [HttpGet]
-        public IActionResult ExportToExcel(string? className, string? Year)
+        public IActionResult ExportToExcel(string? className, string? Year, [FromQuery] string subName)
         {
+          /*  className = Request.Query["className"];
+            string subName1 = HttpContext.Request.Query["subName"];
+            Console.WriteLine($"Subject Name: {subName}");*/
+
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
@@ -517,6 +522,7 @@ namespace QLyHS1.Controllers
                             join sub in _context.Subjects on g.SubjectId equals sub.Id 
                             join sy in _context.SchoolYears on g.SchoolYearId equals sy.Id 
                             where (string.IsNullOrEmpty(className) || cl.Name == className)
+                                  && (string.IsNullOrEmpty(subName) || sub.Name == subName)
                             select new GradeViewModel
                             {
                                 StudentName = st.Name,
@@ -538,6 +544,7 @@ namespace QLyHS1.Controllers
                             join sy in _context.SchoolYears on g.SchoolYearId equals sy.Id
                             where cl.TeacherId == userId &&
                                   (string.IsNullOrEmpty(className) || cl.Name == className)
+                                  && (string.IsNullOrEmpty(subName1) || sub.Name == subName1)
                             select new GradeViewModel
                             {
                                 StudentName = st.Name,

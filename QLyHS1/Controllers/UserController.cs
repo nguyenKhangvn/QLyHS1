@@ -27,7 +27,8 @@ namespace QLyHS1.Controllers
 
         public async Task<IActionResult> Login(UserViewModel model)
         {
-            var teacher = await _context.Teachers.SingleOrDefaultAsync(u => u.UserName == model.username && u.Password == model.password);
+            var teacher = await _context.Teachers.SingleOrDefaultAsync(u => u.UserName == model.username 
+                                                                            && u.Password == model.password);
 
             if (teacher != null)
             {
