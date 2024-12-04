@@ -68,7 +68,7 @@
 .account_form {
     position: absolute;
     width: 150px;
-    height: 100px;
+    height: 120px;
     top: 70%;
     right: 0;
     border: 1px solid #d3d3dd;
@@ -125,7 +125,7 @@
 }
 
 .change_out {
-    margin: 20px 0 0 15px;
+    margin: 20px 0 0 40px;
 }
 
 .a {

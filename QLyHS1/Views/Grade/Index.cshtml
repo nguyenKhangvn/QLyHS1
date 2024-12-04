@@ -55,16 +55,16 @@
                                 }
                             }
                         </select>
-                    <select name="subName" id="className" onchange="this.form.submit()" class="assds">
-                        <option value="">-- Chọn môn học --</option>
-                        @if (ViewBag.SubjectsForSpecificTeacher != null)
-                        {
-                            foreach (SelectListItem classroom in ViewBag.SubjectsForSpecificTeacher)
+                        <select name="subName" id="className" onchange="this.form.submit()" class="assds">
+                            <option value="">-- Chọn môn học --</option>
+                            @if (ViewBag.SubjectsForSpecificTeacher != null)
                             {
-                                <option value="@classroom.Value">@classroom.Text</option>
+                                foreach (SelectListItem classroom in ViewBag.SubjectsForSpecificTeacher)
+                                {
+                                    <option value="@classroom.Value">@classroom.Text</option>
+                                }
                             }
-                        }
-                    </select>
+                        </select>
                     </form>
                 </div>
             </div>

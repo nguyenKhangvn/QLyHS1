@@ -28,9 +28,9 @@
 
             <div class="group_top">
                 <div class="form_excel_1">
-                    <form asp-action="ImportFromExcel" asp-controller="Student" method="post" enctype="multipart/form-data">
+                    <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
                         <button class="form_11" type="button" onclick="document.getElementById('excelFile').click();">Tải Excel File</button>
-                        <input type="file" name="file" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
+                        <input type="file" name="excelFile" id="excelFile" class="form-control" style="display: none;" required onchange="this.form.submit();" />
                     </form>
                     <button class="form_11 btn btn-success mt-2" type="submit">Nhập bằng Excel</button>
                 </div>

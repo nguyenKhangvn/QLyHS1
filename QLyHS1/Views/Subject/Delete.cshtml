@@ -13,35 +13,23 @@
     <div class="table_Detail">
         <div class="Detail_form">
             <p>Xóa môn học</p>
-            <h3>Bạn có chắc chắn xóa môn học này?</h3>
             <button onclick="window.location.href='@Url.Action("Index", "Subject")'" class="btn-back">Quay lại</button>
         </div>
         <form asp-action="Delete" asp-controller="Subject" method="post" class="form_1">
         <div class="detail-item">
-            <div>
                 <strong>Tên môn học:</strong>
-            </div>
-            <div>
                 @Model.Name
-            </div>
         </div>
 
         <div class="detail-item">
-            <div>
                 <strong>Ngày cập nhật:</strong>
-            </div>
-            <div>
+
                 @Html.DisplayFor(model => model.UpdateAt)
-            </div>
         </div>
 
         <div class="detail-item">
-            <div>
                 <strong>Trạng thái:</strong>
-            </div>
-            <div>
                 @Html.DisplayFor(model => model.Status)
-            </div>
         </div>
 
             <div class="btn_form">
