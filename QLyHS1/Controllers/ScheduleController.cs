@@ -81,7 +81,7 @@ namespace QLyHS1.Controllers
             {
                 var schedules = from sch in _context.Schedules
                                 join t in _context.Teachers on sch.TeacherId equals t.Id
-                                join cl in _context.Classrooms on sch.TeacherId equals cl.Id
+                                join cl in _context.Classrooms on sch.ClassRoom equals cl.Id
                                 join s in _context.Subjects on sch.SubjectId equals s.Id
                                 where (sch.TeacherId == userId)
                                 select new ScheduleViewModel
@@ -97,6 +97,9 @@ namespace QLyHS1.Controllers
                                     StartTime = sch.StartTime,
                                     EndTime = sch.EndTime
                                 };
+                var groupedSchedules = schedules
+                    .GroupBy(s => s.DayOfWeeks)
+                    .ToDictionary(g => g.Key, g => g.ToList());
 
                 return View(schedules.ToList());
             }  
