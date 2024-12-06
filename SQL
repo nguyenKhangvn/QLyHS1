@@ -1,4 +1,3 @@
--- sql student, 
 create database QLyHS1
 
 use QlyHS1
@@ -10,7 +9,6 @@ CREATE TABLE Semester (
     updateAt DATE NOT NULL DEFAULT GETDATE(),                    
     status BIT NOT NULL DEFAULT 1            
 );
-
 GO
 CREATE TABLE SchoolYear (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, 
@@ -24,53 +22,12 @@ CREATE TABLE Subject (
     updateAt DATE NOT NULL DEFAULT GETDATE(),
     status BIT NOT NULL
 );
-//bo sung
-Go
-CREATE TABLE WeekDays (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
-    DayName NVARCHAR(20)
-);
-INSERT INTO WeekDays (DayName)
-VALUES (N'Thứ 2'), (N'Thứ 3'), (N'Thứ 4'), (N'Thứ 5'), (N'Thứ 6'), (N'Thứ 7'), (N'Chủ nhật');
-
-GO
-CREATE TABLE Schedules (
-    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    subjectID INT NOT NULL,
-    classRoom NVARCHAR(50) NOT NULL,
-    dayOfWeek INT NOT NULL,
-    startTime DATETIME NOT NULL,
-    endTime DATETIME NOT NULL,
-    FOREIGN KEY (subjectID) REFERENCES Subject(id)
-);
-ALTER TABLE Schedules
-ADD teacherID INT;
---bo sung 25/11 them truong infomation
-ALTER TABLE Schedules
-ADD infomation text;
--- chuyen sang nvarchar để ghi dấu được
-ALTER TABLE Schedules
-ADD NewInfomation NVARCHAR(MAX);
-UPDATE Schedules
-SET NewInfomation = CAST(infomation AS NVARCHAR(MAX));
-ALTER TABLE Schedules
-DROP COLUMN infomation;
-EXEC sp_rename 'Schedules.NewInfomation', 'infomation', 'COLUMN';
-
-select * from Schedules
-
-
-ALTER TABLE Schedules
-ADD CONSTRAINT FK_Teacher_Schedule FOREIGN KEY (teacherID) REFERENCES Teacher(id);
-ALTER TABLE Schedules
-ADD CONSTRAINT FK_WeekDays_Schedule FOREIGN KEY (dayOfWeek) REFERENCES WeekDays(Id);
-
 GO
 CREATE TABLE GrandLevel (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     name NVARCHAR(50) NOT NULL
 );
-GO
+
 CREATE TABLE Teacher (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     name NVARCHAR(50) NOT NULL,
@@ -80,13 +37,12 @@ CREATE TABLE Teacher (
     dateOfBirth DATE NOT NULL,
     phone CHAR(12) NOT NULL,
     address NVARCHAR(100) NOT NULL,
-    token NVARCHAR(200) NOT NULL,
+    token NVARCHAR(200) NULL,
     role BIT NOT NULL,
     createAt DATE NOT NULL,
     updateAt DATE NOT NULL,
     status BIT NOT NULL
 );
-ALTER TABLE Teacher ALTER COLUMN token NVARCHAR(200) NULL;
 GO
 CREATE TABLE Classroom (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -97,52 +53,46 @@ CREATE TABLE Classroom (
     createAt DATE NOT NULL,
     updateAt DATE NOT NULL,
     status BIT NOT NULL,
-    --CONSTRAINT FK_GradeLevel 
-	FOREIGN KEY (gradeLevelID) REFERENCES GrandLevel(id),
-    --CONSTRAINT FK_Teacher 
-	FOREIGN KEY (teacherID) REFERENCES Teacher(id)
+room NVARCHAR(10),
+FOREIGN KEY (gradeLevelID) REFERENCES GrandLevel(id),
+FOREIGN KEY (teacherID) REFERENCES Teacher(id)
 );
-EXEC sp_rename 'Classroom.gradeLevelID', 'grandLevelID', 'COLUMN';
---EXEC sp_rename 'Class', 'Classroom';
+GO
 
+CREATE TABLE Schedules (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    subjectID INT NOT NULL
+    teacherID INT NOT NULL,
+    classRoom int NOT NULL,
+    dayOfWeek INT NOT NULL,
+    dayOfWeeks nvarchar(50),
+    periodStudy nvarchar(50),
+    infomation text
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    FOREIGN KEY (subjectID) REFERENCES Subject(id),
+FOREIGN KEY (teacherID) REFERENCES Teacher(id),
+FOREIGN KEY (classRoom) REFERENCES Classroom(id)
+);
 GO
 CREATE TABLE Student (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     classID INT NOT NULL,                
     name NVARCHAR(50) NOT NULL,
-	gender CHAR(5),
+    gender NVARCHAR(5),
+conduct NVARCHAR(10),
     email CHAR(50) NOT NULL UNIQUE,      
     dateOfBirth DATE NOT NULL,           
     phone CHAR(12) NOT NULL UNIQUE, 
-	phoneParent CHAR(12) NOT NULL UNIQUE,
+    phoneParent CHAR(12) NOT NULL UNIQUE,
     address NVARCHAR(100) NOT NULL,     
     createAt DATE NOT NULL DEFAULT GETDATE(), 
     updateAt DATE NOT NULL DEFAULT GETDATE(), 
     status BIT NOT NULL DEFAULT 1,
-	FOREIGN KEY (classID) REFERENCES Classroom(id),
+FOREIGN KEY (classID) REFERENCES Classroom(id),
 );
-ALTER TABLE Student
-ADD conduct NVARCHAR(10);
---ALTER TABLE Student
---ADD parentPhone CHAR(12) NOT NULL UNIQUE;
-
-
-
---ALTER TABLE Student
---ADD CONSTRAINT fk_classID FOREIGN KEY (classID) REFERENCES Class(id);
---CREATE INDEX idx_email ON Student(email);
---CREATE INDEX idx_phone ON Student(phone);
-
 GO
-CREATE TABLE Schedules (
-    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    subjectID INT NOT NULL,
-    classRoom NVARCHAR(50) NOT NULL,
-    dayOfWeek INT NOT NULL,
-    startTime DATETIME NOT NULL,
-    endTime DATETIME NOT NULL,
-    FOREIGN KEY (subjectID) REFERENCES Subject(id)
-);
+
 GO
 CREATE TABLE Grade (
     id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -150,9 +100,12 @@ CREATE TABLE Grade (
     SemesterID INT NOT NULL,
     SubjectID INT NOT NULL,
     SchoolYearID INT NOT NULL,
-    GradeI FLOAT NOT NULL,
-    GradeII FLOAT NOT NULL,
-    GradeSemester FLOAT NOT NULL,
+    GradeI FLOAT NULL,
+    GradeI1 FLOAT NULL,
+    GradeII FLOAT NULL,
+    GradeSemester FLOAT NULL,
+    GradeAverage  FLOAT NULL,
+    RangeGrade nvarchar(50) NULL,
     createAt DATE NOT NULL DEFAULT GETDATE(),
     updateAt DATE NOT NULL DEFAULT GETDATE(),
     status BIT NOT NULL,
@@ -161,126 +114,14 @@ CREATE TABLE Grade (
     FOREIGN KEY (SubjectID) REFERENCES Subject(id),
     FOREIGN KEY (SchoolYearID) REFERENCES SchoolYear(id)
 );
-ALTER TABLE Grade
-ADD ClassNameID int;
-ALTER TABLE Grade
-ADD CONSTRAINT FK_WClassroom_Grade FOREIGN KEY (ClassNameID) REFERENCES Classroom(Id);
 GO
 CREATE TABLE Assignment (
+    id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     TeacherID int NOT NULL,
     SubjectID int NOT NULL,
     StartDate date NOT NULL,
     EndDate date NOT NULL
-	FOREIGN KEY (TeacherID) REFERENCES Teacher(id),
+    FOREIGN KEY (TeacherID) REFERENCES Teacher(id),
     FOREIGN KEY (SubjectID) REFERENCES Subject(id)
 );
-ALTER TABLE Assignment
-ADD Id INT IDENTITY(1,1) PRIMARY KEY;
 
-use QLyHS1
-
-select * from Teacher
-select * from Student
-Select * from Classroom
-Select * from GrandLevel
-select * from Subject
-select * from Schedules
-SELECT 
-    st.Name,
-    st.Gender,
-    st.DateOfBirth AS Birthday,
-    cl.Name AS ClassName,
-    st.Address,
-    st.ParentPhone
-FROM 
-    Student st
-JOIN 
-    Classroom cl ON st.ClassId = cl.Id;
-
-use QlyHS1
-INSERT INTO Student (classID, name, gender, email, dateOfBirth, phone, phoneParent, address)
-VALUES 
-(1, N'Nguyễn Văn C', 'Nam', 'nguyenvanc@example.com', '2005-05-15', '012345679', '0987654323', N'123 Đường ABC, Quận 1, TP.HCM'),
-(1, N'Trần Thị B', N'Nữ', 'tranthib@example.com', '2005-06-20', '0123456790', '0987654322', N'456 Đường DEF, Quận 1, TP.HCM');
-
-INSERT INTO Classroom (gradeLevelID, teacherID, name, quantity, createAt, updateAt, status)
-VALUES 
-(1, 1, N'Lớp 1A', 30, GETDATE(), GETDATE(), 1),
-(2, 2, N'Lớp 2B', 25, GETDATE(), GETDATE(), 1);
-
-INSERT INTO Teacher (name, userName, password, email, dateOfBirth, phone, address, token, role, createAt, updateAt, status)
-VALUES 
-(N'Teacher 1', N'teacher1', N'password123', 'teacher1@example.com', '1980-01-15', '0123456789', N'123 Đường ABC, Quận 1', N'abc123token', 1, GETDATE(), GETDATE(), 1),
-(N'Teacher 2', N'teacher2', N'password456', 'teacher2@example.com', '1985-03-22', '0987654321', N'456 Đường DEF, Quận 2', N'def456token', 1, GETDATE(), GETDATE(), 1);
-
-
-INSERT INTO GrandLevel (name)
-VALUES 
-(N'Khối 10'), 
-(N'Khối 11');
-
-INSERT INTO SchoolYear(year)
-VALUES 
-(2024), 
-(2025);
-
-INSERT INTO Semester(name)
-VALUES 
-(N'HKI'), 
-(N'HKII');
-
-SELECT TOP 1 s.Id, s.Name, s.Gender, s.DateOfBirth, s.ClassId, s.Address, s.PhoneParent,
-             c.Name AS ClassName
-FROM Student s
-INNER JOIN Classroom c ON s.ClassId = c.Id
-WHERE s.Name like '%A%'
-
-
-SELECT [s].[id], [s].[name], [s].[gender], [s].[dateOfBirth], [c].[name], [s].[address], [s].[phoneParent]
-FROM [Student] AS [s]
-INNER JOIN [Classroom] AS [c] ON [s].[classID] = [c].[id]
-where s.Name like '%A%'
-
-use QLyHS1
-select * from Student
-select * from Schedules
-select * from Classroom
-select * from SchoolYear
-select * from Semester
-select * from GrandLevel where id = 1
-select * from Grade
-select * from Teacher
-
-SELECT [s].[id] AS [Id], [s0].[SubjectName], [s].[classRoom] AS [ClassRoom], [s].[dayOfWeek] AS [DayOfWeek], [s].[startTime] AS [StartTime], [s].[endTime] AS [EndTime]
-      FROM [Schedules] AS [s]
-      INNER JOIN [Subject] AS [s0] ON [s].[subjectID] = [s0].[id]
-
-	  INSERT INTO Schedules (subjectID, classRoom, dayOfWeek, startTime, endTime)
-VALUES (1, 'Room A1', 2, '2024-11-11 08:00:00', '2024-11-11 10:00:00');
-
-      SELECT [c].[id] AS [Id], [c].[name] AS [Name], [c].[quantity] AS [Quantity], [g].[name] AS [GradeLevelName], [t].[name] AS [TeacherName]
-      FROM [Classroom] AS [c]
-      INNER JOIN [Teacher] AS [t] ON [c].[teacherID] = [t].[id]
-      INNER JOIN [GrandLevel] AS [g] ON [c].[gradeLevelID] = [g].[id]
-
-	  SELECT TOP(1) [c].[id], [c].[createAt], [c].[gradeLevelID], [c].[name], [c].[quantity], [c].[status], [c].[teacherID], [c].[updateAt], [t].[id], [t].[address], [t].[createAt], [t].[dateOfBirth], [t].[email], [t].[name], [t].[password], [t].[phone], [t].[role], [t].[status], [t].[token], [t].[updateAt], [t].[userName], [g].[id], [g].[name]
-      FROM [Classroom] AS [c]
-      INNER JOIN [Teacher] AS [t] ON [c].[teacherID] = [t].[id]
-      INNER JOIN [GrandLevel] AS [g] ON [c].[gradeLevelID] = [g].[id]
-      WHERE [c].[id] = 1
-use QLyHS1
-
-	  SELECT [t].[id], [t].[name], [s].[name], [t].[email], [t].[address], [t].[dateOfBirth], [t].[phone]
-      FROM [Teacher] AS [t]
-      INNER JOIN [Assignment] AS [a] ON [t].[id] = [a].[TeacherID]
-      INNER JOIN [Subject] AS [s] ON [a].[SubjectID] = [s].[id]
-
-	  select * from Classroom
-
-
-
-DELETE FROM Schedules
-
-DELETE FROM 
-
-DELETE FROM Schedules
