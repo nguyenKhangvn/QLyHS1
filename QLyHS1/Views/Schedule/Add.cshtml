@@ -28,14 +28,48 @@
             </div>
             <div class="form-group">
                 <label for="TeacherId" class="control-label">Tên giáo viên:</label>
-                <select id="ClassID" asp-for="TeacherId" asp-items="ViewBag.Teacher" class="form-control">
+                <select id="TeacherId" asp-for="TeacherId" asp-items="ViewBag.Teacher" class="form-control">
                     <option value="">-- Chọn giáo viên --</option>
                 </select>
             </div>
+
             <div class="form-group">
-                <label for="ClassRoom" class="control-label">Phòng học:</label>
-                <input type="text" id="ClassRoom" name="ClassRoom" required />
+                <label asp-for="DayOfWeeks" class="control-label">Ngày trong tuần:</label>
+                <select asp-for="DayOfWeeks" class="form-control" class="size_1">
+                    <option value="Thứ 2">Thứ 2</option>
+                    <option value="Thứ 3">Thứ 3</option>
+                    <option value="Thứ 4">Thứ 4</option>
+                    <option value="Thứ 5">Thứ 5</option>
+                    <option value="Thứ 6">Thứ 6</option>
+                    <option value="Thứ 7">Thứ 7</option>
+
+                </select>
             </div>
+
+            <div class="form-group">
+                <label asp-for="PeriodStudy" class="control-label">Tiết học:</label>
+                <select asp-for="PeriodStudy" class="form-control" class="size_1">
+                    <option value="Tiết 1">Tiết 1</option>
+                    <option value="Tiết 2">Tiết 2</option>
+                    <option value="Tiết 3">Tiết 3</option>
+                    <option value="Tiết 4">Tiết 4</option>
+                    <option value="Tiết 5">Tiết 5</option>
+                    <option value="Tiết 6">Tiết 6</option>
+                    <option value="Tiết 7">Tiết 7</option>
+                    <option value="Tiết 8">Tiết 8</option>
+                    <option value="Tiết 9">Tiết 9</option>
+                    <option value="Tiết 10">Tiết 10</option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="ClassRoom" class="control-label">Chọn lớp:</label>
+                <select id="ClassRoom" asp-for="ClassRoom" asp-items="ViewBag.Room" class="form-control">
+                    <option value="">-- Chọn lớp --</option>
+                </select>
+            </div>
+
 
             <div class="form-group">
                 <label for="DayOfWeek" class="control-label">Số tuần:</label>
@@ -43,7 +77,7 @@
             </div>
 
             <div class="form-group">
-                <label for="Infomation" class="control-label">Thông tin:</label>
+                <label for="Infomation" class="control-label">Ghi chú:</label>
                 <input type="text" id="Infomation" name="Infomation" required />
             </div>
             <div class="form-group">

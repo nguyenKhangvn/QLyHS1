@@ -7,9 +7,14 @@
         public string SemesterName {get; set;}
         public string SubjectName {get; set;}
         public int SchoolYearName {get; set;}
+
+        public string className { get; set; }
         public double? GradeI {get; set;}
         public double? GradeII {get; set;}
         public double? GradeIII { get; set; }
+        public double? GradeI1 { get; set; }
+        public double? GradeAverage { get; set; }
+        public string? RangeGrade { get; set; }
     }
 
     public class GradeDetailViewModel 

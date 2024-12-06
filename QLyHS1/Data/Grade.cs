@@ -22,6 +22,12 @@ public partial class Grade
 
     public double? GradeSemester { get; set; }
 
+    public double? GradeI1 { get; set; }
+
+    public double? GradeAverage { get; set; }
+
+     public string? RangeGrade { get; set; }
+
     public DateTime CreateAt { get; set; }
 
     public DateTime UpdateAt { get; set; }

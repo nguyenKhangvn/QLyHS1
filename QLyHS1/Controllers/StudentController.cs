@@ -434,7 +434,7 @@ namespace QLyHS1.Controllers
             using (var package = new OfficeOpenXml.ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Students");
-                worksheet.Cells[1, 1].Value = "Trường: Đại học Quy Nhơn";
+                worksheet.Cells[1, 1].Value = "Trường: THPT chuyên Lương Văn Chánh";
                /* worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";*/
 
                 int headerCell = 4;
@@ -442,7 +442,7 @@ namespace QLyHS1.Controllers
                 worksheet.Cells[headerCell, 2].Value = "Họ và tên";
                 worksheet.Cells[headerCell, 3].Value = "Giới tính";
                 worksheet.Cells[headerCell, 5].Value = "Lớp";
-                worksheet.Cells[headerCell, 4].Value = "Sinh nhật";
+                worksheet.Cells[headerCell, 4].Value = "Ngày sinh";
                 /*                worksheet.Cells[headerCell, 6].Value = "Địa chỉ";
                                 worksheet.Cells[headerCell, 7].Value = "Liên hệ phụ huynh";
                                 worksheet.Cells[headerCell, 8].Value = "Hạnh kiểm";*/
@@ -528,7 +528,7 @@ namespace QLyHS1.Controllers
                                 Phone = phone,
                                 Address = address,
                                 PhoneParent = parentPhone,
-                                Conduct = "Không",
+                                Conduct = "",
                                 Status = true,
                                 CreateAt = DateTime.Now,
                                 UpdateAt = DateTime.Now

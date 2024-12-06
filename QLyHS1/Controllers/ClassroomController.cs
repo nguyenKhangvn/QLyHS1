@@ -166,6 +166,7 @@ namespace QLyHS1.Controllers
                 TeacherId = model.TeacherID,
                 GrandLevelId = model.GrandLevelID,
                 Name = model.Name,
+                Room = model.Room,
                 Quantity = model.Quantity,
                 CreateAt = DateTime.Now,
                 UpdateAt = DateTime.Now,
@@ -200,6 +201,7 @@ namespace QLyHS1.Controllers
                 TeacherID = student.TeacherId,
                 GrandLevelID = student.GrandLevelId,
                 Name = student.Name,
+                Room = student.Room,
                 Quantity = student.Quantity,
                 Status = student.Status,
                 CreateAt = student.CreateAt,
@@ -215,7 +217,7 @@ namespace QLyHS1.Controllers
         // POST: Student/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TeacherID,GrandLevelID,Name,Quantity,Status")] ClassroomDetailToEditViewModel studentViewModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TeacherID,GrandLevelID,Name,Room,Quantity,Status")] ClassroomDetailToEditViewModel studentViewModel)
         {
             if (id != studentViewModel.Id)
             {
@@ -236,6 +238,7 @@ namespace QLyHS1.Controllers
                     student.TeacherId = studentViewModel.TeacherID;
                     student.GrandLevelId = studentViewModel.GrandLevelID;
                     student.Name = studentViewModel.Name;
+                    student.Room = studentViewModel.Room;
                     student.Quantity = studentViewModel.Quantity;
                     student.Status = studentViewModel.Status;
                     student.CreateAt = studentViewModel.CreateAt;

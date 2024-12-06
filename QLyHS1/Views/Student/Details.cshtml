@@ -50,13 +50,13 @@
         </div>
         <div class="detail-item">
             <strong>Hạnh kiểm:</strong>
-            @(string.IsNullOrEmpty(Model.Conduct) ? "Không có thông tin" : Model.Conduct)
+            @(string.IsNullOrEmpty(Model.Conduct) ? "Chưa có thông tin" : Model.Conduct)
         </div>
         <div class="detail-item">
-            <strong>Ngày tạo:</strong> @Model.CreateAt
+            <strong>Ngày tạo:</strong> @Model.CreateAt.ToString("dd/MM/yyyy")
         </div>
         <div class="detail-item">
-            <strong>Ngày cập nhập:</strong> @Model.UpdateAt
+            <strong>Ngày cập nhập:</strong> @Model.UpdateAt.ToString("dd/MM/yyyy")
         </div>
         <div class="detail-item">
             <strong>Trạng thái:</strong> @((Model.Status == true) ? "Còn Học" : "Nghỉ học")

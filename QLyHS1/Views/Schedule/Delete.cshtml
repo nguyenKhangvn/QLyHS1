@@ -25,18 +25,20 @@
         </div>
             <!-- -------------------------------------- -->
             <form asp-action="Delete" asp-controller="Schedule" method="post" class="form_1">
-           
                 <div class="detail-item">
-                    <strong>Tên lớp</strong> @Model.ClassRoom
+                    <strong>Môn học</strong> @Model.Subject.Name
                 </div>
                 <div class="detail-item">
-                    <strong>Ngày trong tuần</strong> @Model.DayOfWeek
+                    <strong>Ngày trong tuần</strong> @Model.DayOfWeeks
+                </div> 
+                <div class="detail-item">
+                    <strong>Tiết học</strong> @Model.PeriodStudy
+                 </div>
+                <div class="detail-item">
+                <strong>Ngày bắt đầu</strong> @Model.StartTime.ToString("dd/MM/yyyy")
                 </div>
                 <div class="detail-item">
-                    <strong>Ngày bắt đầu</strong> @Model.StartTime
-                </div>
-                <div class="detail-item">
-                    <strong>Ngày kết thúc</strong> @Model.EndTime
+                <strong>Ngày kết thúc</strong> @Model.EndTime.ToString("dd/MM/yyyy")
                 </div>
                 <div class="detail-item">
                     <strong>Thông tin</strong> @Model.Infomation

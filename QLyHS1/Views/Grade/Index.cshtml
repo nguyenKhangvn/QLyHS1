@@ -31,8 +31,9 @@
                             </button>
                         </form>
                         <button onclick="window.location.href='@Url.Action("Add", "Grade")'" class="btn-add" onclick="">+</button>
-                        <button class="btn-refresh">⟲</button>
+                       @*  <button class="btn-refresh">⟲</button> *@
                     </div>
+
                     <div class="group_top">
                          <div class="form_excel_1">
                              <form asp-action="ImportFromExcel" asp-controller="Grade" method="post" enctype="multipart/form-data">
@@ -42,12 +43,37 @@
                             <button class="form_11 btn btn-success mt-2" type="submit">Nhập bằng Excel</button>
                          </div>
                     </div>
+
                 <div class="group_top">
-                <a asp-action="ExportToExcel" asp-controller="Grade" class="btn-text">Xuất Excel</a>
+                <form method="get" action="@Url.Action("ExportToExcel", "Grade")">
+                    <label for="className" class="btn-text"></label>
+                    <select name="className" id="className" class="assds">
+                        <option value="">Chọn lớp</option>
+                        @if (ViewBag.Classrooms != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                    <select name="subName" id="className" class="assds">
+                        <option value="">Chọn môn học</option>
+                        @if (ViewBag.SubjectsForSpecificTeacher != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.SubjectsForSpecificTeacher)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                    <button type="submit">Xuất Excel</button>
+                </form>
+
                     <form method="get" asp-action="Index" class="group_class">
                         <label for="className" class="btn-text"></label>
                         <select name="className" id="className" onchange="this.form.submit()" class="assds">
-                            <option value="">-- Chọn lớp --</option>
+                            <option value="">Chọn lớp</option>
                             @if (ViewBag.Classrooms != null)
                             {
                                 foreach (SelectListItem classroom in ViewBag.Classrooms)
@@ -59,7 +85,7 @@
                     </form>
                     <form method="get" asp-action="Index" class="group_class">
                         <select name="subName" id="className" onchange="this.form.submit()" class="assds">
-                            <option value="">-- Chọn môn học --</option>
+                            <option value="">Chọn môn học</option>
                             @if (ViewBag.SubjectsForSpecificTeacher != null)
                             {
                                 foreach (SelectListItem classroom in ViewBag.SubjectsForSpecificTeacher)
@@ -79,11 +105,14 @@
  
                                 <th>Họ tên</th>
                                 <th>Học kỳ</th>
+                                <th>Lớp</th>
                                 <th>Môn học</th>
                                 <th>Năm học</th>
                                 <th>Điểm hệ số 1</th>
                                 <th>Điểm hệ số 2</th>
                                 <th>Điểm hệ số 3</th>
+                                <th>Điểm TB</th>
+                                <th>Xếp loại</th>
                                 <th>Thiết lập</th>
                             </tr>
                         </thead>
@@ -98,13 +127,16 @@
 
                                         <td>@student.StudentName</td>
                                         <td>@student.SemesterName</td>
+                                        <td>@student.className</td>
                                         <td>@student.SubjectName</td>
                                         <td>@student.SchoolYearName</td>
-                                        <td>@student.GradeI</td>
+                                        <td>@student.GradeI  @student.GradeI1</td>
                                         <td>@student.GradeII</td>
                                         <td>@student.GradeIII</td>
+                                        <td>@student.GradeAverage</td>
+                                        <td>@student.RangeGrade</td>
                                         <td>
-                                    <div class="table_funtion" style="display: block;">
+                                             <div class="table_funtion" style="display: block;">
                                                 <a asp-action="Details" asp-route-id="@student.Id">Xem chi tiết</a>
                                                 <p></p>
                                                 <a asp-action="Edit" asp-route-id="@student.Id">Cập nhập thông tin</a>

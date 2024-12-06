@@ -17,6 +17,36 @@ namespace QLyHS1.Controllers
         {
             _context = context;
         }
+
+        public static double CalculateGPA(double gradeI, double gradeI1, double gradeII, double gradeSemester)
+        {
+            double gpa = ((gradeI * 1) + (gradeI1 * 1) + (gradeII * 2) + (gradeSemester * 3)) / 7;
+            return Math.Round(gpa, 3);
+        }
+
+        public static string rangeGPA(double GradeAverage)
+        {
+            if(GradeAverage < 5)
+            {
+                return "Yếu";
+            }
+            else if (GradeAverage >= 5 && GradeAverage < 7)
+            {
+                return "Trung bình";
+            }
+            else if (GradeAverage >= 7 && GradeAverage < 8)
+            {
+                return "Khá";
+            }
+            else if (GradeAverage >= 8 && GradeAverage < 9)
+            {
+                return "Giỏi";
+            }
+            else
+            {
+                return "Xuất sắc";
+            }
+        }
         public IActionResult Index(String? className, String? subName)
         {
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -26,6 +56,7 @@ namespace QLyHS1.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+
 
           /*  ViewBag.Classrooms = _context.Classrooms
                 .Where(c => c.TeacherId == userId)
@@ -45,15 +76,15 @@ namespace QLyHS1.Controllers
                                         }).ToList();
 
 
-             ViewBag.SubjectsForSpecificTeacher = _context.Assignments
-                .Join(_context.Subjects,
-                      assignment => assignment.SubjectId,
-                      subject => subject.Id,
-                      (assignment, subject) => new SelectListItem
-                      {
-                          Value = subject.Name,
-                          Text = subject.Name
-                      })
+                 ViewBag.SubjectsForSpecificTeacher = _context.Assignments
+                    .Join(_context.Subjects,
+                          assignment => assignment.SubjectId,
+                          subject => subject.Id,
+                          (assignment, subject) => new SelectListItem
+                          {
+                              Value = subject.Name,
+                              Text = subject.Name
+                          })
                 .ToList();
 
                 var schedules = from g in _context.Grades
@@ -71,9 +102,17 @@ namespace QLyHS1.Controllers
                                     SemesterName = sm.Name,
                                     SubjectName = su.Name,
                                     SchoolYearName = sc.Year,
+                                    className = cl.Name,
                                     GradeI = g.GradeI ?? 0.0,
+                                    GradeI1 = g.GradeI1 ?? 0.0,
                                     GradeII = g.GradeII ?? 0.0,
-                                    GradeIII = g.GradeSemester ?? 0.0
+                                    GradeIII = g.GradeSemester ?? 0.0,
+                                    GradeAverage = (g.GradeI.HasValue && g.GradeI1.HasValue && g.GradeII.HasValue && g.GradeSemester.HasValue)
+                                           ? CalculateGPA(g.GradeI.Value, g.GradeI1.Value, g.GradeII.Value, g.GradeSemester.Value)
+                                           : 0.0,
+                                    RangeGrade = (g.GradeI.HasValue && g.GradeI1.HasValue && g.GradeII.HasValue && g.GradeSemester.HasValue)
+                                         ? rangeGPA(CalculateGPA(g.GradeI.Value, g.GradeI1.Value, g.GradeII.Value, g.GradeSemester.Value))
+                                         : "Chưa có"
 
                                 };
 
@@ -114,9 +153,17 @@ namespace QLyHS1.Controllers
                                     SemesterName = sm.Name,
                                     SubjectName = su.Name,
                                     SchoolYearName = sc.Year,
+                                    className = cl.Name,
                                     GradeI = g.GradeI ?? 0.0,
+                                    GradeI1 = g.GradeI ?? 0.0,
                                     GradeII = g.GradeII ?? 0.0,
-                                    GradeIII = g.GradeSemester ?? 0.0
+                                    GradeIII = g.GradeSemester ?? 0.0,
+                                    GradeAverage = (g.GradeI.HasValue && g.GradeI1.HasValue && g.GradeII.HasValue && g.GradeSemester.HasValue)
+                                           ? CalculateGPA(g.GradeI.Value, g.GradeI1.Value, g.GradeII.Value, g.GradeSemester.Value)
+                                           : 0.0,
+                                    RangeGrade = (g.GradeI.HasValue && g.GradeI1.HasValue && g.GradeII.HasValue && g.GradeSemester.HasValue)
+                                         ? rangeGPA(CalculateGPA(g.GradeI.Value, g.GradeI1.Value, g.GradeII.Value, g.GradeSemester.Value))
+                                         : "Chưa có"
                                 };
 
                 return View(schedules.ToList());
@@ -146,9 +193,13 @@ namespace QLyHS1.Controllers
                     SemesterName = g.Semester.Name,
                     SubjectName = g.Subject.Name,
                     SchoolYearName = g.SchoolYear.Year,
-                    GradeI = g.GradeI,
-                    GradeII = g.GradeII,
-                    GradeIII = g.GradeSemester
+                    className = g.Classroom.Name,
+                    GradeI = g.GradeI ?? 0.0,
+                    GradeI1 = g.GradeI ?? 0.0,
+                    GradeII = g.GradeII ?? 0.0,
+                    GradeIII = g.GradeSemester ?? 0.0,
+                    GradeAverage = g.GradeAverage ?? 0.0,
+                    RangeGrade = g.RangeGrade
                 }).ToList();
 
             if (!students.Any())
@@ -529,9 +580,13 @@ namespace QLyHS1.Controllers
                                 SemesterName = sem.Name,
                                 SubjectName = sub.Name,
                                 SchoolYearName = sy.Year,
+                                className = cl.Name,
                                 GradeI = g.GradeI ?? 0.0,
+                                GradeI1 = g.GradeI1 ?? 0.0,
                                 GradeII = g.GradeII ?? 0.0,
-                                GradeIII = g.GradeSemester ?? 0.0
+                                GradeIII = g.GradeSemester ?? 0.0,
+                                GradeAverage = g.GradeAverage ?? 0.0,
+                                RangeGrade = g.RangeGrade ?? "Chưa có"
                             };
             }
             else
@@ -544,16 +599,20 @@ namespace QLyHS1.Controllers
                             join sy in _context.SchoolYears on g.SchoolYearId equals sy.Id
                             where cl.TeacherId == userId &&
                                   (string.IsNullOrEmpty(className) || cl.Name == className)
-                                  && (string.IsNullOrEmpty(subName1) || sub.Name == subName1)
+                                  && (string.IsNullOrEmpty(subName) || sub.Name == subName)
                             select new GradeViewModel
                             {
                                 StudentName = st.Name,
                                 SemesterName = sem.Name,
                                 SubjectName = sub.Name,
                                 SchoolYearName = sy.Year,
+                                className = cl.Name,
                                 GradeI = g.GradeI ?? 0.0,
+                                GradeI1 = g.GradeI1 ?? 0.0,
                                 GradeII = g.GradeII ?? 0.0,
-                                GradeIII = g.GradeSemester ?? 0.0
+                                GradeIII = g.GradeSemester ?? 0.0,
+                                GradeAverage = g.GradeAverage ?? 0.0,
+                                RangeGrade = g.RangeGrade ?? "Chưa có"
                             };
             }
 
@@ -562,30 +621,44 @@ namespace QLyHS1.Controllers
             using (var package = new OfficeOpenXml.ExcelPackage())
             {
                 var worksheet = package.Workbook.Worksheets.Add("Students");
-                worksheet.Cells[1, 1].Value = "Trường: Đại học Quy Nhơn";
+                worksheet.Cells[1, 1].Value = "Trường: THPT Chuyên Lương Văn Chánh";
              /*   worksheet.Cells[2, 1].Value = $"Danh sách lớp: {(string.IsNullOrEmpty(className) ? "Tất cả" : className)}";
                 worksheet.Cells[3, 1].Value = $"Học kì: {(string.IsNullOrEmpty(className) ? "---" : className)}";
                 worksheet.Cells[4, 1].Value = $"Học kì: {(string.IsNullOrEmpty(className) ? "---" : className)}";*/
                 
                 int headerCell = 5;
-                worksheet.Cells[headerCell, 2].Value = "Học kì";
-                worksheet.Cells[headerCell, 3].Value = "Tên môn";
-                worksheet.Cells[headerCell, 4].Value = "Năm học";
-                worksheet.Cells[headerCell, 5].Value = "Điểm hệ số 1";
-                worksheet.Cells[headerCell, 6].Value = "Điểm hệ số 2";
-                worksheet.Cells[headerCell, 7].Value = "Điểm hệ số 3";
+                worksheet.Cells[headerCell, 1].Value = "STT";
+                worksheet.Cells[headerCell, 2].Value = "Họ và tên";
+                worksheet.Cells[headerCell, 3].Value = "Học kì";
+                worksheet.Cells[headerCell, 4].Value = "Lớp";
+
+                worksheet.Cells[headerCell, 5].Value = "Tên môn";
+                worksheet.Cells[headerCell, 6].Value = "Năm học";
+                worksheet.Cells[headerCell, 7].Value = "Điểm KT thường xuyên";
+                worksheet.Cells[headerCell, 8].Value = "Điểm hệ số 1";
+                worksheet.Cells[headerCell, 9].Value = "Điểm hệ số 2";
+                worksheet.Cells[headerCell, 10].Value = "Điểm hệ số 3";
+                worksheet.Cells[headerCell, 11].Value = "Điểm tổng kết";
+                worksheet.Cells[headerCell, 12].Value = "Xếp loại";
 
                 int row = headerCell + 1;
+                int stt = 1;
                 foreach (var student in data)
                 {
-                    worksheet.Cells[row, 1].Value = student.StudentName;
-                    worksheet.Cells[row, 2].Value = student.SemesterName;
-                    worksheet.Cells[row, 3].Value = student.SubjectName;
-                    worksheet.Cells[row, 4].Value = student.SchoolYearName;
-                    worksheet.Cells[row, 5].Value = student.GradeI;
-                    worksheet.Cells[row, 6].Value = student.GradeII;
-                    worksheet.Cells[row, 7].Value = student.GradeIII;
+                    worksheet.Cells[row, 1].Value = stt;
+                    worksheet.Cells[row, 2].Value = student.StudentName;
+                    worksheet.Cells[row, 3].Value = student.SemesterName;
+                    worksheet.Cells[row, 4].Value = student.className;
+                    worksheet.Cells[row, 5].Value = student.SubjectName;
+                    worksheet.Cells[row, 6].Value = student.SchoolYearName;
+                    worksheet.Cells[row, 7].Value = student.GradeI;
+                    worksheet.Cells[row, 8].Value = student.GradeI1;
+                    worksheet.Cells[row, 9].Value = student.GradeII;
+                    worksheet.Cells[row, 10].Value = student.GradeIII;
+                    worksheet.Cells[row, 11].Value = student.GradeAverage;
+                    worksheet.Cells[row, 12].Value = student.RangeGrade;
                     row++;
+                    stt++;
                 }
 
                 var stream = new MemoryStream();
@@ -626,8 +699,11 @@ namespace QLyHS1.Controllers
                             var schoolYearName = int.TryParse(worksheet.Cells[row, 5].Value?.ToString(), out var y) ? y : (int?)null;
                             var className = worksheet.Cells[row, 6].Value?.ToString();
                             var gradeI = double.TryParse(worksheet.Cells[row, 7].Value?.ToString(), out var g1) ? g1 : (double?)null;
-                            var gradeII = double.TryParse(worksheet.Cells[row, 8].Value?.ToString(), out var g2) ? g2 : (double?)null;
-                            var gradeIII = double.TryParse(worksheet.Cells[row, 9].Value?.ToString(), out var g3) ? g3 : (double?)null;
+                            var gradeI1 = double.TryParse(worksheet.Cells[row, 8].Value?.ToString(), out var g11) ? g11 : (double?)null;
+                            var gradeII = double.TryParse(worksheet.Cells[row, 9].Value?.ToString(), out var g2) ? g2 : (double?)null;
+                            var gradeIII = double.TryParse(worksheet.Cells[row, 10].Value?.ToString(), out var g3) ? g3 : (double?)null;
+                            var GradeAverage = double.TryParse(worksheet.Cells[row, 11].Value?.ToString(), out var g) ? g : (double?)null;
+                            var RangeGrade = worksheet.Cells[row, 12].Value?.ToString();
 
                             // Tìm các bản ghi tương ứng trong database
                             var student = _context.Students.FirstOrDefault(s => s.Name == studentName);
@@ -660,7 +736,12 @@ namespace QLyHS1.Controllers
                                     g.SchoolYearId == schoolYear.Id);
 
                                 var isStudent = _context.Grades.FirstOrDefault(g => g.StudentId == student.Id);
-                                var isSub = _context.Grades.FirstOrDefault(g => g.SubjectId == subject.Id);
+                                var isSub = _context.Grades
+                                            .FirstOrDefault(g => g.StudentId == student.Id 
+                                                && g.SubjectId == subject.Id 
+                                                && g.SemesterId == semester.Id 
+                                                && g.SchoolYearId == schoolYear.Id);
+
                                 if (isStudent == null)
                                 {
                                     
@@ -672,6 +753,7 @@ namespace QLyHS1.Controllers
                                         SchoolYearId = schoolYear.Id,
                                         ClassNameID = classObj.Id,
                                         GradeI = gradeI,
+                                        GradeI1 = gradeI1,
                                         GradeII = gradeII,
                                         GradeSemester = gradeIII,
                                         CreateAt = DateTime.Now,
@@ -690,6 +772,7 @@ namespace QLyHS1.Controllers
                                         SchoolYearId = schoolYear.Id,
                                         ClassNameID = classObj.Id,
                                         GradeI = gradeI,
+                                        GradeI1 = gradeI1,
                                         GradeII = gradeII,
                                         GradeSemester = gradeIII,
                                         CreateAt = DateTime.Now,
@@ -701,10 +784,21 @@ namespace QLyHS1.Controllers
                                 else
                                 {
                                     grade = isSub;
-                                    grade.GradeI = gradeI;
-                                    grade.GradeII = gradeII;
-                                    grade.GradeSemester = gradeIII;
-                                    grade.UpdateAt = DateTime.Now;
+                                    if (grade != null)
+                                    {
+                                        grade.GradeI = gradeI ?? grade.GradeI;   
+                                        grade.GradeI1 = gradeI1 ?? grade.GradeI1;
+                                        grade.GradeII = gradeII ?? grade.GradeII;
+                                        grade.GradeSemester = gradeIII ?? grade.GradeSemester;
+                                        grade.GradeAverage = (grade.GradeI.HasValue && grade.GradeI1.HasValue && grade.GradeII.HasValue && grade.GradeSemester.HasValue)
+                                           ? CalculateGPA(grade.GradeI.Value, grade.GradeI1.Value, grade.GradeII.Value, grade.GradeSemester.Value)
+                                           : 0.0;
+                                        grade.RangeGrade = (grade.GradeI.HasValue && grade.GradeI1.HasValue && grade.GradeII.HasValue && grade.GradeSemester.HasValue)
+                                             ? rangeGPA(CalculateGPA(grade.GradeI.Value, grade.GradeI1.Value, grade.GradeII.Value, grade.GradeSemester.Value))
+                                             : "Chưa có";
+                                       grade.UpdateAt = DateTime.Now;
+                                    }
+                                    _context.Grades.Update(grade);
                                 }
                             }
                         }

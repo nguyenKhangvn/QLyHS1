@@ -77,6 +77,9 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
+            entity.Property(e => e.Room)
+               .HasMaxLength(10)
+               .HasColumnName("room");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.TeacherId).HasColumnName("teacherID");
@@ -109,6 +112,9 @@ public partial class QlyHs1Context : DbContext
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.StudentId).HasColumnName("StudentID");
             entity.Property(e => e.SubjectId).HasColumnName("SubjectID");
+            entity.Property(e => e.GradeI1).HasColumnName("GradeI1");
+            entity.Property(e => e.GradeAverage).HasColumnName("GradeAverage");
+            entity.Property(e => e.RangeGrade).HasColumnName("RangeGrade");
             entity.Property(e => e.UpdateAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnName("updateAt");
@@ -157,12 +163,17 @@ public partial class QlyHs1Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ClassRoom)
-                .HasMaxLength(50)
                 .HasColumnName("classRoom");
             entity.Property(e => e.DayOfWeek).HasColumnName("dayOfWeek");
-                entity.Property(e => e.Infomation)
-              .HasColumnType("nvarchar(max)")
-              .HasColumnName("infomation");
+            entity.Property(e => e.Infomation)
+                  .HasColumnType("nvarchar(max)")
+                  .HasColumnName("infomation");
+            entity.Property(e => e.DayOfWeeks)
+                  .HasColumnType("nvarchar(50)")
+                  .HasColumnName("dayOfWeeks"); 
+            entity.Property(e => e.PeriodStudy)
+                  .HasColumnType("nvarchar(50)")
+                  .HasColumnName("periodStudy");
 
             entity.Property(e => e.EndTime)
                 .HasColumnType("datetime")
@@ -186,6 +197,9 @@ public partial class QlyHs1Context : DbContext
             entity.HasOne(d => d.Teacher).WithMany(p => p.Schedules)
                 .HasForeignKey(d => d.TeacherId)
                 .HasConstraintName("FK_Teacher_Schedule");
+            entity.HasOne(d => d.classroom).WithMany(p => p.Schedules)
+               .HasForeignKey(d => d.ClassRoom)
+               .HasConstraintName("FK_classes_Schedule");
         });
 
         modelBuilder.Entity<SchoolYear>(entity =>

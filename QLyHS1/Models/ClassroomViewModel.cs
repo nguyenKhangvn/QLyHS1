@@ -18,6 +18,7 @@ namespace QLyHS1.Models
         public int TeacherID { get; set; }
         public int GrandLevelID { get; set; }
         public string Name { get; set; }
+        public string Room { get; set; }
         public int Quantity { get; set; }
 
     }
@@ -28,6 +29,7 @@ namespace QLyHS1.Models
         public int TeacherID { get; set; }
         public int GrandLevelID { get; set; }
         public string Name { get; set; }
+        public string Room { get; set; }
         public int Quantity { get; set; }
         public bool? Status { get; set; }
         public DateTime CreateAt { get; set; }

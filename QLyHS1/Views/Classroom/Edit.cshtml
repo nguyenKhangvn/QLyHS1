@@ -43,6 +43,11 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Room" class="control-label">Số phòng:</label>
+                <input asp-for="Room" class="form-control" />
+                <span asp-validation-for="Room" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Quantity" class="control-label">Số lượng:</label>
                 <input asp-for="Quantity" class="form-control" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
@@ -58,12 +63,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreateAt" class="control-label">Ngày tạo:</label>
-                <input asp-for="CreateAt" class="form-control" />
+                <input asp-for="CreateAt" class="form-control" type=date />
                 <span asp-validation-for="CreateAt" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UpdateAt" class="control-label">Ngày chỉnh sửa:</label>
-                <input asp-for="UpdateAt" class="form-control" />
+                <input asp-for="UpdateAt" class="form-control" type="date"/>
                 <span asp-validation-for="UpdateAt" class="text-danger"></span>
             </div>
             <div class="btn_form">

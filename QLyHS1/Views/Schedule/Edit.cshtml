@@ -31,9 +31,38 @@
                     <span asp-validation-for="TeacherId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ClassRoom" class="control-label">Phòng học: </label>
-                    <input asp-for="ClassRoom" class="form-control" />
+                    <label asp-for="ClassRoom" class="control-label">Lớp học: </label>
+                <select asp-for="ClassRoom" class="form-control" asp-items="ViewBag.ClassRoom"></select>
                     <span asp-validation-for="ClassRoom" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DayOfWeeks" class="control-label">Ngày trong tuần:</label>
+                    <select asp-for="DayOfWeeks" class="form-control" class="size_1">
+                        <option value="Thứ 2">Thứ 2</option>
+                        <option value="Thứ 3">Thứ 3</option>
+                        <option value="Thứ 4">Thứ 4</option>
+                        <option value="Thứ 5">Thứ 5</option>
+                        <option value="Thứ 6">Thứ 6</option>
+                        <option value="Thứ 7">Thứ 7</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="PeriodStudy" class="control-label">Tiết học:</label>
+                    <select asp-for="PeriodStudy" class="form-control" class="size_1">
+                        <option value="Tiết 1">Tiết 1</option>
+                        <option value="Tiết 2">Tiết 2</option>
+                        <option value="Tiết 3">Tiết 3</option>
+                        <option value="Tiết 4">Tiết 4</option>
+                        <option value="Tiết 5">Tiết 5</option>
+                        <option value="Tiết 6">Tiết 6</option>
+                        <option value="Tiết 7">Tiết 7</option>
+                        <option value="Tiết 8">Tiết 8</option>
+                        <option value="Tiết 9">Tiết 9</option>
+                        <option value="Tiết 10">Tiết 10</option>
+
+                    </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="DayOfWeek" class="control-label">Số tuần: </label>
@@ -47,12 +76,12 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="StartTime" class="control-label">Thời gian bắt đầu: </label>
-                    <input asp-for="StartTime" class="form-control" />
+                <input asp-for="StartTime" class="form-control" type="date" />
                     <span asp-validation-for="StartTime" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="EndTime" class="control-label">Thời gian kết thúc:</label>
-                    <input asp-for="EndTime" class="form-control" />
+                    <input asp-for="EndTime" class="form-control" type="date"/>
                     <span asp-validation-for="EndTime" class="text-danger"></span>
                 </div>
 

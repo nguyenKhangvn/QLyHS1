@@ -56,18 +56,24 @@ namespace QLyHS1.Controllers
 
                 var schedules = from sch in _context.Schedules
                                 join t in _context.Teachers on sch.TeacherId equals t.Id
+                                join cl in _context.Classrooms on sch.ClassRoom equals cl.Id
                                 join s in _context.Subjects on sch.SubjectId equals s.Id
                                 select new ScheduleViewModel
                                 {
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                    ClassRoom = sch.ClassRoom,
+                                    ClassRoom = cl.Room,
                                     DayOfWeek = sch.DayOfWeek,
                                     Infomation = sch.Infomation ?? "Không có thông tin",
+                                    DayOfWeeks = sch.DayOfWeeks,
+                                    PeriodStudy = sch.PeriodStudy,
                                     StartTime = sch.StartTime,
                                     EndTime = sch.EndTime
                                 };
+                        var groupedSchedules = schedules
+                            .GroupBy(s => s.DayOfWeeks)
+                            .ToDictionary(g => g.Key, g => g.ToList());
 
                 return View(schedules.ToList());
             }
@@ -75,6 +81,7 @@ namespace QLyHS1.Controllers
             {
                 var schedules = from sch in _context.Schedules
                                 join t in _context.Teachers on sch.TeacherId equals t.Id
+                                join cl in _context.Classrooms on sch.TeacherId equals cl.Id
                                 join s in _context.Subjects on sch.SubjectId equals s.Id
                                 where (sch.TeacherId == userId)
                                 select new ScheduleViewModel
@@ -82,9 +89,11 @@ namespace QLyHS1.Controllers
                                     Id = sch.Id,
                                     SubjectName = s.Name,
                                     TeacherName = t.Name,
-                                    ClassRoom = sch.ClassRoom,
+                                    ClassRoom = cl.Room,
                                     DayOfWeek = sch.DayOfWeek,
                                     Infomation = sch.Infomation ?? "Không có thông tin",
+                                    DayOfWeeks = sch.DayOfWeeks,
+                                    PeriodStudy = sch.PeriodStudy,
                                     StartTime = sch.StartTime,
                                     EndTime = sch.EndTime
                                 };
@@ -100,13 +109,14 @@ namespace QLyHS1.Controllers
             var schedules = _context.Schedules
                 .Include(s => s.Subject)
                  .Include(s => s.Teacher)
-                .Where(s => s.Subject.Name.Contains(query) || s.ClassRoom.Contains(query))
+                  .Include(s => s.ClassRoom)
+                .Where(s => s.Subject.Name.Contains(query))
                 .Select(s => new ScheduleViewModel
                 {
                     Id = s.Id,
                     SubjectName = s.Subject.Name,
                     TeacherName = s.Teacher.Name,
-                    ClassRoom = s.ClassRoom,
+                    ClassRoom = s.classroom.Room,
                     DayOfWeek = s.DayOfWeek,
                     Infomation = s.Infomation ?? "Không có thông tin",
                     StartTime = s.StartTime,
@@ -137,6 +147,15 @@ namespace QLyHS1.Controllers
                            .ToList();
 
             ViewBag.Teacher = new SelectList(Teacher, "Id", "Name");
+
+            var room = _context.Classrooms
+                         .Select(s => new { s.Id, s.Name })
+                         .ToList();
+
+            ViewBag.Room = new SelectList(room, "Id", "Name");
+
+
+
             //ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name");
             return View();
         }
@@ -144,6 +163,7 @@ namespace QLyHS1.Controllers
         [HttpPost]
         public IActionResult Add(ScheduleDetailViewModel model)
         {
+           
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -155,6 +175,8 @@ namespace QLyHS1.Controllers
                 ClassRoom = model.ClassRoom,
                 DayOfWeek = model.DayOfWeek,
                 Infomation = model.Infomation,
+                DayOfWeeks = model.DayOfWeeks,
+                PeriodStudy = model.PeriodStudy,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime
             };
@@ -187,13 +209,17 @@ namespace QLyHS1.Controllers
                 ClassRoom = schedule.ClassRoom,
                 DayOfWeek = schedule.DayOfWeek,
                 Infomation = schedule.Infomation,
+                DayOfWeeks = schedule.DayOfWeeks,
+                PeriodStudy = schedule.PeriodStudy,
                 StartTime = schedule.StartTime,
                 EndTime = schedule.EndTime
             };
 
             ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
 
-            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", schedule.TeacherId);
+            ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", schedule.TeacherId); 
+
+            ViewData["ClassRoom"] = new SelectList(_context.Classrooms, "Id", "Name", schedule.ClassRoom);
             return View(model);
         }
 
@@ -220,6 +246,8 @@ namespace QLyHS1.Controllers
                 schedule.ClassRoom = model.ClassRoom;
                 schedule.DayOfWeek = model.DayOfWeek;
                 schedule.Infomation = model.Infomation;
+                schedule.DayOfWeeks = model.DayOfWeeks;
+                schedule.PeriodStudy = model.PeriodStudy;
                 schedule.StartTime = model.StartTime;
                 schedule.EndTime = model.EndTime;
 
@@ -229,6 +257,7 @@ namespace QLyHS1.Controllers
                 ViewData["SubjectId"] = new SelectList(_context.Subjects, "Id", "Name", schedule.SubjectId);
 
                 ViewData["TeacherId"] = new SelectList(_context.Teachers, "Id", "Name", schedule.TeacherId);
+                ViewData["ClassRoom"] = new SelectList(_context.Classrooms, "Id", "Name", schedule.ClassRoom);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
