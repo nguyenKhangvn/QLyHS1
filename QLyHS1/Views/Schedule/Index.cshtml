@@ -52,27 +52,40 @@
                             <td>@lesson.Key</td>
                             @foreach (var day in daysOfWeek)
                             {
-                                var scheduleForDay = lesson.Value.FirstOrDefault(x => x.DayOfWeeks == day);
-                                if (scheduleForDay != null)
+                                var schedulesForDay = lesson.Value.Where(x => x.DayOfWeeks == day).ToList();
+                                if (schedulesForDay.Any())
                                 {
                                     <td>
-                                        <strong>@scheduleForDay.SubjectName</strong><br />
-                                        Giáo viên: @scheduleForDay.TeacherName<br />
-                                        Phòng: @scheduleForDay.ClassRoom<br />
-                                        <div class="table_funtion" style="display: block;">
-                                            <a asp-action="Edit" asp-route-id="@scheduleForDay.Id">Cập nhật</a>
-                                            <a asp-action="Delete" asp-route-id="@scheduleForDay.Id">Xóa</a>
-                                        </div>
+                                        @foreach (var schedule in schedulesForDay)
+                                        {
+                                            <div>
+                                                <strong>@schedule.SubjectName</strong>
+                                                <br />
+                                                Giáo viên: @schedule.TeacherName
+                                                <br />
+                                                Phòng: @schedule.ClassRoom
+                                                <br />
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <div class="table_funtion" style="display: block;">
+                                                        <a asp-action="Edit" asp-route-id="@schedule.Id">Cập nhật</a>
+                                                        <a asp-action="Delete" asp-route-id="@schedule.Id">Xóa</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <hr />
+                                        }
                                     </td>
                                 }
                                 else
                                 {
-                                    <td>-</td> 
+                                    <td>-</td>
                                 }
                             }
                         </tr>
                     }
                 </tbody>
+
             </table>
         </div>
     </div>

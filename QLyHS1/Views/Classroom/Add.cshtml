@@ -18,7 +18,7 @@
     <div class="table_Detail">
         <div class="Detail_form">
             <p>Thêm lớp học</p>
-            <button onclick="window.location.href='@Url.Action("Index", "Teacher")'" class="btn-back">Quay lại</button>
+            <button onclick="window.location.href='@Url.Action("Index", "Classroom")'" class="btn-back">Quay lại</button>
         </div>
         <form asp-action="Add" asp-controller="Classroom" method="post">
             <div class="form-group">
@@ -36,6 +36,10 @@
             <div class="form-group">
                 <label for="name" class="control-label">Lớp:</label>
                 <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+                <label for="Room" class="control-label">Phòng học:</label>
+                <input type="text" id="Room" name="Room" required />
             </div>
             <div class="form-group">
                 <label for="quantity" class="control-label">Số lượng:</label>

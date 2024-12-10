@@ -638,7 +638,7 @@ namespace QLyHS1.Controllers
                 worksheet.Cells[headerCell, 8].Value = "Điểm hệ số 1";
                 worksheet.Cells[headerCell, 9].Value = "Điểm hệ số 2";
                 worksheet.Cells[headerCell, 10].Value = "Điểm hệ số 3";
-                worksheet.Cells[headerCell, 11].Value = "Điểm tổng kết";
+                worksheet.Cells[headerCell, 11].Value = "Điểm TB";
                 worksheet.Cells[headerCell, 12].Value = "Xếp loại";
 
                 int row = headerCell + 1;
@@ -817,8 +817,5 @@ namespace QLyHS1.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-
     }
 }

@@ -515,7 +515,7 @@ namespace QLyHS1.Controllers
                             if (classroom == null)
                             {
                                 TempData["Error"] = $"Lớp học '{className}' không tồn tại. Hãy thêm lớp học trước.";
-                                continue;
+                                break;
                             }
 
                             var student = new Student

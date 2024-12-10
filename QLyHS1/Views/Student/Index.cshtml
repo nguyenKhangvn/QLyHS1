@@ -38,7 +38,20 @@
 
 
             <div class="group_top">
-                <a asp-action="ExportToExcel" asp-controller="Student" class="btn-text">Xuất Excel</a>
+                <form method="get" action="@Url.Action("ExportToExcel", "Student")">
+                    <label for="className" class="btn-text"></label>
+                    <select name="className" id="className" class="assds">
+                        <option value="">Chọn lớp</option>
+                        @if (ViewBag.Classrooms != null)
+                        {
+                            foreach (SelectListItem classroom in ViewBag.Classrooms)
+                            {
+                                <option value="@classroom.Value">@classroom.Text</option>
+                            }
+                        }
+                    </select>
+                    <button type="submit">Xuất Excel</button>
+                </form>
                 <form method="get" asp-action="Index" class="group_class">
                     <label for="className" class="btn-text">Lọc theo lớp:</label>
                     <select name="className" id="className" onchange="this.form.submit()" class="assds">
